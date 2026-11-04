@@ -25,7 +25,7 @@ Tabla de contenido
 11. Estado y entregables
 
 
-1. Integrantes
+1) Integrantes
 El presente proyecto es desarrollado por los siguientes estudiantes:
 - Paulina Camacho
 - Sary Vargas
@@ -33,7 +33,7 @@ El presente proyecto es desarrollado por los siguientes estudiantes:
 - Steven Loaiza
 
 
-2. Objetivos y experimentos
+2) Objetivos y experimentos
 Se utilizan programas disenados utilizando el lenguage de programacion C, matrices float de tamaño N × N y compilación estática AArch64. 
 De la misma manera, los tamaños oficiales principales son N = 64 y N = 128. Por otra parte, las mediciones se realizan sobre la región de 
 interés (ROI), marcada mediante m5_reset_stats() y m5_dump_stats().
@@ -56,3 +56,31 @@ De la misma manera, la elección final debe considerar resultados medidos, costo
 configuración de más recursos.
 
 
+3) Distribución del trabajo
+Esta sección describe qué aporta cada rol/encargado al repositorio, no es solamente una lista de instrucciones para ejecutar manualmente. De la misma
+es importante indicar que las guías detalladas permanecen en docs/ y en los documentos de apoyo del grupo.
+
+|        Rol      |				 Responsabilidad técnica						 	| Archivos y evidencias principales |
+| --------------- | --------------------------------------------------------------- | --------------------------------- |
+
+| Paulina Camacho | Organizar Git/GitHub, preparar gem5 ARM,						 
+                    establecer el entorno común y liderar **E2**.					 
+                    Participar en E1 y E6. | 										 
+ 
+                    																 
+| Steven Loaiza   | Desarrollar/validar los benchmarks, 							 
+					automatizar simulaciones y liderar **E3 (SVE)**. 				 
+					Facilitar programas a C y D; participar en E1 y E6.  			 
+																					 
+																					 
+| Sary Vargas     | Liderar **E4**, evaluar 1/2/4/8 núcleos, calcular 
+					eficiencia y estimar la fracción serial con Amdahl.
+				    Coordinar el avance de resultados E1 - E3
+
+
+
+| Tomas Campos    | Liderar **E5**, comparar protocolos de coherencia y 
+					cuantificar el falso compartido, con y sin relleno. 
+
+Actividades compartidas: E1, E6, revisión de resultados, informe IEEE, presentación/video, coevaluación y actividades individuales de 
+aprendizaje continuo AC1–AC4. Todos deben poder explicar los resultados del equipo.
