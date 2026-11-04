@@ -85,3 +85,23 @@ aprendizaje continuo AC1–AC4. Todos deben poder explicar los resultados del eq
 
 Proyecto_2_Arqui/
 ├── README.md                   # Presentación, autores y reproducción del presente proyecto
+
+6) Instalacion paso a paso
+
+
+
+7) Compilacion y validacion
+
+
+8) Ejecucion de los experimentos
+
+
+9) Resultados y reproducibilidad
+
+
+
+10) Trabajo colaborativo y documentación
+
+
+
+11) Estado y entregables
