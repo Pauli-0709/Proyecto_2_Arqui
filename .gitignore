@@ -1,0 +1,8 @@
+# Excluye los ejecutables compilados
+bin/ 
+
+# Excluye archivos objeto de compilación
+*.o
+
+# Excluye bibliotecas estáticas compiladas
+*.a
