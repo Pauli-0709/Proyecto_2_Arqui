@@ -9,3 +9,50 @@ Asimismo, el presente trabajo analiza el paralelismo a nivel de instrucciones, e
 la vectorización Arm SVE, la ejecución multinúcleo y la coherencia de memoria. El objetivo final es recomendar una arquitectura respaldada 
 por las diversas mediciones de GEMM y teniendo en cuenta una restricción de costo.
 
+Estado del proyecto: inicializacion del mismo, se repartieron las funciones entre los diversos integrantes.
+
+Tabla de contenido
+1. Integrantes
+2. Objetivos y experimentos
+3. Distribución del trabajo
+4. Tecnologías y requisitos
+5. Estructura del repositorio
+6. Instalación paso a paso
+7. Compilación y validación
+8. Ejecución de los experimentos
+9. Resultados y reproducibilidad
+10. Trabajo colaborativo y documentación
+11. Estado y entregables
+
+
+1. Integrantes
+El presente proyecto es desarrollado por los siguientes estudiantes:
+- Paulina Camacho
+- Sary Vargas
+- Tomás Campos
+- Steven Loaiza
+
+
+2. Objetivos y experimentos
+Se utilizan programas disenados utilizando el lenguage de programacion C, matrices float de tamaño N × N y compilación estática AArch64. 
+De la misma manera, los tamaños oficiales principales son N = 64 y N = 128. Por otra parte, las mediciones se realizan sobre la región de 
+interés (ROI), marcada mediante m5_reset_stats() y m5_dump_stats().
+
+
+Experimento y tema      	Qué se estudia									Variantes y métricas principales																Liderazgo/Encargado
+E1: línea base	       		Procesadores TimingSimple, Minor y O3			1 núcleo; ciclos, IPC, CPI y fallos de caché L1D/L2												Equipo completo
+E2: superescalar	   		Paralelismo a nivel de instrucciones			Anchos 1, 2, 4 y 8; ROB 32, 64 y 192; IPC, ocupación IQ/ROB y predicción						Paulina Camacho
+E3: vectorial	       		Extensiones 									SVE	Escalar frente a SVE; VL de 128, 256, 512 y 1024 bits; ciclos, instrucciones y speedup		Steven Loaiza
+E4: multinúcleo	       		Memoria compartida y escalabilidad				1, 2, 4 y 8 núcleos O3; speedup, eficiencia y fallos L2											Sary Vargas
+E5: coherencia	       		MESI, MOESI y falso compartido					MESI_Two_Level y MOESI_CMP_directory; invalidaciones, mensajes y latencias						Tomas Campos
+E6: integración  	   		Selección de arquitectura						Al menos 6 configuraciones con costo ≤ 32 y GEMM con N = 128									Equipo completo
+
+
+Modelo de costo del enunciado:
+Costo = # de núcleos × (ancho_de_emisión / 2 + VL(longitud_vectorial)_en_bits / 128)
+Costo máximo = 32 unidades
+
+De la misma manera, la elección final debe considerar resultados medidos, costo y rendimiento/costo; no basta con solamente  seleccionar la 
+configuración de más recursos.
+
+
