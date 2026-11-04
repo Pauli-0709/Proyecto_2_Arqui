@@ -1,0 +1,17 @@
+# Esta linea va a habilitar la construccion del soporte de instrucciones.
+BUILD_ISA=y
+
+# Esta linea va a seleccionar la arquitectura ARM.
+USE_ARM_ISA=y
+
+# Esta linea incluye Ruby, la cual permite modelar la coherencia de caches.
+RUBY=y
+
+# Esta linea es la construccion que utiliza un protocolo seleccionado.
+USE_MULTIPLE_PROTOCOLS=n
+
+# Esta linea selecciona la implementacion MESI de dos niveles de gem5.
+PROTOCOL="MESI_Two_Level"
+
+# Finalmenteh se habilita la implementacion seleccionada.
+RUBY_PROTOCOL_MESI_Two_Level=y
