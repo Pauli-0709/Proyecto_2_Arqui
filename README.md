@@ -86,6 +86,8 @@ aprendizaje continuo AC1–AC4. Todos deben poder explicar los resultados del eq
 Proyecto_2_Arqui/
 ├── README.md                   # Presentación, autores y reproducción del presente proyecto
 ├── .gitignore                  # Ignora binarios y archivos temporales
+├── docs/                       # Plan del equipo, acuerdos técnicos y bitácoras
+
 
 6) Instalacion paso a paso
 
