@@ -74,8 +74,8 @@ Actividades compartidas: E1, E6, revisión de resultados, informe IEEE, presenta
 aprendizaje continuo AC1–AC4. Todos deben poder explicar los resultados del equipo.
 
 ### 4) Tecnologías y requisitos
-- Ubuntu 24.04 nativo o en WSL2 (entorno de trabajo propuesto).
-- gem5 v24.1.0.3 (versión fijada por las guías del equipo, no exigida por el profesor).
+- Ubuntu nativo o en WSL2 (entorno de trabajo propuesto).
+- gem5
 - GCC, SCons, Python 3, Bash, Git y GitHub.
 - El compilador cruzado aarch64-linux-gnu-gcc y la biblioteca libm5.a de gem5.
 - matplotlib para poder producir las diversas gráficas, qemu-user es opcional ya que es util para validar los diversos binarios ARM sin medir rendimiento.
