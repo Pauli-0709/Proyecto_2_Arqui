@@ -39,13 +39,14 @@ De la misma manera, los tamaños oficiales principales son N = 64 y N = 128. Por
 interés (ROI), marcada mediante m5_reset_stats() y m5_dump_stats().
 
 
-Experimento y tema      	Qué se estudia									Variantes y métricas principales																Liderazgo/Encargado
-E1: línea base	       		Procesadores TimingSimple, Minor y O3			1 núcleo; ciclos, IPC, CPI y fallos de caché L1D/L2												Equipo completo
-E2: superescalar	   		Paralelismo a nivel de instrucciones			Anchos 1, 2, 4 y 8; ROB 32, 64 y 192; IPC, ocupación IQ/ROB y predicción						Paulina Camacho
-E3: vectorial	       		Extensiones 									SVE	Escalar frente a SVE; VL de 128, 256, 512 y 1024 bits; ciclos, instrucciones y speedup		Steven Loaiza
-E4: multinúcleo	       		Memoria compartida y escalabilidad				1, 2, 4 y 8 núcleos O3; speedup, eficiencia y fallos L2											Sary Vargas
-E5: coherencia	       		MESI, MOESI y falso compartido					MESI_Two_Level y MOESI_CMP_directory; invalidaciones, mensajes y latencias						Tomas Campos
-E6: integración  	   		Selección de arquitectura						Al menos 6 configuraciones con costo ≤ 32 y GEMM con N = 128									Equipo completo
+| Experimento | Qué se estudia | Variantes y métricas principales | Liderazgo |
+| --- | --- | --- | --- |
+| **E1: línea base** | Procesadores TimingSimple, Minor y O3 | 1 núcleo; ciclos, IPC, CPI y fallos de caché L1D/L2 | Equipo completo |
+| **E2: superescalar** | Paralelismo a nivel de instrucciones | Anchos 1, 2, 4 y 8; ROB 32, 64 y 192; IPC, ocupación IQ/ROB y predicción | Paulina Camacho |
+| **E3: vectorial** | Extensiones SVE | Escalar frente a SVE; VL de 128, 256, 512 y 1024 bits; ciclos, instrucciones y *speedup* | Steven Loaiza |
+| **E4: multinúcleo** | Memoria compartida y escalabilidad | 1, 2, 4 y 8 núcleos O3; *speedup*, eficiencia y fallos L2 | Sary Vargas |
+| **E5: coherencia** | MESI, MOESI y falso compartido | `MESI_Two_Level` y `MOESI_CMP_directory`; invalidaciones, mensajes y latencias | Tomas Campos |
+| **E6: integración** | Selección de arquitectura | Al menos 6 configuraciones con costo ≤ 32 y GEMM con `N = 128` | Equipo completo |
 
 
 Modelo de costo del enunciado:
