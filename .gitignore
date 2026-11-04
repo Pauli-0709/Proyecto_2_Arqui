@@ -6,8 +6,22 @@
 # Excluye los ejecutables compilados
 bin/ 
 
-# Excluye archivos objeto de compilación
-*.o
+# Configuraciones y datos locales del entorno que se va a utilizar en el desarollo
+/.local/
 
-# Excluye bibliotecas estáticas compiladas
+# Directorio del entorno virtual de Python
+/.venv/
+
+# Archivos de cache y bytecode compilado de Python
+__pycache__/
+*.pyc 
+
+# Excluye archivos objeto y biblbiotecas estaticas de compilación (Lenguaje C)
+*.o
 *.a
+
+# Archivo de variables del entorno o locales
+/.env
+
+# Directorio de salidas y estadisticas del simulador GEM5
+/m5out/
