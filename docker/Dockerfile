@@ -56,8 +56,8 @@ RUN scons --ignore-style defconfig out/ARM_MOESI /opt/defconfigs/ARM_MOESI.defco
 # Asimismo esta biblioteca permite usar operaciones como resetear y volcar las estadisticas desde el programa simulado.
 # Finalmente, tambien va a comprobar que ambos simuladores respondan a --version.
 RUN scons -C util/m5 build/arm64/out/libm5.a \
-    && out/ARM_MESI/gem5.opt --version \
-    && out/ARM_MOESI/gem5.opt --version
+    && out/ARM_MESI/gem5.opt --build-info \
+    && out/ARM_MOESI/gem5.opt --build-info
 
 # Esta seccion va a registrar el commit del simulador gem5 y las versiones de paquetes instalados.
 # Asimismo estos datos ayudan a identificar el entorno usado en las pruebas.
