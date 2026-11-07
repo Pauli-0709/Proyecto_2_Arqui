@@ -35,4 +35,4 @@ exec "${docker_cli[@]}" run --rm "${tty_args[@]}" \
     --user "$(id -u):$(id -g)" \
     --mount "type=bind,src=${project_dir},dst=/work" \
     --workdir /work \
-    proyecto2-gem5:24.1.0.1 "$@"
+    ghcr.io/pauli-0709/proyecto2-gem5:24.1.0.1-env2 "$@"
