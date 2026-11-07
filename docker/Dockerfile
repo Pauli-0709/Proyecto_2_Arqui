@@ -64,6 +64,14 @@ RUN scons -C util/m5 build/arm64/out/libm5.a \
 RUN git rev-parse HEAD > /opt/gem5-commit.txt \
     && dpkg-query -W > /opt/packages.txt
 
+# Esta seccion se decidio colocarla para poder hacer que  las rutas utilizadas en el enunciado del profesor sean las mismas en el docker
+# EL objetivo es reutilizar los ejecutables compilados en out/, sin duplicarlos, solamente corregir las rutas de accesos a los mismos.
+RUN mkdir -p /opt/gem5/build \
+    && ln -s /opt/gem5/out/ARM_MESI /opt/gem5/build/ARM_MESI \
+    && ln -s /opt/gem5/out/ARM_MOESI /opt/gem5/build/ARM_MOESI \
+    && test -x /opt/gem5/build/ARM_MESI/gem5.opt \
+    && test -x /opt/gem5/build/ARM_MOESI/gem5.opt
+
 # Esta linea va a definir la carpeta de trabajo al iniciar el contenedor.
 # El script arm_env.sh conecta aqui el repositorio de Ubuntu.
 WORKDIR /work
