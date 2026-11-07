@@ -332,9 +332,9 @@ verificar el funcionamiento correcto del docker.
 
 #### Construir la imagen desde el Dockerfile
 
-En primer lugar, este paso solo se necesita para reconstruir el entorno. No es necesario para utilizar la imagen descargada.
+Es importante mencionar que este paso solo se necesita para reconstruir el entorno. No es necesario para utilizar la imagen descargada.
 
-En segundo lugar, desde Ubuntu, en la raíz del repositorio, ejecutar los siguientes comandos:
+En primer lugar, desde Ubuntu, en la raíz del repositorio, ejecutar los siguientes comandos:
 
 ```bash
 sudo docker build --progress=plain --build-arg JOBS=1 \
@@ -349,7 +349,7 @@ enunciado.
 Asimismo, JOBS indica cuántos trabajos de compilación se ejecutan simultáneamente. La construcción puede tardar varias horas si no hay caché. De la 
 misma manera, la imagen reconstruida queda guardada como `proyecto2-gem5:rebuild` y a su vez el lanzador continúa utilizando env2.
 
-En tercer lugar, para comprobar los ejecutables de la imagen reconstruida:
+En segundo lugar, para comprobar los ejecutables de la imagen reconstruida:
 
 ```bash
 sudo docker run --rm proyecto2-gem5:rebuild \
