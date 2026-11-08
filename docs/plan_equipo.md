@@ -18,3 +18,44 @@
 
 # Directrices y notas operativas para la realizacion del proyecto
 - Revisar tablero dos veces por semana.
+
+## Seguimiento de tareas
+
+Estados utilizados:
+- Pendiente: todavía no se ha iniciado o no hay evidencia publicada en el repositorio.
+- En curso: hay trabajo realizado, pero faltan algunas secciones del mismo.
+- Completado: la evidencia está publicada en el repositorio  y fue revisada.
+
+Las fechas objetivo se acuerdan con el equipo. Es importante indicar que una tarea no se marca como completada unicamente porque exista 
+una carpeta o un script en particular.
+
+| Tarea | Responsable | Estado | Fecha objetivo | Evidencia o criterio de |
+| --- | --- | --- | --- | --- |
+| Completar estructura del repositorio | Paulina Camacho | Completado | — | src/, configs/, scripts/, results/ y report/ |
+| Establecer seguimiento y calendario | Equipo General | En curso | Por acordar | Fechas, estados y revision dos veces por semana |
+| Preparar entorno ARM con Docker | Paulina Camacho | Completado | — | docker/, scripts/arm_env.sh y README.md |
+| Verificar ejecucion inicial en ARM | Paulina Camacho | Completado | — | results/environment/ |
+| Validar GEMM escalar | Steven Loaiza | Completado | — | results/validation/gemm_scalar_native/ y gemm_scalar_n16/ |
+| Repetir validacion ARM desde el entorno de Paulina Camacho | Paulina Camacho | Completado | — | results/validation/paulina_gemm_scalar_n16/ |
+| Ejecutar y analizar línea base | Todo el equipo | Pendiente | Por acordar | TimingSimple, Minor y O3; N=64 y N=128 |
+| Preparar configuracion O3 parametrizable | Paulina Camacho | Pendiente | Por acordar | Configuracion con ancho y ROB verificables |
+| Preparar automatizacion y extraccion de las diversas metricas | Paulina Camacho y Steven Loaiza | Pendiente | Por acordar | Barrido y extraccion exclusiva de ROI a CSV |
+| Ejecutar barrido completo | Paulina Camacho | Pendiente | Por acordar | 24 corridas correctas con configuracion y estadisticas |
+| Analizar IPC, IQ/ROB y prediccion | Paulina Camacho | Pendiente | Por acordar | CSV y explicacion de los limites del rendimiento |
+| Generar graficos y documentar reproduccion del mismo | Paulina Camacho | Pendiente | Por acordar | Graficos, conclusiones y comandos reproducibles |
+
+## Coordinacion
+
+- Revisar este seguimiento dos veces por semana.
+- Acordar las fechas objetivo y registrarlas en formato AAAA-MM-DD.
+- Registrar bloqueos y dependencias cuando aparezcan.
+- Actualizar estados junto con los commits que aportan evidencia.
+- Acordar y registrar quien realiza la integracion cada semana.
+- Mantener las responsabilidades generales E3–E6 y AC1–AC4 del tablero inicial.
+
+## Registro de revisiones
+
+Agregar una fila despues de cada revision real del equipo.
+
+| Fecha | Participantes | Avances revisados | Bloqueos y acuerdos | Proxima revision |
+| --- | --- | --- | --- | --- |
