@@ -104,10 +104,20 @@ la compilación del simulador en forma independiente.
 
 ### 5) Estructura del repositorio
 
+```text
 Proyecto_2_Arqui/
-├── README.md                   # Presentación, autores y reproducción del presente proyecto
-├── .gitignore                  # Ignora binarios y archivos temporales
-├── docs/                       # Plan del equipo, acuerdos técnicos y bitácoras
+├── README.md
+├── docker/       # Entorno y compilación de gem5
+├── docs/         # Plan del equipo y documentacion
+├── src/          # Programas de los distintos experimentos
+├── configs/      # Configuraciones de las diversas simulaciones
+├── scripts/      # Validacion, ejecucion y analisis
+├── tests/        # Programas de prueba del entorno
+├── results/      # Evidencias, estadisticas, CSV y graficos del proyecto
+└── report/       # Informe tecnico y materiales de exposicion
+```
+
+Nota: las carpetas configs/ y report/ contienen la documentacion inicial. Sus diversas implementaciones y entregables siguen pendientes.
 
 Archivos del entorno Docker y sus pruebas:
 
@@ -361,10 +371,25 @@ sudo docker run --rm proyecto2-gem5:rebuild \
 
 Finalmente, antes de publicar una nueva versión, se debe repetir también la prueba ARM utilizando esa imagen en particular.
 
+#### Seguimiento del equipo
+
+En el [tablero de tareas](docs/plan_equipo.md) se registra los diversas personas responsables de las mismas, teniendo en cuenta los estados, 
+fechas objetivo, dependencias y evidencias.
+
+Asimismo, se revisa dos veces por semana. A su vez, cada tarea se cierra cuando su evidencia esta publicada en el repositorio oficial y revisada por el grupo de trabajo.
+
+Por otra parte, los commits representan avances concretos, como lo son la organizacion, la implementacion, la validacion, los resultados o 
+documentacion de los mismo. Antes de subir cambios se debe revisar la lista de los archivos incluidos en el commit.
+
+
 ### 11) Estado y entregables
 
 - Imagen Docker env2 publicada.
 - Ejecutables MESI y MOESI comprobados mediante --build-info.
 - Listado de CPU obtenido correctamente.
 - Prueba inicial ARM completada con HOLA_ARM_OK, código cero y estadísticas.
-- Pendientes: validación de benchmarks y desarrollo de los experimentos E1–E6.
+- GEMM escalar validado de forma nativa para N=16, N=64 y N=128.
+- GEMM escalar validado en gem5 ARM para N=16, con CHECK=PASS.
+- Validacion ARM repetida por Paulina Camacho y publicada en results/validation/.
+- Pendientes: los otros benchmarks y los experimentos E1 hasta el E6.
+- E2 pendiente: configuracion O3, 24 corridas, CSV, analisis y graficos.
