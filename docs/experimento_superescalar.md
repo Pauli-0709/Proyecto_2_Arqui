@@ -51,7 +51,7 @@ el volcado final puede incluir la verificacióo posterior.
 
 Finalmente, es importante indicar que el reiniciar las diversas estadisticas no vacía las caches.
 
-## Ejecución de una configuracion
+## Ejecucion de una configuracion
 
 Dentro del Docker:
 
@@ -60,3 +60,17 @@ cd /work
 bash scripts/ejecutar_superescalar.sh \
     16 2 64 \
     results/validation/superescalar_n16_ancho2_rob64
+```
+## Estado
+
+La configuracion fue validada con GEMM, teniendo en cuenta un N=16, un ancho 2 y un ROB de 64 entradas.
+
+Asimismo, la prueba termino con el esperado mensaje de CHECK=PASS, con 0 errores y un error absoluto maximo igual a 0. Tambien se logro verificar
+los parametros del procesador mediante config.ini.
+
+Por otra parte, se generaron dos bloques de estadisticas: en primer lugar, el volcado de la region de interes y en segundo lugar el volcado final.
+
+La evidencia de la prueba se observa en la siguiente ruta:
+results/validation/superescalar_n16_ancho2_rob64/
+
+Finalmente, el barrido oficial de las 24 corridas para N=64 y N=128 y su posterior analisis siguen pendientes.
