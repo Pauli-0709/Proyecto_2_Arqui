@@ -25,3 +25,10 @@ __pycache__/
 
 # Directorio de salidas y estadisticas del simulador GEM5
 /m5out/
+
+# Archivos auxiliares generados automaticamente por el simulador gem5
+results/**/citations.bib
+results/**/config.dot
+results/**/config.dot.pdf
+results/**/config.dot.svg
+results/**/fs/
