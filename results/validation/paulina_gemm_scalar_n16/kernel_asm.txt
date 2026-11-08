@@ -1,0 +1,52 @@
+
+bin/gemm_scalar:     file format elf64-littleaarch64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .text:
+
+0000000000400b60 <gemm_scalar>:
+  400b60:	aa0003e8 	mov	x8, x0
+  400b64:	aa0203ea 	mov	x10, x2
+  400b68:	b4000440 	cbz	x0, 400bf0 <gemm_scalar+0x90>
+  400b6c:	d37ef402 	lsl	x2, x0, #2
+  400b70:	aa0303e7 	mov	x7, x3
+  400b74:	aa0103e6 	mov	x6, x1
+  400b78:	8b020023 	add	x3, x1, x2
+  400b7c:	d2800009 	mov	x9, #0x0                   	// #0
+  400b80:	aa0a03e5 	mov	x5, x10
+  400b84:	d2800004 	mov	x4, #0x0                   	// #0
+  400b88:	0f000401 	movi	v1.2s, #0x0
+  400b8c:	aa0503e1 	mov	x1, x5
+  400b90:	aa0603e0 	mov	x0, x6
+  400b94:	d503201f 	nop
+  400b98:	bd400022 	ldr	s2, [x1]
+  400b9c:	8b020021 	add	x1, x1, x2
+  400ba0:	bc404400 	ldr	s0, [x0], #4
+  400ba4:	1e220800 	fmul	s0, s0, s2
+  400ba8:	1e202821 	fadd	s1, s1, s0
+  400bac:	eb00007f 	cmp	x3, x0
+  400bb0:	54ffff41 	b.ne	400b98 <gemm_scalar+0x38>  // b.any
+  400bb4:	91000480 	add	x0, x4, #0x1
+  400bb8:	bc2478e1 	str	s1, [x7, x4, lsl #2]
+  400bbc:	910010a5 	add	x5, x5, #0x4
+  400bc0:	eb00011f 	cmp	x8, x0
+  400bc4:	54000060 	b.eq	400bd0 <gemm_scalar+0x70>  // b.none
+  400bc8:	aa0003e4 	mov	x4, x0
+  400bcc:	17ffffef 	b	400b88 <gemm_scalar+0x28>
+  400bd0:	8b0200e7 	add	x7, x7, x2
+  400bd4:	8b0200c6 	add	x6, x6, x2
+  400bd8:	8b020063 	add	x3, x3, x2
+  400bdc:	91000520 	add	x0, x9, #0x1
+  400be0:	eb09009f 	cmp	x4, x9
+  400be4:	54000060 	b.eq	400bf0 <gemm_scalar+0x90>  // b.none
+  400be8:	aa0003e9 	mov	x9, x0
+  400bec:	17ffffe5 	b	400b80 <gemm_scalar+0x20>
+  400bf0:	d65f03c0 	ret
+
+Disassembly of section __libc_freeres_fn:
+
+Disassembly of section .fini:
