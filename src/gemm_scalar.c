@@ -4,6 +4,11 @@
 #include <errno.h>  //Biblioteca que permite capturar codigos de error del sistema
 #include <math.h>   //Biblioteca que tiene funciones matemeticas como fabs (valor absoluto) y isfinite (verificar si un numero es valido)
 
+//Directiva de preprocesamiento, esta va a comprobar si la macro denominada USE_GEM5 ha sido definida correctamente
+//Esto tambien permite que el mismo codigo fuente funcione tanto en un equipo real como en el simulador de gem5
+#ifdef USE_GEM5
+#include <gem5/m5ops.h>	//Incluye el archivo de cabera oficial del simulador de gem5 el cual declara las llamadas a funciones especiales
+#endif	//Fin del condicional para la instruccion USE_GEM5
 
 //-------------------------------------------------------------------------------------------------------------------------------
 //Inicializa las distintas matrices. Asimismo, las matrices se almacenan por filas en los diversos arreglos continuos
@@ -137,7 +142,16 @@ int main(int argc, char *argv[])
 	//Llamado de las subfunciones
 	//Parametros: n-> dimension de las matrices, a-> primer matriz de entrada, b-> segunda matriz de entrada, c-> matriz de resultados y referencia -> matriz de validacion 
     inicializar(n, a, b, c);	//Llama a la subfuncion inicializar y le da los parametros
-    gemm_scalar(n, a, b, c);	//Llama a la subfuncion gemm_scalar y le da los parametros
+
+#ifdef USE_GEM5
+    m5_reset_stats(0, 0);	//Reinicia las estadisticas del simulador gem5 en este punto exacto. Esto es importante porque descarta todo el coste de inicializacion como lo es la asignacion de memoria, entre otros. 
+#endif
+
+    gemm_scalar(n, a, b, c);	//Llama a la subfuncion gemm_scalar y le da los parametros. Asimismo, es importante indicar que esto es lo que interesa medir
+
+#ifdef USE_GEM5
+    m5_dump_stats(0, 0);	//Guarda las estadisticas acumuladas en el simulador gem5 al archivo de salida (stats.txt). A su vez, estas estadisticas reflejan unicamente el rendimiento real de gemm_scalar gracia al reset previo
+#endif
 
     int resultado = verificar(n, a, b, c, referencia); //Va a comprobar y validar los resultados obtenidos vs a la referencia
     free(a);	//Libera la memoria asignada a la matriz a
