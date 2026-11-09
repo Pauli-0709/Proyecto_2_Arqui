@@ -9,10 +9,17 @@ Asimismo, el presente trabajo analiza el paralelismo a nivel de instrucciones, e
 la vectorización Arm SVE, la ejecución multinúcleo y la coherencia de memoria. El objetivo final es recomendar una arquitectura respaldada 
 por las diversas mediciones de GEMM y teniendo en cuenta una restricción de costo.
 
-Estado del proyecto: inicializacion del mismo, se repartieron las funciones entre los diversos integrantes.
+Estado del proyecto: entorno del Docker ARM preparado y el GEMM escalar validado. Asimismo, el barrido de E2 esta completado y publicado: 24 
+corridas, las cuales corresponden a 12 configuraciones para un tamano de N=64 y 12 para un tamano de N=128.
 
-Actualizacion del entorno (7 de noviembre de 2026): imagen del Docker env2 publicada y se realizaron las diversas pruebas ARM que fueron completadas
-con exito. Las seccion 6 y 7 indican como descargarla y usurla, la seccion 11 resume el avance.
+Por otra parte, la extracción de metricas a CSV, el analisis y los graficos de E2 permanecen pendientes. E2 todavía no se puede considerar como 
+terminado en su totalidad.
+
+Finalmente, las secciones 6 y 7 describen la preparacion y validacion del entorno. A su vez, la seccion 8 explica como ejecutar o verificar el 
+barrido de E2.
+
+La documentacion detallada se puede observar y analizar en:
+[Experimento E2: arquitectura superescalar](docs/experimento_superescalar.md).
 
 # Tabla de contenido
 1. Integrantes
@@ -117,7 +124,8 @@ Proyecto_2_Arqui/
 └── report/       # Informe tecnico y materiales de exposicion
 ```
 
-Nota: las carpetas configs/ y report/ contienen la documentacion inicial. Sus diversas implementaciones y entregables siguen pendientes.
+Por otra parte, la carpeta configs/ contiene la configuracion superescalar de E2. Asi como, los scripts de ejecucion individual y barrido estan 
+implementados en la carpeta scripts/. Por otra parte, la carpeta report/ conserva la documentacion inicial del informe.
 
 Archivos del entorno Docker y sus pruebas:
 
@@ -304,34 +312,96 @@ La imagen y los resultados permanecen guardados. Para volver a entrar en otro mo
 
 ### 8) Ejecucion de los experimentos
 
-Es importante mencionar que los comandos del simulador se ejecutan dentro del contenedor, desde `/opt/gem5`.
+#### E2: arquitectura superescalar
 
-| Ruta | Función |
+El barrido utiliza la funcion GEMM escalar con un nucleo ARM O3 y tiene en cuenta las siguientes caracteristicas:
+
+| Parametro | Valores |
 | --- | --- |
-| `build/ARM_MESI/gem5.opt` | Simulador compilado con MESI. |
-| `build/ARM_MOESI/gem5.opt` | Simulador compilado con MOESI. |
-| `configs/deprecated/example/se.py` | Configuración SE del ejemplo del profesor. |
-| `/work/bin/` | Programas compilados del proyecto. |
-| `/work/results/` | Resultados de las simulaciones. |
+| Tamano de matriz N | 64 y 128 |
+| Ancho del pipeline | 1, 2, 4 y 8 |
+| Entradas del ROB | 32, 64 y 192 |
 
-De la misma manera, las rutas `build/ARM_MESI` y `build/ARM_MOESI` son enlaces a los ejecutables originales de `out/`.
+Asimismo, son 12 configuraciones distintas por tamano y 24 corridas en total.
 
-Es importante indicar que para adaptar los ejemplos del HTML, utilizar  `-c` con la ubicación del programa compilado y `-d /work/results/...` 
-para obtener los diversos resultados.
+Los siguientes comandos se ejecutan desde la raiz del repositorio en Ubuntu, fuera del docker.
+NOTA: se requiere del Docker funcionando y la imagen env2 descargada segun lo especificado en la seccion 6.
 
-Consecuentemente para utilizar Ruby se debe agregar `--ruby`. A su vez, la prueba de la sección 7 utiliza cachés clásicas y no valida la 
-coherencia multinúcleo.
+**Ejecutar o verificar el barrido completo:**
 
-Finalmente, los comandos de los experimentos E1–E6 se agregarán conforme se completen y validen sus programas.
+```bash
+bash scripts/arm_env.sh bash scripts/barrido_superescalar.sh 64 &&
+bash scripts/arm_env.sh bash scripts/barrido_superescalar.sh 128
+```
+
+Cada uno de los comandos recorre los 4 anchos y los 3 tamaños del ROB. A su vez, las corridas se ejecutan secuencialmente.
+
+Al terminar correctamente cada una de ellas, cada uno de los tamano debe generar una impresion en pantalla del siguiente mensaje:
+
+```text
+BLOQUE_COMPLETO N=64 CORRIDAS=12
+BLOQUE_COMPLETO N=128 CORRIDAS=12
+```
+
+**Ejecutar por bloques de 6 configuraciones:**
+
+```bash
+bash scripts/arm_env.sh bash scripts/barrido_superescalar.sh 64 1 2
+bash scripts/arm_env.sh bash scripts/barrido_superescalar.sh 64 4 8
+bash scripts/arm_env.sh bash scripts/barrido_superescalar.sh 128 1 2
+bash scripts/arm_env.sh bash scripts/barrido_superescalar.sh 128 4 8
+```
+
+En este punto se debe esperar a que termine cada bloque y comprobar su mensaje respectivo "BLOQUE_COMPLETO" antes de continuar con el siguiente bloque.
+
+**Comportamiento ante resultados existentes:**
+
+- Si la carpeta de una corrida no existe, el script va a compilar el programa, continuamente ejecuta el simulador gem5 y verifica las evidencias generadas.
+- Si ya existe, comprueba las evidencias y su correspondencia con el codigo y la configuracion actuales, no vuelve a ejecutar esa simulación.
+- Si el script encuentra una corrida incompleta o incompatible, se detiene.
+- Finalmente, los resultados publicados ya vienen incluidos al clonar el repositorio. Por esta razon, al ejecutar estos comandos sobre un clon 
+  completo del repositorio verifica las corridas existentes.
+
+De la misma manera, es importante mencionar que los resultados se guardan en la siguiente ruta:
+
+- results/e2/n64/anchoW_robR/
+- results/e2/n128/anchoW_robR/
+
+Simbologia:
+W representa el ancho y R las entradas del ROB.
+
+Por otra parte, las instrucciones para repetir las distintas simulaciones, poder conservar las simulaciones previas y revisar las evidencias 
+estan en:
+[documentación de E2](docs/experimento_superescalar.md).
+
+#### Otros experimentos
+
+Las instrucciones de ejecucion de E1 y E3–E6 se incorporaran conforme se van implementando y validando.
 
 ### 9) Resultados y reproducibilidad
 
-Guardar cada corrida en una carpeta distinta y conservar los archivos stats.txt, config.ini y config.json, junto con el comando utilizado.
+En primer lugar, el barrido E2 conserva una carpeta por configuracion. Asimismo, cada carpeta incluye lo siguiente:
 
-Posteriormente, el entorno utiliza la imagen 24.1.0.1-env2 y gem5 24.1.0.1.
+- stats.txt: estadisticas generadas por gem5.
+- config.ini y config.json: configuracion efectiva.
+- command.txt: comando de simulacion utilizado.
+- run.log: salida del simulador y comprobacion CHECK=PASS.
+- validation.txt: confirmacion de validacion de la corrida.
+- source.sha256 y binary.sha256: hashes de fuente y ejecutable.
+- compiler.txt, build.log y binary_info.txt: datos de compilacion.
+- gem5_build_info.txt: informacion del simulador.
+- kernel_asm.txt: desensamblado del kernel escalar.
+- Copias de configuracion_superescalar.sh y ejecutar_superescalar.sh.
 
-Finalmente, para los experimentos GEMM, extraer las métricas únicamente de la región de interés delimitada por m5_reset_stats() y m5_dump_stats().
-Ademas, la prueba ejecutada del hola mundo solamente va a compruebar el funcionamiento del entorno.
+Por otra parte, el entorno utilizado es la imagen Docker 24.1.0.1-env2 con gem5 24.1.0.1. A su vez, las 24 corridas oficiales utilizan 
+forwardComSize=256.
+
+De la misma manera, la region de interes esta delimitada por m5_reset_stats() y m5_dump_stats(). A su vez, con el programa y la configuracion 
+actuales, el primer bloque de stats.txt corresponde al volcado de la ROI. Asimismo, el bloque final va a incluir el trabajo posterior y el mismo
+no debe usarse como sustituto del primero.
+
+Por otra parte, el barrido valida las evidencias, pero todavia no genera CSV ni graficos. La prueba de hola mundo comprueba el entorno y no 
+sustituye las validaciones de GEMM.
 
 ### 10) Trabajo colaborativo y documentación
 
@@ -391,5 +461,8 @@ documentacion de los mismo. Antes de subir cambios se debe revisar la lista de l
 - GEMM escalar validado de forma nativa para N=16, N=64 y N=128.
 - GEMM escalar validado en gem5 ARM para N=16, con CHECK=PASS.
 - Validacion ARM repetida por Paulina Camacho y publicada en results/validation/.
-- Pendientes: los otros benchmarks y los experimentos E1 hasta el E6.
-- E2 pendiente: configuracion O3, 24 corridas, CSV, analisis y graficos.
+- Configuracion ARM O3 parametrizable de E2 implementada.
+- Barrido secuencial y verificacion de corridas existentes implementados.
+- E2: 24 corridas publicadas y verificadas respectivamente, 12 para un tamano de  N=64 y 12 para un tamano de N=128.
+- E2 pendiente: extraccion de metricas de la ROI a CSV, analisis y graficos.
+- Pendientes: los otros benchmarks y los experimentos E1 y E3–E6.
