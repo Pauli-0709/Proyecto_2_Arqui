@@ -62,3 +62,14 @@ opciones_procesador+=(
 )
 
 #NOTA: el ROB es crucial para mantener el estado de las instrucciones que se ejecutan fuera de orden
+
+#============================================================================================
+#La siguiente seccion se coloco porque se genera un error al realizar "bash scripts/arm_env.sh \ bash scripts/barrido_superescalar.sh 128 1 2", la
+#simulacion terminaba de forma puntual y ocurre cuando se prueba anchos de emision pequeno con tamanos de ROB grande
+#===============================================================================================================
+#Capacidad temporal para resultados pendientes de writeback
+#Asimismo, se mantiene fija en todas las configuraciones de E2 (experimento #2)
+#Esta a su vez, no modifica el ancho de emision ni el tamano del ROB
+opciones_procesador+=(
+    --param "system.cpu[0].forwardComSize=256"
+)

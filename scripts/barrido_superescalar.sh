@@ -135,6 +135,7 @@ for parametro in (
 #Verificar el tamano del ROB y el tamano fijo de la cola de instrucciones (IQ)
 assert int(cpu["numROBEntries"]) == rob
 assert int(cpu["numIQEntries"]) == 64
+assert int(cpu["forwardComSize"]) == 256
 
 # Verificar que el primer bloque de estadisticas este completo y contenga ciclos positivos
 texto = (ruta / "stats.txt").read_text()
