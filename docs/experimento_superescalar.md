@@ -124,27 +124,37 @@ Por otra parte, se generaron dos bloques de estadisticas: en primer lugar, el vo
 La evidencia de la prueba se observa en la siguiente ruta:
 results/validation/superescalar_n16_ancho2_rob64/
 
-Posteriorment, se aplico forwardComSize=256 y se verifico su presencia en el archivo config.ini para la configuracion utilizada: N=64, ancho=1 y 
-ROB=64, que anteriormente abortaba (seccion "Incidencia importante para notificar durante el primer bloque del barrido"). 
+Posteriormente, se aplico forwardComSize=256 para atender el fallo observado durante el primer intento del barrido. Asimsimo, este parametro se
+mantuvo constante en las 24 corridas oficiales.
 
-Por otra parte, se completo el primer bloque del barrido: 6 configuraciones para N=64, teniendo en cuenta anchos de 1 y de 2 con un ROB de 32, 
-64 y 192 entradas. 
+El barrido completo ya fue ejecutado y publicado en el repositorio:
 
-El script verifico las 6 corridas y termino con el mensaje:
+| Tamano de matriz | Configuraciones verificadas |
+| --- | --- |
+| N=64 | 12 de 12 |
+| N=128 | 12 de 12 |
+| Total | 24 de 24 |
 
-    BLOQUE_COMPLETO N=64 CORRIDAS=6
+A su vez, para cada tamano se combinaron los anchos de 1, 2, 4 y 8 con los tamanos del ROB de 32, 64 y 192 entradas.
 
-Asimismo, la configuracion que tiene un ancho=1 y un ROB=64 se reutilizo despues de superar las comprobaciones del barrido. Las otras 5
-configuraciones se ejecutaron durante este bloque y terminaron con el mensaje esperado: CHECK=PASS, teniendo 0 errores y error absoluto maximo de 0.
+De la misma manera, las 24 corridas ejecutadas terminaron con CHECK=PASS de forma satisfactoria, 0 errores y una salida normal del simulador. 
+Asimismo, se verificaron los anchos del pipeline, el tamano del ROB, la IQ de 64 entradas y forwardComSize=256.
 
-Por ende, es importante mencionar que el fallo de TimeBuffer no volvio a aparecer en este bloque. La validacion del ajuste para las 
-configuraciones restantes continua pendiente.
+Las evidencias se pueden observar en la siguiente ruta del repositorio:
 
-Evidencias: results/e2/n64/ancho1_rob*/ y
-results/e2/n64/ancho2_rob*/.
+- results/e2/n64/
+- results/e2/n128/
 
-Avance del barrido: 6 de 24 corridas verificadas.
-La extraccion a CSV, el analisis y los graficos siguen pendientes.
+Por otra parte, cada configuracion conserva sus respectivas estadisticas, los archivos config.ini y config.json, el comando utilizado, registros 
+de ejecucion y validacion. A su vez, tambien se conservan los hashes, datos de compilacion y copias de la configuracion respectiva y del  script
+para cada una de estas.
+
+Es importante mencionar que el fallo de TimeBuffer no volvio a aparecer en las 24 corridas realizadas con el ajuste comentado posteriomente.
+
+Avance del barrido: 24 de 24 corridas verificadas.
+
+Finalmente, la extraccion a CSV, el analisis y los graficos siguen pendientes. Por lo tanto, el barrido esta completo, pero el experimento E2
+todavia no se considera terminado en su totalidad.
 
 ## Incidencia importante para notificar durante el primer bloque del barrido
 
@@ -158,26 +168,28 @@ CHECK=PASS y 0 errores. Por otra parte, la siguiente configuracion, ancho=1 y RO
 AL investigar el error senala directamente a la función IEW::instToCommit. A su vez, el barrido que se estaba ejecutando se detuvo y esta corrida
 no se puede considerar como completada.
 
-### Diagnostico y ajuste propuesto
+### Diagnostico y ajuste propuesto y aplicado
 
 Es importante mencionar que el fallo es compatible con un desbordamiento del bufer temporal el cual es utilizado para enviar resultados de IEW 
 al commit. Utilizando un wbWidth=1, los resultados pendientes pueden necesitar de posiciones futuras que las mismas superen la capacidad 
 predeterminada del bufer.
 
-Asimismo, para poder comprobar este diagnostico, se propone establecer:
+Asimismo, para poder comprobar este diagnostico, se establecio:
 
     --param "system.cpu[0].forwardComSize=256"
 
-Este valor 256 es una decision de la configuracion puntual utilizada y dada por el equipo y no un requisito del enunciado del proyecto (html). 
-Es importante mencionar que la eficacia de la misma se debe verificar mediante nuevas simulaciones.
+A su vez, este valor de  256 es una decision de la configuracion puntual utilizada por el equipo y no un requisito del enunciado del
+proyecto (html). De la misma forma, su funcionamiento se verifico para las 24 configuraciones del barrido.
 
-Por otra parte, este parametro se mantendra fijo en las 24 corridas posteriores. A su vez, los anchos del pipeline seguiran tomando los 
-valores de 1, 2, 4 y 8, el ROB tomara los valores de 32, 64 y 192 entradas y finalmente la IQ permanecera en 64 entradas.
+De forma similar, este parametro se mantuvo fijo en las 24 corridas oficiales. Los diversos anchos del pipeline tomaron los valores de 1, 2, 4 y 8,
+el ROB tomo los valores de 32, 64 y 192 entradas y la IQ permanecio en 64 entradas.
 
 ### Conservación de evidencias y repetición
 
-De la misma manera, los resultados del intento anterior se van a conservarar en la ruta .local/, separados del conjunto final.
+Los resultados del intento anterior se conservaron en la ruta .local/, separados del conjunto final.
 
-Asimismo, tambien se debe repetir la configuracion que había terminado correctamente, esto con el fin de que  todas las corridas oficiales utilicen
-la misma configuracion del bufer temporal propuesta en la seccion anterior.
+Asimismo, se repitio la configuracion que habia terminado correctamente, para que todas las corridas oficiales utilizaran la misma configuracion
+del bufer temporal.
 
+Finalmente, las 24 corridas oficiales terminaron correctamente con este ajuste. Esta comprobacion corresponde a las configuraciones y al programa
+utilizados en este experimento.
