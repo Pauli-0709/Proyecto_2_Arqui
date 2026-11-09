@@ -52,12 +52,14 @@ static void calcular_referencia(size_t n, const float *a, const float *b, double
     for (size_t j = 0; j < n; j++) {
         for (size_t k = 0; k < n; k++) {
             for (size_t i = 0; i < n; i++) {
-				// En esta seccion se realiza la multiplicacion y la va sumando al valor de referencia, ademas se realiza teniendo en cuenta el tipo float
+				// En esta seccion se realiza la multiplicacion y la va sumando al valor de referencia, ademas se realiza teniendo en cuenta que los numeros estan convertidos a double
                 referencia[i * n + j] += (double)a[i * n + k] * (double)b[k * n + j];
             }
         }
     }
 }
+
+//----------------------------------------------------------------------------------------------------------
 
 /* Funcion para leer el tamano solicitado y poder rechazar las entradas que son incorrectas
    Objetivo: leer el tamano N desde la consola cuando la persona ejecuta el programa
@@ -92,6 +94,8 @@ static int leer_tamano(int argc, char *argv[], size_t *n)
     return 1;	// Senal de exito
 }
 
+//=========================================================================================================================================
+
 /* Funcion principal, que ejecuta la primera prueba de preparación.
    Proposito: es la rama principal del script.
    Parametros:
@@ -117,7 +121,7 @@ int main(int argc, char *argv[])
     float *c = malloc(elementos * sizeof(*c));
     double *referencia = calloc(elementos, sizeof(*referencia));
 
-	// Este IF es para comprobar si existe memoria RAM disponible, si es asi malloc/calloc devuelven un NULL
+	// Este IF es para comprobar si existe memoria RAM disponible, si no existe memoria disponible las instrucciones malloc/calloc devuelven un NULL
     if (a == NULL || b == NULL || c == NULL || referencia == NULL) {
         fprintf(stderr, "Error al reservar memoria para las matrices.\n");	// Se imprime el error en pantalla
 		// Si el IF se ejecuta por el error de memoria, se libera cualquier memoria dinamica que si haya tenido exito
@@ -155,5 +159,5 @@ int main(int argc, char *argv[])
     free(c);
     free(referencia);
 
-    return referencia_valida ? EXIT_SUCCESS : EXIT_FAILURE; // Termina el programa. Si fue valida, retorna exito o falsa (0); si no, retorna fallo o verdadera (1).
+    return referencia_valida ? EXIT_SUCCESS : EXIT_FAILURE; // Finaliza con la instruccion EXIT_SUCCESS a su vez si la referencia contiene valores finitos, de lo contrario, devuelve EXIT_FAILURE
 }
