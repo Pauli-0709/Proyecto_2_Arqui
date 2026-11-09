@@ -38,9 +38,9 @@ una carpeta o un script en particular.
 | Validar GEMM escalar | Steven Loaiza | Completado | — | results/validation/gemm_scalar_native/ y gemm_scalar_n16/ |
 | Repetir validacion ARM desde el entorno de Paulina Camacho | Paulina Camacho | Completado | — | results/validation/paulina_gemm_scalar_n16/ |
 | Ejecutar y analizar línea base | Todo el equipo | Pendiente | Por acordar | TimingSimple, Minor y O3; N=64 y N=128 |
-| Preparar configuracion O3 parametrizable | Paulina Camacho | Pendiente | Por acordar | Configuracion con ancho y ROB verificables |
-| Preparar automatizacion y extraccion de las diversas metricas | Paulina Camacho y Steven Loaiza | Pendiente | Por acordar | Barrido y extraccion exclusiva de ROI a CSV |
-| Ejecutar barrido completo | Paulina Camacho | Pendiente | Por acordar | 24 corridas correctas con configuracion y estadisticas |
+| Preparar configuracion O3 parametrizable | Paulina Camacho | Completado, evidencia en configs/configuracion_superescalar.sh y validación con un tamano de N=16 | Por acordar | Configuracion con ancho y ROB verificables |
+| Preparar automatizacion y extraccion de las diversas metricas | Paulina Camacho y Steven Loaiza | En curso, barrido implementado, extraccion ROI a CSV pendiente | Por acordar | Barrido y extraccion exclusiva de ROI a CSV |
+| Ejecutar barrido completo | Paulina Camacho | En curso, todavia sin corridas oficiales completadas | Por acordar | 24 corridas correctas con configuracion y estadisticas |
 | Analizar IPC, IQ/ROB y prediccion | Paulina Camacho | Pendiente | Por acordar | CSV y explicacion de los limites del rendimiento |
 | Generar graficos y documentar reproduccion del mismo | Paulina Camacho | Pendiente | Por acordar | Graficos, conclusiones y comandos reproducibles |
 
