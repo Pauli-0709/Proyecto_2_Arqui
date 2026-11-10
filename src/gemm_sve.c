@@ -1,11 +1,11 @@
-// Programa GEMM para el experimento de extensiones vectoriales SVE
+// Programa GEMM con instrucciones vectoriales SVE
 
-/* La primer seccion de codigo va hacer lo siguiente:
- - Leer el tamano de las matrices
- - Preparar los distintos datos reproducibles
- - Poder calcular una matriz de referencia */
+/* El siguiente codigo realiza las siguientes acciones:
+ - Preparar las matrices a utilizar
+ - Ejecuta la multiplicacion de matrices
+ - Compara cada elemento de la matriz c contra una refencia calculada utilizando double */
 
-// NOTA: el calculo con las instrucciones SVE se va agregar en la siguiente seccion
+// NOTA: cuando se compila con la herramienta de USE_GEM5, mide solamente la multiplicacion con el uso de las herramientas m5_reset_stats y m5_dump_stats.
 
 //-------------------------------------------------------------------------------------------------------
 // Bibliotecas del codigo
@@ -13,6 +13,11 @@
 #include <stdlib.h>		// Permite gestionar la memoria dinámica (malloc, calloc, free) y las utilidades (strtoul)
 #include <errno.h>		// Proporciona la variable 'errno' que sirva para detectar errores en operaciones del sistema
 #include <math.h>		// Proporciona funciones y las macros matematicas (isfinite() que sirve para comprobar los numeros)
+#include <stdint.h>	    // Define tipos enteros de tamano conocido
+#include <arm_sve.h>    // Permite utilizar las operaciones vectoriales SVE de ARM
+#ifdef USE_GEM5
+#include <gem5/m5ops.h> // Incluye las funciones de medicion cuando se va a compilar para gem5
+#endif
 
 //-------------------------------------------------------------------------------------------------------
 /*  Funcion de inicializar las matrices de entrada
@@ -37,9 +42,50 @@ static void inicializar(size_t n, float *a, float *b, float *c)
     }
 }
 
+//-------------------------------------------------------------------------------------------------------------------------
+
+/* Funcion que realiza la multiplicacion de matrices mediante instrucciones SVE
+   Objetivo: se realiza esta multiplicacion con instrucciones SVE de ARM para de esta manera poder acelerar de gran manera el calculo
+   - La logica es la de calcular C = A X  B, las cuales son matrices cuadradas N X N de tipo float, y se efectua procesando bloques de VL columnas a la vez,
+     donde VL = svcntw() es el ancho del vector SVE. Asimismo, para cada fila (i) y cada bloque de columnas (j), se va acumulando en un vector el producto
+     punto, en cada iteracion (k) carga el valor de la ecuacion B[k][j...j + Vl - 1], lo multiplica por el escalar A[i][k] y lo suma. Al final guarda el
+     bloque en C[i][j....]. Finalmente se realiza un verificacion en el ultimo bloque de columnas para que no se salga de la matriz.
+   Parametros:
+   1-> n: dimension de las matrices (N X N)
+   2-> a: puntero de la matriz a (solo es para la lectura)
+   3-> b: puntero de la matriz b (solo es para la lectura)
+   4-> c: puntero de la matriz c (esta va a guardar el resultado, por ende es de escritura) */
+__attribute__((noinline))
+void gemm_sve(size_t n, const float *a, const float *b, float *c)
+{
+    size_t elementos_vector = (size_t)svcntw();	// Consultar cuantos valores float de 32 bits caben en este vector
+
+    // Recorre las distintas filas de la matriz de resultados
+    for (size_t i = 0; i < n; i++) {
+
+        // Recorre las distintas columnas del tamano del vector (las recorre por grupos)
+        for (size_t j = 0; j < n; j += elementos_vector) {
+
+            svbool_t activas = svwhilelt_b32_u64((uint64_t)j, (uint64_t)n);	// Activa solamente las posiciones que pertenecen a la matriz, esto con el fin de evitar que accede a un rango fuera del arreglo (se puede dar cuando el ultimo grupo tiene menos columnas que el vector)
+            svfloat32_t sumas = svdup_n_f32(0.0f);	 // Iniciar en 0 las sumas de las columnas del grupo
+
+            // Recorrer los elementos que forman cada producto punto
+            for (size_t k = 0; k < n; k++) {
+
+                svfloat32_t valores_b = svld1_f32(activas, &b[k * n + j]);	// Leer varias columnas consecutivas de la fila k de la matriz B
+                svfloat32_t productos = svmul_n_f32_x(activas, valores_b, a[i * n + k]);	// Multiplicar esas columnas en especifico por cada elemento A[i][k]
+                sumas = svadd_f32_m(activas, sumas, productos);	// Acumula los productos de las columnas bajo analisis o activas
+            }
+
+            svst1_f32(activas, &c[i * n + j], sumas);	// Guarda las columnas calculadas en la matriz c
+        }
+    }
+}
+
+
 //---------------------------------------------------------------------------------------------------------
 
-/* Funciion para Calcular el resultado de referencia de C = A X B
+/* Funciion para calcular el resultado de referencia de C = A X B
    Objetivo: hacer la operacion de multiplicacion de matrices C = A x B
    Parametros:
    1-> n: tamano de las matrices (N x N -> n filas x n columnas)
@@ -57,6 +103,58 @@ static void calcular_referencia(size_t n, const float *a, const float *b, double
             }
         }
     }
+}
+
+//-----------------------------------------------------------------------------------------------------------------------
+
+/* Funcion que es para comparar cada elemento calculado con SVE contra la referencia.
+   Objetivo: validar la exactitud matematica de la multiplicacion de matrices realizada con las instrucciones SVE
+   Parametros:
+   1-> n: dimension de las matrices (N X N)
+   2-> c: puntero de la matriz c
+   3-> referencia: puntero a la matriz que contiene los resultados comprobados (fueron calculados de forma escalar y usando tipo float para tener una mayor precision) */
+static int verificar_resultado(size_t n, const float *c, const double *referencia)
+{
+	// Declaracion de variables
+    size_t errores = 0;	// Contador del numero de errores
+    double error_maximo = 0.0;	// Rastrea
+    double checksum = 0.0;	// Acumulad
+
+    // Revisar todos los elementos de la matriz de resultados.
+    for (size_t p = 0; p < n * n; p++) {
+        double obtenido = (double)c[p];	// Extrae el valor calculado por las instrucciones SVE (float de 32 bits) y lo convierte a un tipo double (64 bits) para poder comparar con la referencia
+        double esperado = referencia[p];	// Extrae el valor calculado por las instrucciones SVE (float de 32 bits) y lo convierte a un tipo double (64 bits) para compararlo con la referencia
+
+        // Detectar valores invalidos antes de calcular la diferencia
+        if (!isfinite(obtenido) || !isfinite(esperado)) {
+            errores++;	// Se actualiza el contador de errores
+            error_maximo = INFINITY;	// El error maximo se actualiza a infinito
+            continue;	// Continua con la siguiente iteracion
+        }
+
+		// fabs(): valor absoluto en punto flotante
+        double error = fabs(obtenido - esperado);	// Se calcula la diferencia entre el valor del dato SVE vs el esperado
+
+        // Usar la misma tolerancia que en el programa escalar
+        double tolerancia = 1e-5 + 1e-5 * fabs(esperado);	// Algoritmo para la tolerancia (Tolerancia absoluta + tolerancia relativa)
+
+		// SI la diferencia superar la tolerecnia se activa este IF
+        if (error > tolerancia) {
+            errores++;	// Se actualiza el contador de errores
+        }
+
+		// Si el error actual es mas grande en comparacion al error maximo registrado se activa este IF
+        if (error > error_maximo) {
+            error_maximo = error;	// Se actualiza el contador de error maximo con el error actual
+        }
+
+        checksum += obtenido;	// Se suma el valor obtenido al total general
+    }
+
+    // Mostrar el resultado de la comprobacion elemento por elemento.
+    printf("N=%zu CHECK=%s errores=%zu " "max_abs_error=%.9g checksum=%.17g\n", n, errores == 0 ? "PASS" : "FAIL", errores, error_maximo, checksum);	// Imprimir en pantalla los datos estadisticos obtenidos
+
+    return errores == 0 ? EXIT_SUCCESS : EXIT_FAILURE;	// Genera el codigo de salida para verificar el estado de la prueba
 }
 
 //----------------------------------------------------------------------------------------------------------
@@ -133,31 +231,41 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;	// Genera el fallo
     }
 
-	// Llamado a las sub funciones
+	// Preparar las matrices antes de comenzar la medicion
     inicializar(n, a, b, c);
+
+    /* Mostrar la longitud vectorial disponible
+       Cada elemento float va a ocupar 32 bits */
+    size_t elementos_vector = (size_t)svcntw();
+
+    printf("SVE VL_BITS=%zu ELEMENTOS_FLOAT=%zu\n", elementos_vector * 32, elementos_vector);	// Imprimir en pantalla
+
+#ifdef USE_GEM5
+    // Descartar las estadisticas de preparacion del programa
+    m5_reset_stats(0, 0);
+#endif
+
+    // Ejecutar la multiplicacion que se va a medir
+    gemm_sve(n, a, b, c);
+
+#ifdef USE_GEM5
+    // Guardar las estadisticas de la multiplicacion
+    m5_dump_stats(0, 0);
+#endif
+
+    /* Calcular la referencia despues de la medicion
+       Esto con el fin de que este calculo de la referencia no forme parte de las estadisticas de GEMM SVE. */
     calcular_referencia(n, a, b, referencia);
 
-    // Variable para validar que el calculado realizado es correcto
-    double checksum = 0.0;	// Variable para guardar la suma de todos los resultados
-    int referencia_valida = 1;	// Variable que funciona como una flag (1 = verdadera y 0 = falsa)
+    // Comparar todos los elementos y conservar el estado de la prueba
+    int resultado = verificar_resultado(n, c, referencia);
 
-	// Recorre toda la matriz de resultado linealmente (de 0 hasta N X N)
-    for (size_t p = 0; p < elementos; p++) {
-		// La instruccion isfinite() comprueba que el numero no sea Infinito (Inf) ni "No es un Numero" (NaN).
-        if (!isfinite(referencia[p])) {
-            referencia_valida = 0;	// Si existe el error se actualiza la variable referencia_valida en 0
-        }
-
-        checksum += referencia[p];	// Suma el valor actual al total
-    }
-
-    printf("N=%zu REFERENCIA=%s checksum=%.17g\n", n, referencia_valida ? "FINITA" : "INVALIDA", checksum );	// Imprime en pantalla el resultado final del experimento
-
-    // Liberar los espacios de memoria dinamica reservados antes de finalizar la ejecucion del programa
+    // Liberar la memoria reservada
     free(a);
     free(b);
     free(c);
     free(referencia);
 
-    return referencia_valida ? EXIT_SUCCESS : EXIT_FAILURE; // Finaliza con la instruccion EXIT_SUCCESS a su vez si la referencia contiene valores finitos, de lo contrario, devuelve EXIT_FAILURE
+    // Indicar si la comprobacion fue exitosa
+    return resultado;
 }
