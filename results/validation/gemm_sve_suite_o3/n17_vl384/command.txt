@@ -1,0 +1,1 @@
+/opt/gem5/build/ARM_MESI/gem5.opt -d /work/results/validation/gemm_sve_suite_o3/n17_vl384 /opt/gem5/configs/deprecated/example/se.py --cpu-type=ArmO3CPU --num-cpus=1 --caches --l2cache --mem-size=512MiB --param system.cpu\[0\].isa\[0\].sve_vl_se=3 -c /work/bin/gemm_sve_validation_LuAQEM -o 17 

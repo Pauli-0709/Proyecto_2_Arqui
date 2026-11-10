@@ -1,0 +1,25 @@
+warn: The se.py script is deprecated. It will be removed in future releases of  gem5.
+Global frequency set at 1000000000000 ticks per second
+src/mem/dram_interface.cc:690: warn: DRAM device capacity (8192 Mbytes) does not match the address range assigned (512 Mbytes)
+src/base/statistics.hh:279: warn: One of the stats is a legacy stat. Legacy stat is a stat that does not belong to any statistics::Group. Legacy stat is deprecated.
+system.remote_gdb: Listening for connections on port 7000
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 24.1.0.1
+gem5 compiled Nov  5 2026 01:31:20
+gem5 started Nov 10 2026 06:55:48
+gem5 executing on eaf785e91169, pid 71
+command line: /opt/gem5/build/ARM_MESI/gem5.opt -d /work/results/validation/gemm_sve_suite_o3/n16_vl384 /opt/gem5/configs/deprecated/example/se.py --cpu-type=ArmO3CPU --num-cpus=1 --caches --l2cache --mem-size=512MiB --param 'system.cpu[0].isa[0].sve_vl_se=3' -c /work/bin/gemm_sve_validation_LuAQEM -o 16
+
+**** REAL SIMULATION ****
+src/sim/simulate.cc:199: info: Entering event queue @ 0.  Starting simulation...
+src/sim/syscall_emul.cc:86: warn: ignoring syscall set_robust_list(...)
+src/sim/syscall_emul.cc:97: warn: ignoring syscall rseq(...)
+      (further warnings will be suppressed)
+src/sim/mem_state.cc:448: info: Increasing stack size by one page.
+src/arch/arm/insts/pseudo.cc:174: warn: 	instruction 'bti' unimplemented
+src/sim/syscall_emul.cc:86: warn: ignoring syscall mprotect(...)
+SVE VL_BITS=384 ELEMENTOS_FLOAT=12
+N=16 CHECK=PASS errores=0 max_abs_error=0 checksum=-2.8203125
+Exiting @ tick 53498500 because exiting with last active thread context
