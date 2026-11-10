@@ -198,15 +198,36 @@ if [[ "$programa" == sve ]]; then
     grep -Eq 'fmul[[:space:]]+z[0-9]+\.s' "$salida/kernel_asm.txt"
     grep -Eq 'fadd[[:space:]]+z[0-9]+\.s' "$salida/kernel_asm.txt"
 else
-    # Rechazar registros vectoriales SVE o SIMD en el kernel escalar
-    if grep -Eq \
-        '(^|[[:space:],{])(z[0-9]+|p[0-9]+|v[0-9]+)([./[:space:],}]|$)' \
-        "$salida/kernel_asm.txt"
-    then
-    	# Si se detectan registros vectoriales muestra un mensaje de error y detiene el script
-        echo "Se detectaron registros vectoriales en GEMM escalar." >&2
-        exit 1
-    fi
+
+    # Permitir la inicializacion en cero observada en el acumulador.
+    # Las demas apariciones de registros vectoriales requieren revision.
+    python3 - "$salida/kernel_asm.txt" <<'PY'
+import re
+import sys
+from pathlib import Path
+
+# lee el contenido completo del archivo de ensamblador pasado como primer argumento y lo guarda como cadena
+texto = Path(sys.argv[1]).read_text()
+
+# compila una expresion para poder detectar cualquier uso de registros vectoriales
+registro_vectorial = re.compile(r"\b(?:z\d+|p\d+|v\d+)(?:\b|\.)")
+
+# compila otra expresion regular especifica para la excepcion permitida
+inicializacion_permitida = re.compile(r"\bmovi\s+v\d+\.2s,\s*#(?:0x0|0)\s*$")
+
+# Se itera sobre cada linea del archivo de texto desensamblado
+for linea in texto.splitlines():
+    instruccion = linea.split("//", 1)[0].strip()
+
+	# Se verifica si la instruccion actual contiene alguna referencia a un registro vectorial
+    if registro_vectorial.search(instruccion):
+		# Si se tiene un registro vectorial revisa que no sea la excepcion de inicializacion en 0
+        if not inicializacion_permitida.search(instruccion):
+            raise SystemExit("ERROR: instruccion vectorial que requiere revision:\n" + linea)
+
+# Impresion en pantalla
+print("REVISION_KERNEL_ESCALAR_OK")
+PY
 
 	# Comprobar que existan instrucciones escalares de multiplicacion con registros de tipo s
     grep -Eq 'fmul[[:space:]]+s[0-9]+' "$salida/kernel_asm.txt"
