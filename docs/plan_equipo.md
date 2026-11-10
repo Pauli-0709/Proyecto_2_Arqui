@@ -43,6 +43,16 @@ una carpeta o un script en particular.
 | Ejecutar barrido completo | Paulina Camacho | Completado | — | 24 corridas verificadas y publicadas: 12 en la carpeta results/e2/n64/ y 12 en la carpeta results/e2/n128/ |
 | Analizar IPC, IQ/ROB y prediccion | Paulina Camacho | Pendiente | Por acordar | CSV y explicacion de los limites del rendimiento |
 | Generar graficos y documentar reproduccion del mismo | Paulina Camacho | Pendiente | Por acordar | Graficos, conclusiones y comandos reproducibles |
+| Implementar y validar el GEMM SVE en el simulador gem5 | Steven Loaiza | Completado | — | src/gemm_sve.c y results/validation/gemm_sve_suite_o3/: 16 pruebas con CHECK=PASS para N=16 y N=17 |
+| Automatizar la validacion funcional de SVE | Steven Loaiza | Completado | — | scripts/test_gemm_sve.sh: ocho longitudes vectoriales, comprobacion de resultados, VL efectivo y estadisticas |
+| Verificar las diversas instrucciones vectoriales de SVE | Steven Loaiza | Completado | — | results/validation/gemm_sve_suite_o3/kernel_asm.txt: instrucciones vectoriales de multiplicacion y suma |
+| Documentar la validacion y la reproduccion de SVE | Steven Loaiza | Completado | — | docs/validacion_gemm_sve.md y seccion E3 del README.md |
+| Desarrollar el experimento E3 | Steven Loaiza | En curso | Por acordar | Implementacion y validacion funcional completadas; barrido oficial, CSV, analisis y graficos pendientes |
+| Preparar y ejecutar el barrido oficial para E3 | Steven Loaiza | Pendiente | Por acordar | N=64 y N=128; ocho longitudes SVE y referencias escalares bajo la misma configuracion de hardware |
+| Analizar instrucciones, los ciclos y el speedup para E3 | Steven Loaiza | Pendiente | Por acordar | Metricas de la ROI en CSV y comparacion escalar/SVE para ambos tamanos |
+| Generar graficos y conclusiones para E3 | Steven Loaiza | Pendiente | Por acordar | Speedup frente a VL y explicacion de los limites de rendimiento |
+| Implementar y validar GEMM paralelo | Steven Loaiza | Pendiente | Por acordar | Reparto por filas, verificacion de resultados y ROI; programa para el experimento E4 |
+| Implementar y validar falso compartido | Steven Loaiza | Pendiente | Por acordar | Variantes sin relleno y con separacion de 64 bytes, comprobacion de contadores y ROI para E5 |
 
 ## Coordinacion
 
