@@ -15,6 +15,14 @@ corridas, las cuales corresponden a 12 configuraciones para un tamano de N=64 y 
 Por otra parte, la extracción de metricas a CSV, el analisis y los graficos de E2 permanecen pendientes. E2 todavía no se puede considerar como 
 terminado en su totalidad.
 
+Por otro lado, la validacion funcional de GEMM SVE esta completada en el simulador de gem5 con un nucleo ArmO3CPU. Ademas, se publicaron 16 pruebas para
+un tamano de N=16 y N=17, utilizando las longitudes vectoriales de 128 a 1024 bits en incrementos de 128 bits cada una de ellas. A su vez, todas terminaron
+con la impresion en pantalla del CHECK=PASS y  errores.
+
+El experimento E3 esta en curso, ya que el mismo ya cuenta con el programa SVE, el script de validacion y las evidencias de vectorizacion. De la misma manera,
+permanecen pendientes el barrido oficial para los tamanos de N=64 y de N=128, la comparacion con GEMM escalar bajo la misma configuracion de hardware, la
+extraccion de metricas a CSV, el analisis y los graficos correspondientes.
+
 Finalmente, las secciones 6 y 7 describen la preparacion y validacion del entorno. A su vez, la seccion 8 explica como ejecutar o verificar el 
 barrido de E2.
 
@@ -53,7 +61,7 @@ interés (ROI), marcada mediante m5_reset_stats() y m5_dump_stats().
 | --- | --- | --- | --- |
 | **E1: línea base** | Procesadores TimingSimple, Minor y O3 | 1 núcleo; ciclos, IPC, CPI y fallos de caché L1D/L2 | Equipo completo |
 | **E2: superescalar** | Paralelismo a nivel de instrucciones | Anchos 1, 2, 4 y 8; ROB 32, 64 y 192; IPC, ocupación IQ/ROB y predicción | Paulina Camacho |
-| **E3: vectorial** | Extensiones SVE | Escalar frente a SVE; VL de 128, 256, 512 y 1024 bits; ciclos, instrucciones y *speedup* | Steven Loaiza |
+| **E3: vectorial** | Extensiones SVE | Escalar frente a SVE; VL de 128, 256, 384, 512, 640, 768, 896 y 1024 bits, ciclos, instrucciones y *speedup* | Steven Loaiza |
 | **E4: multinúcleo** | Memoria compartida y escalabilidad | 1, 2, 4 y 8 núcleos O3; *speedup*, eficiencia y fallos L2 | Sary Vargas |
 | **E5: coherencia** | MESI, MOESI y falso compartido | `MESI_Two_Level` y `MOESI_CMP_directory`; invalidaciones, mensajes y latencias | Tomas Campos |
 | **E6: integración** | Selección de arquitectura | Al menos 6 configuraciones con costo ≤ 32 y GEMM con `N = 128` | Equipo completo |
@@ -465,4 +473,9 @@ documentacion de los mismo. Antes de subir cambios se debe revisar la lista de l
 - Barrido secuencial y verificacion de corridas existentes implementados.
 - E2: 24 corridas publicadas y verificadas respectivamente, 12 para un tamano de  N=64 y 12 para un tamano de N=128.
 - E2 pendiente: extraccion de metricas de la ROI a CSV, analisis y graficos.
-- Pendientes: los otros benchmarks y los experimentos E1 y E3–E6.
+- GEMM SVE implementado en la ruta src/gemm_sve.c y con verificacion contra una referencia teniendo variables de tipo double y medicion delimitada por m5_reset_stats() y m5_dump_stats().
+- Validacion funcional SVE completada: 16 pruebas con un CPU ArmO3CPU para un tamano de N=16 y de N=17 y 8 longitudes vectoriales y que las mismas imprimieron en pantalla con CHECK=PASS.
+- Vectorizacion SVE comprobada mediante el desensamblado del kernel.
+- E3 en curso: pendientes el barrido oficial para el tamano de N=64 y de N=128, la comparacion escalar/SVE, el CSV, el analisis y los graficos correspondientes.
+- Benchmarks pendientes: GEMM paralelo y falso compartido.
+- Experimentos pendientes: E1 y E4–E6.
