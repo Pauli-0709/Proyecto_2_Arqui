@@ -382,9 +382,67 @@ Por otra parte, las instrucciones para repetir las distintas simulaciones, poder
 estan en:
 [documentación de E2](docs/experimento_superescalar.md).
 
+#### E3: extensiones vectoriales SVE
+
+Responsable: Steven Loaiza
+
+Estado: en curso. 
+
+La implementacion y la validacion funcional de GEMM SVE estan completadas. Asimismo, el barrido oficial de rendimiento permanece pendiente.
+
+La validacion utiliza:
+
+- Programa: src/gemm_sve.c.
+- Script: scripts/test_gemm_sve.sh.
+- CPU: un nucleo ArmO3CPU, con caches L1 y L2.
+- Tamanos de matriz: N=16 y N=17.
+- Longitudes vectoriales: 128, 256, 384, 512, 640, 768, 896 y 1024 bits.
+- Un mismo ejecutable estatico AArch64 para las 16 pruebas.
+
+De la misma manera, para el tamano de N=17 permitio comprobar el manejo de bloques incompletos de columnas. A su vez, cada resultado se compara contra 
+una referencia calculada utilizando variables de tipo double y esta fuera de la region de interes.
+
+**Repetir la validacion funcional**
+
+Desde la raiz del repositorio en Ubuntu, entrar al Docker:
+
+```bash
+bash scripts/arm_env.sh
+```
+
+Dentro del Docker:
+
+```bash
+cd /work
+bash scripts/test_gemm_sve.sh results/validation/gemm_sve_suite_o3_repeticion1
+```
+
+La carpeta de salida debe ser nueva. Si esta ya existe, utilizar otro nombre para conservar las evidencias anteriores.
+
+Al completar correctamente las pruebas, el script debe mostrar:
+
+```text
+VALIDACION_SVE_COMPLETA CORRIDAS=16
+```
+
+Las evidencias originales estan publicadas en la ruta del repositorio results/validation/gemm_sve_suite_o3/. Ademas, se incluye el codigo y el script
+utilizados, los datos de compilacion, el desensamblado del mismo y para cada una de las corridas la configuracion, el registro, las estadisticas y los
+resultados de validacion correspondientes.
+
+Por otra parte, la explicacion del ajuste de CPU y los resultados se encuentran en
+[Validacion funcional de GEMM SVE](docs/validacion_gemm_sve.md).
+
+**Trabajo pendiente de E3**
+
+Falta ejecutar el barrido oficial para los tamanos de N=64 y de N=128 y comparar SVE contra GEMM escalar manteniendo la misma configuracion de hardware.
+Posteriormente, extraer las diversas instrucciones y los ciclos de la ROI a CSV, calcular el speedup y finalmente elaborar los graficos con su respectivo analisis.
+
+Las pruebas con tamanos de N=16 y de N=17 validan el funcionamiento del programam, el script actual del repositorio no ejecuta el barrido oficial ni 
+genera CSV o graficos.
+
 #### Otros experimentos
 
-Las instrucciones de ejecucion de E1 y E3–E6 se incorporaran conforme se van implementando y validando.
+Las instrucciones de ejecucion de E1 y E4–E6 se incorporaran conforme se implementen y validen.
 
 ### 9) Resultados y reproducibilidad
 
