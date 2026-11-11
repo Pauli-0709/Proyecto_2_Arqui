@@ -1,0 +1,3 @@
+PROGRAMA=scalar
+N=64
+VL_BITS=384

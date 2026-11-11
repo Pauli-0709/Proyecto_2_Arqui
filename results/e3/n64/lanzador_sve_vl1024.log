@@ -1,0 +1,5 @@
+Ejecutando E3: programa=sve N=64 VL=1024
+Resultados: /work/results/e3/n64/vl1024/sve
+CONFIGURACION_VECTORIAL_OK
+ROI_E3_OK
+VALIDACION_E3_OK PROGRAMA=sve N=64 VL_BITS=1024
