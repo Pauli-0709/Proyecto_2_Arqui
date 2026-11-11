@@ -1,0 +1,1 @@
+aarch64-linux-gnu-gcc -std=c11 -O2 -static -Wall -Wextra -Wpedantic -march=armv8-a+sve -msve-vector-bits=scalable -fno-tree-vectorize -fno-tree-slp-vectorize -ffp-contract=off -DUSE_GEM5 -I/opt/gem5/include /work/results/e3/n128/vl768/scalar/gemm_scalar.c /opt/gem5/util/m5/build/arm64/out/libm5.a -lm -o /work/bin/gemm_e3_n3tEVc 

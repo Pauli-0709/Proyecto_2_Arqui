@@ -1,0 +1,6 @@
+REVISION_KERNEL_ESCALAR_OK
+Ejecutando E3: programa=scalar N=128 VL=256
+Resultados: /work/results/e3/n128/vl256/scalar
+CONFIGURACION_VECTORIAL_OK
+ROI_E3_OK
+VALIDACION_E3_OK PROGRAMA=scalar N=128 VL_BITS=256

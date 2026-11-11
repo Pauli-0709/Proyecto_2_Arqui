@@ -1,0 +1,3 @@
+PROGRAMA=sve
+N=128
+VL_BITS=384

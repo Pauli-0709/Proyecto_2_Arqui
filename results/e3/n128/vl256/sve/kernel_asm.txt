@@ -1,0 +1,55 @@
+
+/work/bin/gemm_e3_Sj1Wdg:     file format elf64-littleaarch64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .text:
+
+0000000000400b60 <gemm_sve>:
+  400b60:	aa0003e7 	mov	x7, x0
+  400b64:	aa0203ec 	mov	x12, x2
+  400b68:	b40004a0 	cbz	x0, 400bfc <gemm_sve+0x9c>
+  400b6c:	d37ef402 	lsl	x2, x0, #2
+  400b70:	aa0303e6 	mov	x6, x3
+  400b74:	aa0103e8 	mov	x8, x1
+  400b78:	8b020023 	add	x3, x1, x2
+  400b7c:	d280000b 	mov	x11, #0x0                   	// #0
+  400b80:	04a0e3ea 	cntw	x10
+  400b84:	0420e3e9 	cntb	x9
+  400b88:	2518e3e2 	ptrue	p2.b
+  400b8c:	d503201f 	nop
+  400b90:	aa0c03e5 	mov	x5, x12
+  400b94:	d2800004 	mov	x4, #0x0                   	// #0
+  400b98:	aa0803e0 	mov	x0, x8
+  400b9c:	aa0503e1 	mov	x1, x5
+  400ba0:	25a71c81 	whilelo	p1.s, x4, x7
+  400ba4:	25b8c001 	mov	z1.s, #0
+  400ba8:	25814420 	mov	p0.b, p1.b
+  400bac:	d503201f 	nop
+  400bb0:	8540c802 	ld1rw	{z2.s}, p2/z, [x0]
+  400bb4:	91001000 	add	x0, x0, #0x4
+  400bb8:	a540a420 	ld1w	{z0.s}, p1/z, [x1]
+  400bbc:	8b020021 	add	x1, x1, x2
+  400bc0:	65828040 	fmul	z0.s, p0/m, z0.s, z2.s
+  400bc4:	65808001 	fadd	z1.s, p0/m, z1.s, z0.s
+  400bc8:	eb03001f 	cmp	x0, x3
+  400bcc:	54ffff21 	b.ne	400bb0 <gemm_sve+0x50>  // b.any
+  400bd0:	e54444c1 	st1w	{z1.s}, p1, [x6, x4, lsl #2]
+  400bd4:	8b0a0084 	add	x4, x4, x10
+  400bd8:	8b0900a5 	add	x5, x5, x9
+  400bdc:	eb0400ff 	cmp	x7, x4
+  400be0:	54fffdc8 	b.hi	400b98 <gemm_sve+0x38>  // b.pmore
+  400be4:	9100056b 	add	x11, x11, #0x1
+  400be8:	8b0200c6 	add	x6, x6, x2
+  400bec:	8b020108 	add	x8, x8, x2
+  400bf0:	8b020063 	add	x3, x3, x2
+  400bf4:	eb0b00ff 	cmp	x7, x11
+  400bf8:	54fffcc1 	b.ne	400b90 <gemm_sve+0x30>  // b.any
+  400bfc:	d65f03c0 	ret
+
+Disassembly of section __libc_freeres_fn:
+
+Disassembly of section .fini:
