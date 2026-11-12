@@ -19,9 +19,13 @@ Por otro lado, la validacion funcional de GEMM SVE esta completada en el simulad
 un tamano de N=16 y N=17, utilizando las longitudes vectoriales de 128 a 1024 bits en incrementos de 128 bits cada una de ellas. A su vez, todas terminaron
 con la impresion en pantalla del CHECK=PASS y  errores.
 
-El experimento E3 esta en curso, ya que el mismo ya cuenta con el programa SVE, el script de validacion y las evidencias de vectorizacion. De la misma manera,
-permanecen pendientes el barrido oficial para los tamanos de N=64 y de N=128, la comparacion con GEMM escalar bajo la misma configuracion de hardware, la
-extraccion de metricas a CSV, el analisis y los graficos correspondientes.
+El experimento E3 esta en curso. Asimismo, la implementacion y la validacion funcional de GEMM SVE estan totalmente completadas. A su vez, también esta publicado 
+el barrido de rendimiento. la cual consta de 32 corridas y son correspondientes a 16 para un tamano de  N=64 y 16 para un tamano de N=128.
+
+Asimismo, para cada uno de los tamanos se ejecutaron las versiones escalar y SVE con longitudes vectoriales de 128, 256, 384, 512, 640, 768, 896 y 1024 bits. 
+De la misma manera, cada pareja escalar/SVE utilizara la misma configuracion de hardware.
+
+Todavia permanece pendiente la extraccion de metricas de la ROI a CSV, el calculo del speedup, los graficos y el analisis de resultados.
 
 Finalmente, las secciones 6 y 7 describen la preparacion y validacion del entorno. A su vez, la seccion 8 explica como ejecutar o verificar el 
 barrido de E2.
@@ -432,13 +436,36 @@ resultados de validacion correspondientes.
 Por otra parte, la explicacion del ajuste de CPU y los resultados se encuentran en
 [Validacion funcional de GEMM SVE](docs/validacion_gemm_sve.md).
 
+**Barrido de rendimiento completado**
+
+Responsable: Steven Loaiza
+
+| Tamano | Corridas escalares | Corridas SVE | Total |
+| --- | --- | --- | --- |
+| N=64 | 8 | 8 | 16 |
+| N=128 | 8 | 8 | 16 |
+
+En primer lugar, las evidencias se encuentran en las siguientes rutas: `results/e3/n64/` y `results/e3/n128/`. Por otra parte, cada carpeta contiene un 
+`validation.txt` el cual confirma las 16 corridas.
+
+De la misma manera, la ejecucion utiliza:
+
+- `configs/configuracion_vectorial.sh`: hardware comun.
+- `scripts/ejecutar_vectorial.sh`: compilacion, ejecucion y validacion.
+- `scripts/barrido_vectorial.sh`: barrido de las ocho longitudes vectoriales.
+
+A su vez, ambas versiones se compilan estaticamente para el AArch64. Asimismo, la autovectorización esta desactivada. Por otra parte, el desensamblado se 
+conserva como evidencia del codigo ejecutado.
+
+Las pruebas de tamano N=16 y N=17 corresponden a la validacion funcional. Por otra parte, las corridas con un tamano de N=64 y N=128 corresponden al estudio 
+de rendimiento.
+
 **Trabajo pendiente de E3**
 
-Falta ejecutar el barrido oficial para los tamanos de N=64 y de N=128 y comparar SVE contra GEMM escalar manteniendo la misma configuracion de hardware.
-Posteriormente, extraer las diversas instrucciones y los ciclos de la ROI a CSV, calcular el speedup y finalmente elaborar los graficos con su respectivo analisis.
-
-Las pruebas con tamanos de N=16 y de N=17 validan el funcionamiento del programam, el script actual del repositorio no ejecuta el barrido oficial ni 
-genera CSV o graficos.
+- Extraer instrucciones y ciclos de la ROI a CSV.
+- Calcular el speedup de SVE respecto al escalar para cada N y VL.
+- Elaborar los graficos y explicar los limites de rendimiento.
+- Documentar los comandos que regeneren los CSV y graficos.
 
 #### Otros experimentos
 
@@ -534,6 +561,7 @@ documentacion de los mismo. Antes de subir cambios se debe revisar la lista de l
 - GEMM SVE implementado en la ruta src/gemm_sve.c y con verificacion contra una referencia teniendo variables de tipo double y medicion delimitada por m5_reset_stats() y m5_dump_stats().
 - Validacion funcional SVE completada: 16 pruebas con un CPU ArmO3CPU para un tamano de N=16 y de N=17 y 8 longitudes vectoriales y que las mismas imprimieron en pantalla con CHECK=PASS.
 - Vectorizacion SVE comprobada mediante el desensamblado del kernel.
-- E3 en curso: pendientes el barrido oficial para el tamano de N=64 y de N=128, la comparacion escalar/SVE, el CSV, el analisis y los graficos correspondientes.
+- E3: 32 corridas de rendimiento publicadas, 16 para un tamano de  N=64 y 16 para un tamano de  N=128 y hardware equivalente en cada pareja escalar/SVE.
+- E3 en curso: pendientes CSV, calculo del speedup, graficos y analisis.
 - Benchmarks pendientes: GEMM paralelo y falso compartido.
 - Experimentos pendientes: E1 y E4–E6.

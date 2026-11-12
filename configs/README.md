@@ -42,6 +42,31 @@ no existen, debe ejecutar las corridas respectivas.
 Finalmente, los detalles de ejecucion y del ajuste utilizado estan en
 [la documentacion del experimento E2](../docs/experimento_superescalar.md).
 
+## Configuracion implementada para E3
+
+Responsable: Steven Loaiza
+
+EN primer lugar, el archivo: `configuracion_vectorial.sh` va a definir el hardware comun para las versiones escalar y SVE. Ademas, este esta cargado por el siguiente
+script: `scripts/ejecutar_vectorial.sh`.
+
+En segundo lugar, la configuracion utilizada es la siguiente:
+
+- Un nucleo ArmO3CPU a 2 GHz y reloj del sistema a una frecuencia de 1 GHz.
+- Ancho 2 en fetch, decode, rename, dispatch, issue, writeback y commit.
+- ROB de 192 entradas e IQ de 64 entradas.
+- L1I y L1D de 32 KiB y a 2 vias.
+- L2 de 256 KiB y a 8 vias.
+- Lineas de cache de 64 bytes.
+- Memoria DDR3_1600_8x8 con rango de 512 MiB.
+- forwardComSize=256.
+
+En tercer lugar, la longitud vectorial se configura mediante `sve_vl_se`, y la misma es expresada en unidades de 128 bits. Asimismo, para cada VL se utiliza el mismo 
+hardware en las ejecuciones escalar y SVE.
+
+En cuarto lugar, las 32 corridas para un tamano de N=64 y de N=128 estan publicadas en la siguiente ruta: `results/e3/`. La extraccion a CSV, los graficos y el 
+analisis permanecen pendientes.
+
+
 ## Pendientes
 
 - Configuracion para E1: TimingSimple, Minor y O3.
