@@ -17,7 +17,7 @@ terminado en su totalidad.
 
 Por otro lado, la validacion funcional de GEMM SVE esta completada en el simulador de gem5 con un nucleo ArmO3CPU. Ademas, se publicaron 16 pruebas para
 un tamano de N=16 y N=17, utilizando las longitudes vectoriales de 128 a 1024 bits en incrementos de 128 bits cada una de ellas. A su vez, todas terminaron
-con la impresion en pantalla del CHECK=PASS y  errores.
+con la impresion en pantalla del CHECK=PASS y  errores=0.
 
 El experimento E3 esta en curso. Asimismo, la implementacion y la validacion funcional de GEMM SVE estan totalmente completadas. A su vez, también esta publicado 
 el barrido de rendimiento. la cual consta de 32 corridas y son correspondientes a 16 para un tamano de  N=64 y 16 para un tamano de N=128.
@@ -392,7 +392,9 @@ Responsable: Steven Loaiza
 
 Estado: en curso. 
 
-La implementacion y la validacion funcional de GEMM SVE estan completadas. Asimismo, el barrido oficial de rendimiento permanece pendiente.
+La implementacion y la validacion funcional de GEMM SVE estan completadas. Asimismo el barrido de rendimiento tambien esta completado y publicado, son un total de 
+16 corridas para un tamano de N=64 y 16 para un tamano de N=128. A su vez, el experimento E3 permanece en curso porque faltan el CSV, el calculo del speedup, 
+los graficos y el analisis.
 
 La validacion utiliza:
 
@@ -454,8 +456,9 @@ De la misma manera, la ejecucion utiliza:
 - `scripts/ejecutar_vectorial.sh`: compilacion, ejecucion y validacion.
 - `scripts/barrido_vectorial.sh`: barrido de las ocho longitudes vectoriales.
 
-A su vez, ambas versiones se compilan estaticamente para el AArch64. Asimismo, la autovectorización esta desactivada. Por otra parte, el desensamblado se 
-conserva como evidencia del codigo ejecutado.
+Ambas versiones se compilan estaticamente para AArch64 con optimizacion -O2. Asimismo, la autovectorizacion esta desactivada para conservar el calculo
+escalar en la referencia. De la misma manera, el programa SVE utiliza intrinsecos vectoriales. Finalmente, el desensamblado se conserva como evidencia 
+del codigo ejecutado.
 
 Las pruebas de tamano N=16 y N=17 corresponden a la validacion funcional. Por otra parte, las corridas con un tamano de N=64 y N=128 corresponden al estudio 
 de rendimiento.
