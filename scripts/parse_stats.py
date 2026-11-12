@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# La proxima linea le indica al OS (kernel) que el archivo de texto debe ser ejecutado utilizando el interprete Bash
+# La linea anterior indica que este archivo se ejecuta con Python 3.
 
 
 """Extraer el primer bloque de ROI de las corridas actuales de E2 y E3."""

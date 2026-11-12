@@ -25,7 +25,10 @@ el barrido de rendimiento. la cual consta de 32 corridas y son correspondientes 
 Asimismo, para cada uno de los tamanos se ejecutaron las versiones escalar y SVE con longitudes vectoriales de 128, 256, 384, 512, 640, 768, 896 y 1024 bits. 
 De la misma manera, cada pareja escalar/SVE utilizara la misma configuracion de hardware.
 
-Todavia permanece pendiente la extraccion de metricas de la ROI a CSV, el calculo del speedup, los graficos y el analisis de resultados.
+La extraccion de metricas de la ROI y el calculo del speedup de E3 estan completados. De la misma manera, los resultados incluyen 32 corridas y 16 comparaciones
+escalar/SVE, disponibles en la siguiente ruta: `results/e3/summary/`.
+
+Permanecen pendientes los graficos y el analisis de las tendencias.
 
 Finalmente, las secciones 6 y 7 describen la preparacion y validacion del entorno. A su vez, la seccion 8 explica como ejecutar o verificar el 
 barrido de E2.
@@ -392,9 +395,11 @@ Responsable: Steven Loaiza
 
 Estado: en curso. 
 
-La implementacion y la validacion funcional de GEMM SVE estan completadas. Asimismo el barrido de rendimiento tambien esta completado y publicado, son un total de 
-16 corridas para un tamano de N=64 y 16 para un tamano de N=128. A su vez, el experimento E3 permanece en curso porque faltan el CSV, el calculo del speedup, 
-los graficos y el analisis.
+En primer lugar, la implementacion, la validacion funcional y el barrido de rendimiento estan completados. Ademas, se publicaron las 16 corridas para el tamano de
+N=64 y 16 para el tamano de N=128.
+
+Tambien se completaron la extraccion de metricas de la ROI a CSV y el calculo de las 16 comparaciones escalar/SVE. El experimento E3 permanece en curso porque todavia
+faltan los graficos y el analisis de las tendencias.
 
 La validacion utiliza:
 
@@ -463,12 +468,45 @@ del codigo ejecutado.
 Las pruebas de tamano N=16 y N=17 corresponden a la validacion funcional. Por otra parte, las corridas con un tamano de N=64 y N=128 corresponden al estudio 
 de rendimiento.
 
+**Procesamiento de resultados**
+
+El procesamiento utiliza los siguientes scripts:
+
+- `scripts/parse_stats.py`: extraccion del primer bloque de la ROI.
+- `scripts/resumir_e3.py`: organizacion de las corridas y calculo del speedup.
+
+Asimismo, los archivos generados son los siguientes:
+
+| Archivo | Contenido |
+| --- | --- |
+| `results/e3/summary/e3_metricas.csv` | 32 corridas con N, VL, programa y metricas de la ROI |
+| `results/e3/summary/e3_speedup.csv` | 16 comparaciones escalar/SVE con instrucciones, ciclos, tiempos y speedup |
+
+A su vez, para regenerar ambos CSV desde la raiz del repositorio en la consola de Linux:
+
+```bash
+python3 scripts/resumir_e3.py # Procesar las estadisticas existentes y regenerar los CSV.
+```
+
+El comando no repite las simulaciones. Solamente reutiliza los resultados obtenidos y reemplaza los CSV derivados de la carpeta summary.
+
+El mensaje esperado es el siguiente:
+
+```text
+RESUMEN_E3_OK CORRIDAS=32 PAREJAS=16
+```
+
+Por otra parte, el speedup se calcula como el tiempo simulado escalar dividido entre el tiempo simulado SVE para el mismo N y VL. Ademas, tambien se calcula la
+razon de ciclos como comprobacion de consistencia.
+
+Los detalles del extractor estan en
+[Extraccion de estadisticas de la ROI](docs/extraccion_roi.md).
+
 **Trabajo pendiente de E3**
 
-- Extraer instrucciones y ciclos de la ROI a CSV.
-- Calcular el speedup de SVE respecto al escalar para cada N y VL.
-- Elaborar los graficos y explicar los limites de rendimiento.
-- Documentar los comandos que regeneren los CSV y graficos.
+- Elaborar el grafico de speedup frente a VL.
+- Analizar instrucciones, ciclos y limites de rendimiento.
+- Integrar la regeneracion de CSV y graficos en un comando reproducible.
 
 #### Otros experimentos
 
@@ -496,8 +534,12 @@ De la misma manera, la region de interes esta delimitada por m5_reset_stats() y 
 actuales, el primer bloque de stats.txt corresponde al volcado de la ROI. Asimismo, el bloque final va a incluir el trabajo posterior y el mismo
 no debe usarse como sustituto del primero.
 
-Por otra parte, el barrido valida las evidencias, pero todavia no genera CSV ni graficos. La prueba de hola mundo comprueba el entorno y no 
-sustituye las validaciones de GEMM.
+Asimismo, los scripts de barrido ejecutan las simulaciones y validan sus evidencias. El procesamiento posterior del experimento E3 se realiza con
+`scripts/resumir_e3.py`, el cual genera los CSV de metricas y speedup. Los graficos de E3 permanecen pendientes.
+
+Para el experimento E2, la extraccion de sus metricas completas, el analisis y los graficos permanecen pendientes.
+
+Por otra parte, la prueba de hola mundo comprueba el entorno y no sustituye las validaciones de GEMM.
 
 ### 10) Trabajo colaborativo y documentación
 
@@ -565,6 +607,8 @@ documentacion de los mismo. Antes de subir cambios se debe revisar la lista de l
 - Validacion funcional SVE completada: 16 pruebas con un CPU ArmO3CPU para un tamano de N=16 y de N=17 y 8 longitudes vectoriales y que las mismas imprimieron en pantalla con CHECK=PASS.
 - Vectorizacion SVE comprobada mediante el desensamblado del kernel.
 - E3: 32 corridas de rendimiento publicadas, 16 para un tamano de  N=64 y 16 para un tamano de  N=128 y hardware equivalente en cada pareja escalar/SVE.
-- E3 en curso: pendientes CSV, calculo del speedup, graficos y analisis.
+- E3: extractor de ROI implementado en scripts/parse_stats.py y documentado en docs/extraccion_roi.md.
+- E3: CSV de 32 corridas y 16 comparaciones escalar/SVE generados mediante scripts/resumir_e3.py y publicados en results/e3/summary/.
+- E3 en curso: pendientes graficos y analisis de las tendencias.
 - Benchmarks pendientes: GEMM paralelo y falso compartido.
 - Experimentos pendientes: E1 y E4–E6.

@@ -39,7 +39,7 @@ una carpeta o un script en particular.
 | Repetir validacion ARM desde el entorno de Paulina Camacho | Paulina Camacho | Completado | — | results/validation/paulina_gemm_scalar_n16/ |
 | Ejecutar y analizar línea base | Todo el equipo | Pendiente | Por acordar | TimingSimple, Minor y O3; N=64 y N=128 |
 | Preparar configuracion O3 parametrizable | Paulina Camacho | Completado | — | configs/configuracion_superescalar.sh y configuracion verificada en las 24 corridas |
-| Preparar automatizacion y extraccion de las diversas metricas | Paulina Camacho y Steven Loaiza | En curso | Por acordar | Barrido secuencial y verificacion implementados, extraccion de la ROI a CSV pendiente |
+| Preparar automatizacion y extraccion de las diversas metricas | Paulina Camacho y Steven Loaiza | En curso | Por acordar | Barridos implementados; extractor basico de ROI y CSV de E3 disponibles; metricas adicionales de E2 pendientes |
 | Ejecutar barrido completo | Paulina Camacho | Completado | — | 24 corridas verificadas y publicadas: 12 en la carpeta results/e2/n64/ y 12 en la carpeta results/e2/n128/ |
 | Analizar IPC, IQ/ROB y prediccion | Paulina Camacho | Pendiente | Por acordar | CSV y explicacion de los limites del rendimiento |
 | Generar graficos y documentar reproduccion del mismo | Paulina Camacho | Pendiente | Por acordar | Graficos, conclusiones y comandos reproducibles |
@@ -47,9 +47,11 @@ una carpeta o un script en particular.
 | Automatizar la validacion funcional de SVE | Steven Loaiza | Completado | — | scripts/test_gemm_sve.sh: ocho longitudes vectoriales, comprobacion de resultados, VL efectivo y estadisticas |
 | Verificar las diversas instrucciones vectoriales de SVE | Steven Loaiza | Completado | — | results/validation/gemm_sve_suite_o3/kernel_asm.txt: instrucciones vectoriales de multiplicacion y suma |
 | Documentar la validacion y la reproduccion de SVE | Steven Loaiza | Completado | — | docs/validacion_gemm_sve.md y seccion E3 del README.md |
-| Desarrollar el experimento E3 | Steven Loaiza | En curso | Por acordar | Implementación, validación funcional y 32 corridas publicadas; CSV, speedup, análisis y gráficos pendientes |
+| Desarrollar el experimento E3 | Steven Loaiza | En curso | Por acordar | Implementacion, validacion, barrido, CSV y speedup completados; graficos y analisis pendientes |
 | Preparar y ejecutar el barrido oficial para E3 | Steven Loaiza | Completado | — | results/e3/n64/ y results/e3/n128/: 16 corridas por tamaño, con parejas escalar/SVE bajo el mismo hardware |
-| Analizar instrucciones, los ciclos y el speedup para E3 | Steven Loaiza | Pendiente | Por acordar | Metricas de la ROI en CSV y comparacion escalar/SVE para ambos tamanos |
+| Implementar y validar el extractor basico de ROI | Steven Loaiza | Completado | — | scripts/parse_stats.py y docs/extraccion_roi.md; extraccion comprobada para las 32 corridas de E3 |
+| Generar CSV y calcular speedup de E3 | Steven Loaiza | Completado | — | scripts/resumir_e3.py y results/e3/summary/: 32 corridas y 16 comparaciones escalar/SVE |
+| Analizar instrucciones, los ciclos y el speedup para E3 | Steven Loaiza | En curso | Por acordar | CSV y calculos disponibles; interpretacion de tendencias y limites pendiente |
 | Generar graficos y conclusiones para E3 | Steven Loaiza | Pendiente | Por acordar | Speedup frente a VL y explicacion de los limites de rendimiento |
 | Implementar y validar GEMM paralelo | Steven Loaiza | Pendiente | Por acordar | Reparto por filas, verificacion de resultados y ROI; programa para el experimento E4 |
 | Implementar y validar falso compartido | Steven Loaiza | Pendiente | Por acordar | Variantes sin relleno y con separacion de 64 bytes, comprobacion de contadores y ROI para E5 |

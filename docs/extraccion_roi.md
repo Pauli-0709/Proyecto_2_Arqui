@@ -126,13 +126,28 @@ Estos valores permiten contrastar la salida del extractor contra los archivos or
 
 Esta version extrae las metricas basicas de las corridas actuales de un nucleo de los experimentos E2 y E3.
 
-Para E3 permanecen pendientes:
+A su vez, para el experimento E3 ya se implemento el procesamiento de las 32 corridas mediante el script de la ruta `scripts/resumir_e3.py`.
 
-- Publicar los CSV definitivos.
-- Separar N, VL y programa en columnas.
-- Calcular el speedup por pareja escalar/SVE.
-- Elaborar los graficos y el analisis.
-- Integrar la regeneracion de CSV y graficos en un comando.
+Asimismo el script genera lo siguiente:
+
+- `results/e3/summary/e3_metricas.csv`: 32 corridas con N, VL y programa.
+- `results/e3/summary/e3_speedup.csv`: 16 comparaciones escalar/SVE.
+
+Para regenerar ambos archivos se debe ejecutar:
+
+```bash
+python3 scripts/resumir_e3.py # Extraer las metricas y calcular el speedup de E3.
+```
+
+Por otra parte, el speedup principal se calcula como el tiempo escalar dividido entre tiempo SVE. A su vez, tambien se calcula la razon de ciclos como comprobacion
+de consistencia para las parejas con igual frecuencia.
+
+Por otra parte, el procesamiento reutiliza el primer bloque de ROI y las comprobaciones de `scripts/parse_stats.py`. Asimismo, se exige las 32 rutas esperadas y verifica
+la confirmacion individual de cada programa, N y VL.
+
+Por otra parte, las comprobaciones del script no sustituyen la revision del hardware registrado en config.ini.
+
+FInalmente, permanecen pendientes los graficos, el analisis de las tendencias y la integracion de la generacion de CSV y graficos en un comando.
 
 Para el experimento E2 todavia deben incorporarse las metricas adicionales de IPC, ocupacion de IQ/ROB y prediccion requeridas por el enunciado.
 
