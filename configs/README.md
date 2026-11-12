@@ -63,8 +63,9 @@ En segundo lugar, la configuracion utilizada es la siguiente:
 En tercer lugar, la longitud vectorial se configura mediante `sve_vl_se`, y la misma es expresada en unidades de 128 bits. Asimismo, para cada VL se utiliza el mismo 
 hardware en las ejecuciones escalar y SVE.
 
-En cuarto lugar, las 32 corridas para un tamano de N=64 y de N=128 estan publicadas en la siguiente ruta: `results/e3/`. La extraccion a CSV, los graficos y el 
-analisis permanecen pendientes.
+En cuarto lugar, las 32 corridas para los tamanos de N=64 y de N=128 estan publicadas en la siguiente ruta: `results/e3/`. Asimismo, la extraccion de metricas y el
+calculo del speedup estan completados, con los CSV disponibles en la siguiente ruta: `results/e3/summary/`. De la misma manera, el grafico de speedup frente a VL
+se encuentra en la siguiente ruta: `results/e3/figures/`, en formatos PNG y SVG. El analisis de los resultados permanece pendiente.
 
 
 ## Pendientes

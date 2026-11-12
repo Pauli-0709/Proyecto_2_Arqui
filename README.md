@@ -502,9 +502,20 @@ razon de ciclos como comprobacion de consistencia.
 Los detalles del extractor estan en
 [Extraccion de estadisticas de la ROI](docs/extraccion_roi.md).
 
+### Grafico de speedup de E3
+
+El script que esta en la ruta `scripts/graficar_e3.py` utiliza `results/e3/summary/e3_speedup.csv` esto con el fin de generar el grafico de speedup
+frente a VL para los tamanos de N=64 y de N=128.
+
+Asimismo, las figuras se guardan en la ruta `results/e3/figures/`, en formatos PNG y SVG. A su vez, el speedup se calcula como tiempo escalar dividido 
+entre tiempo SVE.
+
+![Speedup de E3 frente a VL](results/e3/figures/e3_speedup_vs_vl.png)
+
+Finalmente, el grafico esta completado. La interpretacion de las tendencias y la explicacion de los limites de rendimiento permanecen pendientes.
+
 **Trabajo pendiente de E3**
 
-- Elaborar el grafico de speedup frente a VL.
 - Analizar instrucciones, ciclos y limites de rendimiento.
 - Integrar la regeneracion de CSV y graficos en un comando reproducible.
 
