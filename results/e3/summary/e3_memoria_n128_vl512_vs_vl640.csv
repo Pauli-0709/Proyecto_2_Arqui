@@ -1,0 +1,9 @@
+metrica,N,roi_block,sve_vl512,sve_vl640
+simInsts,128,1,1059862,927510
+system.cpu.numCycles,128,1,921522,1473805
+system.cpu.dcache.demandAccesses::total,128,1,264582,329746
+system.cpu.dcache.demandMisses::total,128,1,138959,219763
+system.cpu.dcache.demandMissRate::total,128,1,0.525202,0.666461
+system.cpu.lsq0.blockedByCache,128,1,125025,213893
+system.cpu.rename.LQFullEvents,128,1,22628,569086
+system.l2.demandMisses::total,128,1,43,45
