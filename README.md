@@ -28,7 +28,7 @@ De la misma manera, cada pareja escalar/SVE utilizara la misma configuracion de 
 La extraccion de metricas de la ROI y el calculo del speedup de E3 estan completados. De la misma manera, los resultados incluyen 32 corridas y 16 comparaciones
 escalar/SVE, disponibles en la siguiente ruta: `results/e3/summary/`.
 
-Por otra parte los graficos estan completados y el analisis inicial esta documentado. Permanecen pendientes la explicacion microarquitectonica.
+Por otra parte los graficos estan completados y el analisis inicial esta documentado. Permanece pendiente completar la explicacion microarquitectonica.
 
 Finalmente, las secciones 6 y 7 describen la preparacion y validacion del entorno. A su vez, la seccion 8 explica como ejecutar o verificar el 
 barrido de E2.
@@ -398,8 +398,11 @@ Estado: en curso.
 En primer lugar, la implementacion, la validacion funcional y el barrido de rendimiento estan completados. Ademas, se publicaron las 16 corridas para el tamano de
 N=64 y 16 para el tamano de N=128.
 
-Tambien se completaron la extraccion de metricas de la ROI a CSV y el calculo de las 16 comparaciones escalar/SVE. El experimento E3 esta completado puesto que los 
-graficos y el analisis inicial estan completados. Falta como pendiente la explicacion microarquictonica.
+En segundo lugar, tambien se completaron la extraccion de metricas de la ROI a CSV, asi como el calculo de las 16 comparaciones escalar/SVE, el grafico y su respectivo
+analisis inicial.
+
+Por otra parte, el experimento E3 permanece en curso. A su vez, falta completar la explicacion del limite de rendimiento y poder comprobar la causa microarquitectonica
+de la caida observada para un tamano de N=128 entre un VL=512 y un VL=640. Tambien queda pendiente integrar la regeneracion de CSV y figuras en un comando reproducible.
 
 La validacion utiliza:
 

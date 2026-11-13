@@ -133,8 +133,8 @@ costo medio observado por instruccion aumenta.
 De la misma manera, los CSV resumidos no permiten atribuir esta caida a una causa especifica o puntual, como lo pueden ser los fallos de cache, 
 los accesos que cruzan las diversas lineas o las distintas esperas de ejecucion.
 
-Asimismo, esta comprobacion genera una causa que la misma requiere revisar las estadisticas adicionales del primer bloque de ROI y la 
-configuracion efectiva de todas las corridas involucradas.
+Por otra parte, para poder comprobar la causa de esta caida se deben revisar las estadisticas adicionales del primer bloque de ROI y la configuracion 
+efectiva de las diversas corridas involucradas.
 
 ## Conclusiones iniciales
 
