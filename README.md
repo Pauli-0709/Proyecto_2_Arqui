@@ -28,7 +28,7 @@ De la misma manera, cada pareja escalar/SVE utilizara la misma configuracion de 
 La extraccion de metricas de la ROI y el calculo del speedup de E3 estan completados. De la misma manera, los resultados incluyen 32 corridas y 16 comparaciones
 escalar/SVE, disponibles en la siguiente ruta: `results/e3/summary/`.
 
-Permanecen pendientes los graficos y el analisis de las tendencias.
+Por otra parte los graficos estan completados y el analisis inicial esta documentado. Permanecen pendientes la explicacion microarquitectonica.
 
 Finalmente, las secciones 6 y 7 describen la preparacion y validacion del entorno. A su vez, la seccion 8 explica como ejecutar o verificar el 
 barrido de E2.
@@ -398,8 +398,8 @@ Estado: en curso.
 En primer lugar, la implementacion, la validacion funcional y el barrido de rendimiento estan completados. Ademas, se publicaron las 16 corridas para el tamano de
 N=64 y 16 para el tamano de N=128.
 
-Tambien se completaron la extraccion de metricas de la ROI a CSV y el calculo de las 16 comparaciones escalar/SVE. El experimento E3 permanece en curso porque todavia
-faltan los graficos y el analisis de las tendencias.
+Tambien se completaron la extraccion de metricas de la ROI a CSV y el calculo de las 16 comparaciones escalar/SVE. El experimento E3 esta completado puesto que los 
+graficos y el analisis inicial estan completados. Falta como pendiente la explicacion microarquictonica.
 
 La validacion utiliza:
 
@@ -512,11 +512,17 @@ entre tiempo SVE.
 
 ![Speedup de E3 frente a VL](results/e3/figures/e3_speedup_vs_vl.png)
 
-Finalmente, el grafico esta completado. La interpretacion de las tendencias y la explicacion de los limites de rendimiento permanecen pendientes.
+Por otra parte, el grafico y el analisis inicial estan disponibles. El documento explica las mesetas/zonas de estabilización para un tamano de  N=64 a partir
+del numero de grupos de columnas y el mismo cuantifica la caida de rendimiento que se observa para un tamano de N=128 entre un VL=512 y un VL=640.
+
+[Analisis inicial del experimento E3](docs/experimento_vectorial.md).
+
+Permanece pendiente comprobar la causa microarquitectonica de esa caida y el poder completar la explicacion del limite de rendimiento.
 
 **Trabajo pendiente de E3**
 
-- Analizar instrucciones, ciclos y limites de rendimiento.
+- Completar la explicacion del limite de rendimiento que se genera mediante las estadisticas adicionales de la ROI para un tamano de N=128,
+  especialmente en un VL=512 y en un VL=640.
 - Integrar la regeneracion de CSV y graficos en un comando reproducible.
 
 #### Otros experimentos
@@ -546,7 +552,7 @@ actuales, el primer bloque de stats.txt corresponde al volcado de la ROI. Asimis
 no debe usarse como sustituto del primero.
 
 Asimismo, los scripts de barrido ejecutan las simulaciones y validan sus evidencias. El procesamiento posterior del experimento E3 se realiza con
-`scripts/resumir_e3.py`, el cual genera los CSV de metricas y speedup. Los graficos de E3 permanecen pendientes.
+`scripts/resumir_e3.py`, el cual genera los CSV de metricas y speedup. Los graficos de E3 estan completados.
 
 Para el experimento E2, la extraccion de sus metricas completas, el analisis y los graficos permanecen pendientes.
 
@@ -620,6 +626,6 @@ documentacion de los mismo. Antes de subir cambios se debe revisar la lista de l
 - E3: 32 corridas de rendimiento publicadas, 16 para un tamano de  N=64 y 16 para un tamano de  N=128 y hardware equivalente en cada pareja escalar/SVE.
 - E3: extractor de ROI implementado en scripts/parse_stats.py y documentado en docs/extraccion_roi.md.
 - E3: CSV de 32 corridas y 16 comparaciones escalar/SVE generados mediante scripts/resumir_e3.py y publicados en results/e3/summary/.
-- E3 en curso: pendientes graficos y analisis de las tendencias.
+- E3: graficos y analisis inicial estan completados.
 - Benchmarks pendientes: GEMM paralelo y falso compartido.
 - Experimentos pendientes: E1 y E4–E6.

@@ -1,0 +1,168 @@
+# Experimento E3: extensiones vectoriales SVE
+
+Responsable: Steven Loaiza
+
+## Estado
+
+La implementacion, la validacion funcional, las 32 corridas ejecutadas, los CSV y el grafico de speedup estan publicados en el repositorio.
+
+Asimismo, este documento presenta el analisis inicial de instrucciones, ciclos y la escalabilidad. A su vez, permanece pendiente comprobar 
+la causa microarquitectonica de la caida observada para el tamano de N=128 entre un VL=512 y un VL=640.
+
+## Objetivo
+
+EL objetivo principal es el de comparar GEMM escalar y GEMM SVE para de esta manera poder determinar si la ganancia del rendimiento que se genera
+aumenta proporcionalmente con la longitud vectorial.
+
+De la misma manera, se estudian tamano de N=64 y un tamano de N=128 con VL de 128 a 1024 bits, en incrementos de 128 bits cada uno de ellos.
+
+## Condiciones de comparacion
+
+Cada pareja escalar/SVE utiliza el mismo hardware, el cual se presenta a continuacion:
+
+- Un nucleo ArmO3CPU a una frecuencia de 2 GHz.
+- Ancho 2 en las etapas configuradas del pipeline.
+- ROB de 192 entradas y el IQ de 64 entradas en total.
+- L1I y L1D de 32 KiB y 2 vias de asociatividad.
+- L2 de 256 KiB y 8 vias de asociatividad.
+- Lineas de cache de 64 bytes.
+
+A su vez, ambas versiones utilizan compilacion estatica AArch64 con -O2 y la version SVE utiliza intrinsecos vectoriales.
+
+Finalmente, las metricas corresponden al primer bloque de estadisticas, puesto porque esta delimitado por las operaciones de medicion de la ROI.
+La inicializacion y la comprobacion numerica quedan fuera de ella.
+
+## Evidencias
+
+- [Metricas de las 32 corridas](../results/e3/summary/e3_metricas.csv).
+- [Comparaciones escalar/SVE](../results/e3/summary/e3_speedup.csv).
+- [Grafico en SVG](../results/e3/figures/e3_speedup_vs_vl.svg).
+- [Codigo SVE conservado con una corrida](../results/e3/n128/vl640/sve/gemm_sve.c).
+
+![Speedup frente a VL](../results/e3/figures/e3_speedup_vs_vl.png)
+
+## Definicion de las metricas
+
+El tiempo simulado se obtiene con la siguiente ecuacion:
+
+tiempo_ROI = simTicks / simFreq
+
+El speedup se calcula para el mismo N y VL de la siguiente manera:
+
+speedup = tiempo_escalar / tiempo_SVE
+
+Asimismo, un valor mayor que 1 indica que SVE tarda menos que la version escalar. De forma similar, es importante mencionar que ambas versiones
+utilizan la misma frecuencia, la razon de ciclos coincide con la razon de tiempos.
+
+Por otra parte, la reduccion de instrucciones se calcula con la siguiente ecuacion:
+
+reduccion_pct = 100 * (1 - instrucciones_SVE / instrucciones_escalar)
+
+## Resultados de speedup
+
+| VL en bits | N=64 | N=128 |
+| --- | --- | --- |
+| 128 | 2.727 | 3.987 |
+| 256 | 5.439 | 7.926 |
+| 384 | 7.238 | 7.979 |
+| 512 | 10.868 | 15.703 |
+| 640 | 10.865 | 9.819 |
+| 768 | 14.449 | 11.572 |
+| 896 | 14.434 | 11.609 |
+| 1024 | 21.529 | 15.874 |
+
+Es importante mencionar que los valores estan redondeados a tres decimales cada uno de ellos.
+
+SVE mejora el tiempo frente a la referencia escalar en las
+16 comparaciones. Sin embargo, aumentar VL no produce una
+mejora proporcional ni estrictamente creciente en todos los casos.
+
+## N=64: bloques de columnas y mesetas
+
+Cada elemento float ocupa 32 bits. Por ello, la cantidad de
+elementos por vector es VL / 32.
+
+El codigo avanza por grupos de columnas del tamano obtenido
+con svcntw(). El numero de grupos por fila es:
+
+grupos_por_fila = techo(N / (VL / 32))
+
+El predicado del ultimo grupo desactiva las posiciones que
+quedan fuera de la matriz.
+
+| VL | Elementos por vector | Grupos por fila para N=64 | Instrucciones SVE | Ciclos SVE |
+| --- | --- | --- | --- | --- |
+| 512 | 16 | 4 | 134166 | 103095 |
+| 640 | 20 | 4 | 134166 | 103129 |
+| 768 | 24 | 3 | 100758 | 77545 |
+| 896 | 28 | 3 | 100758 | 77628 |
+| 1024 | 32 | 2 | 67350 | 52044 |
+
+Pasar de VL=512 a VL=640 mantiene cuatro grupos por fila.
+Pasar de VL=768 a VL=896 mantiene tres grupos por fila.
+
+Esto explica por que esos aumentos de VL no reducen el numero
+de iteraciones de grupos. Las instrucciones medidas son iguales
+dentro de cada pareja y los ciclos son muy similares.
+
+Esta estructura del algoritmo explica las mesetas principales.
+No identifica por si sola la causa de las pequenas diferencias
+de ciclos entre configuraciones con igual numero de instrucciones.
+
+## N=128: menos instrucciones no garantiza menos ciclos
+
+La comparacion entre VL=512 y VL=640 muestra:
+
+| Metrica SVE | VL=512 | VL=640 |
+| --- | --- | --- |
+| Instrucciones | 1059862 | 927510 |
+| Ciclos | 921522 | 1473805 |
+| Tiempo en segundos | 0.000460761 | 0.0007369025 |
+| Speedup frente a escalar | 15.703 | 9.819 |
+| Ciclos / instrucciones | 0.869 | 1.589 |
+
+Al pasar de un VL=512 a un VL=640, se tiene los siguientes factores:
+
+- Las instrucciones disminuyen aproximadamente un 12.49%.
+- Los ciclos aumentan aproximadamente un 59.93%.
+- El speedup disminuye aproximadamente un 37.47%.
+
+Por tanto, la reduccion del trabajo expresado como instrucciones no se convierte en forma automatica en una reduccion de tiempo. Asimismo, el 
+costo medio observado por instruccion aumenta.
+
+De la misma manera, los CSV resumidos no permiten atribuir esta caida a una causa especifica o puntual, como lo pueden ser los fallos de cache, 
+los accesos que cruzan las diversas lineas o las distintas esperas de ejecucion.
+
+Asimismo, esta comprobacion genera una causa que la misma requiere revisar las estadisticas adicionales del primer bloque de ROI y la 
+configuracion efectiva de todas las corridas involucradas.
+
+## Conclusiones iniciales
+
+1. SVE reduce el tiempo respecto a su referencia escalar en todas las configuraciones estudiadas y analizadas.
+
+2. El mayor speedup que fue medido dentro del barrido ocurre con la siguiente configuracion de un VL=1024: 21.529 para un tamano de N=64 y 
+   15.874 para un tamano de N=128. Asimismo, estos valores no establecen un maximo fuera del rango medido.
+
+3. La ganancia no escala de forma estrictamente proporcional con VL. Puesto que para el tamano de N=64, el numero entero de grupos de columnas
+   explica las principales zonas de estabilizacion de la grafica.
+
+4. Para un tamano de N=128, la caida entre un VL=512 y un VL=640 demuestra que el contar las instrucciones no basta para predecir los ciclos.
+
+5. Asimismo, estos resultados corresponden al programa y al modelo de hardware simulados, los mismos no representan una medicion de un 
+   procesador ARM en formato fisico.
+
+## Pendientes para cerrar el analisis
+
+- Contrastar las estadisticas adicionales de la ROI para un tamano de N=128 con un VL=512 y un VL=640.
+- Determinar que la evidencia respalda la explicacion del limite de rendimiento y declarar las diversas incertidumbres restantes.
+- Integrar la regeneracion de CSV y figuras en un solo comando.
+
+## Referencia tecnica del enunciado
+
+Arm C Language Extensions (ACLE), esta es una referencia incluida en el HTML del enunciado del proyecto:
+
+https://github.com/ARM-software/acle
+
+Documentacion:
+
+https://arm-software.github.io/acle/main/acle.html

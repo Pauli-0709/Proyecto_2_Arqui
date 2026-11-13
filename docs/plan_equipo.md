@@ -51,8 +51,8 @@ una carpeta o un script en particular.
 | Preparar y ejecutar el barrido oficial para E3 | Steven Loaiza | Completado | — | results/e3/n64/ y results/e3/n128/: 16 corridas por tamaño, con parejas escalar/SVE bajo el mismo hardware |
 | Implementar y validar el extractor basico de ROI | Steven Loaiza | Completado | — | scripts/parse_stats.py y docs/extraccion_roi.md; extraccion comprobada para las 32 corridas de E3 |
 | Generar CSV y calcular speedup de E3 | Steven Loaiza | Completado | — | scripts/resumir_e3.py y results/e3/summary/: 32 corridas y 16 comparaciones escalar/SVE |
-| Analizar instrucciones, los ciclos y el speedup para E3 | Steven Loaiza | En curso | Por acordar | CSV y calculos disponibles; interpretacion de tendencias y limites pendiente |
-| Generar graficos y conclusiones para E3 | Steven Loaiza | En curso | Por acordar | Grafico de speedup frente a VL disponible en la ruta results/e3/figures/, conclusiones y explicacion de los limites pendientes |
+| Analizar instrucciones, los ciclos y el speedup para E3 | Steven Loaiza | En curso | Por acordar | Analisis inicial en docs/experimento_vectorial.md, mesetas de un tamano de N=64 explicadas y caida de un tamano de N=128 cuantificada, causa microarquitectonica pendiente |
+| Generar graficos y conclusiones para E3 | Steven Loaiza | En curso | Por acordar | Grafico publicado y conclusiones iniciales documentadas; explicacion final del limite pendiente |
 | Implementar y validar GEMM paralelo | Steven Loaiza | Pendiente | Por acordar | Reparto por filas, verificacion de resultados y ROI, programa para el experimento E4 |
 | Implementar y validar falso compartido | Steven Loaiza | Pendiente | Por acordar | Variantes sin relleno y con separacion de 64 bytes, comprobacion de contadores y ROI para E5 |
 
