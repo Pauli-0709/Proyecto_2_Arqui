@@ -65,7 +65,12 @@ hardware en las ejecuciones escalar y SVE.
 
 En cuarto lugar, las 32 corridas para los tamanos de N=64 y de N=128 estan publicadas en la siguiente ruta: `results/e3/`. Asimismo, la extraccion de metricas y el
 calculo del speedup estan completados, con los CSV disponibles en la siguiente ruta: `results/e3/summary/`. De la misma manera, el grafico de speedup frente a VL
-se encuentra en la siguiente ruta: `results/e3/figures/`, en formatos PNG y SVG. El analisis de los resultados permanece pendiente.
+se encuentra en la siguiente ruta: `results/e3/figures/`, en formatos PNG y SVG. 
+
+En quinto lugar, el analisis inicial y la comparacion de los contadores de memoria estan documentados en la seccion:
+[el experimento E3](../docs/experimento_vectorial.md).
+
+El experimento E3 permanece en curso, con la revision final de conclusiones y la integracion de la reproduccion pendientes.
 
 
 ## Pendientes

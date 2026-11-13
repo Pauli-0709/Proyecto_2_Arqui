@@ -6,8 +6,11 @@ Responsable: Steven Loaiza
 
 La implementacion, la validacion funcional, las 32 corridas ejecutadas, los CSV y el grafico de speedup estan publicados en el repositorio.
 
-Asimismo, este documento presenta el analisis inicial de instrucciones, ciclos y la escalabilidad. A su vez, permanece pendiente comprobar 
-la causa microarquitectonica de la caida observada para el tamano de N=128 entre un VL=512 y un VL=640.
+Asimismo el actual documento presenta el analisis de instrucciones, los diversos ciclos y la escalabilidad. Ademas, incluye una comparacion 
+reproducible de los contadores de memoria para un tamano de N=128 con un VL=512 y un VL=640.
+
+Por otra parte, los resultados respaldan una explicacion basada en mayor presion sobre memoria con un VL=640. Tambien es importante mencionar que
+no se ha aislado de forma concluyente el mecanismo inicial que produce ese aumento.
 
 ## Objetivo
 
@@ -133,8 +136,70 @@ costo medio observado por instruccion aumenta.
 De la misma manera, los CSV resumidos no permiten atribuir esta caida a una causa especifica o puntual, como lo pueden ser los fallos de cache, 
 los accesos que cruzan las diversas lineas o las distintas esperas de ejecucion.
 
-Por otra parte, para poder comprobar la causa de esta caida se deben revisar las estadisticas adicionales del primer bloque de ROI y la configuracion 
-efectiva de las diversas corridas involucradas.
+## Comparacion reproducible de memoria para un tamano de N=128
+
+El script de la ruta: `scripts/comparar_memoria_e3.py` compara 8 metricas del primer bloque de ROI de las corridas SVE con un VL=512 y un VL=640.
+
+A su vez, antes de escribir el CSV, este reutiliza las comprobaciones de `parse_stats.py`: validation.txt no vacio, CHECK=PASS con errores=0 y 
+primer bloque completo. Ademas, este rechaza las metricas ausentes, duplicadas o con valores invalidos.
+
+Desde la raiz del repositorio, en Ubuntu colocar los siguiente comandos:
+
+```bash
+# Regenerar la comparacion usando las estadisticas existentes.
+python3 scripts/comparar_memoria_e3.py
+```
+
+Este script reemplaza solamente su CSV derivado. El mismo no modifica las estadisticas originales ni ejecuta nada en el simulador gem5.
+
+[CSV de la comparacion](../results/e3/summary/e3_memoria_n128_vl512_vs_vl640.csv).
+
+### Resultados
+
+| Metrica | VL=512 | VL=640 |
+| --- | --- | --- |
+| Instrucciones | 1059862 | 927510 |
+| Ciclos CPU | 921522 | 1473805 |
+| Accesos de demanda L1D | 264582 | 329746 |
+| Fallos de demanda L1D | 138959 | 219763 |
+| Tasa de fallos L1D | 52.5202% | 66.6461% |
+| Eventos de bloqueo por cache en LSQ | 125025 | 213893 |
+| Eventos de cola de cargas llena | 22628 | 569086 |
+| Fallos de demanda L2, total | 43 | 45 |
+
+A partir de la anterior tabla se observa que el CSV conserva los nombres exactos de las estadisticas. Ademas, la tasa de fallos se almacena 
+como una razon entre 0 y 1. Finalmente, los fallos de demanda totales de L2 incluyen los datos e instrucciones.
+
+### Interpretacion y alcance
+
+En primer lugar, con un VL=640 se disminuyen las instrucciones, pero a su vez se aumentan los accesos y fallos de L1D. Asimismo, tambien aumentan
+los eventos de acceso bloqueados por cache y de bloqueo de rename por la cola de cargas llena.
+
+En segundo lugar, estos contadores respaldan una explicacion de la perdida de rendimiento puesto que la misma esta relacionada con una mayor presion 
+sobre la memoria y sobre los distintos recursos que mantienen cargas pendientes.
+
+En tercer lugar, los fallos de demanda de L2 pasan de 43 a 45. A su vez, esta comparacion no respalda el poder atribuir la caida a un gran aumento 
+del numero de fallos en L2, pero tampoco se puede descartar otros costos de acceso o de contencion.
+
+En cuarto lugar, los eventos de bloqueo no son ciclos perdidos. Por esta razon, estos no se deben sumar ni convertirse directamente en porcentajes 
+del tiempo de ejecucion.
+
+En quinto lugar, la comparacion manual de los archivos config.ini publicados se encontro diferencias en la longitud vectorial y en las rutas de ejecucion
+de los mismos, sin cambios en los demas parametros. A su vez, el nuevo script extrae las distintas estadisticas, pero no automatiza esa comparacion de 
+configuraciones.
+
+En sexto lugar, una posible explicacion del aumento de accesos que se logro evidenciar es su distribucion entre las diversas lineas de cache. Un vector 
+de 512 bits contiene 64 bytes, mientras que uno de 640 bits llega a contener 80 bytes, frente a lineas configuradas de 64 bytes.
+
+Finalmente, esta observacion no demuestra cuantos accesos se dividen: puesto que tambien intervienen la alineacion, los elementos activos y la 
+implementacion de las operaciones vectoriales en el simulador gem5. Por la anterior explicacion se concluye que la causa exacta permanece como una incertidumbre.
+
+### Evidencias originales
+
+- [Estadisticas VL=512](../results/e3/n128/vl512/sve/stats.txt).
+- [Estadisticas VL=640](../results/e3/n128/vl640/sve/stats.txt).
+- [Configuracion VL=512](../results/e3/n128/vl512/sve/config.ini).
+- [Configuracion VL=640](../results/e3/n128/vl640/sve/config.ini).
 
 ## Conclusiones iniciales
 
@@ -153,9 +218,11 @@ efectiva de las diversas corridas involucradas.
 
 ## Pendientes para cerrar el analisis
 
-- Contrastar las estadisticas adicionales de la ROI para un tamano de N=128 con un VL=512 y un VL=640.
-- Determinar que la evidencia respalda la explicacion del limite de rendimiento y declarar las diversas incertidumbres restantes.
-- Integrar la regeneracion de CSV y figuras en un solo comando.
+- Revisar las conclusiones finales, separando la evidencia de mayor presion sobre la memoria de las hipotesis sobre su posible origen.
+- Integrar la regeneracion de CSV y las distitnas figuras en un solo comando.
+
+Finalmente, como un procedimiento extra, se puede aislar el efecto de la alineacion y de los distintos accesos que cruzan lineas. Asimismo, esta comprobacion
+adicional no se presenta como una exigencia explicita en el enunciado del proyecto (HTML).
 
 ## Referencia tecnica del enunciado
 

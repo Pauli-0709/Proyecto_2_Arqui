@@ -28,7 +28,9 @@ De la misma manera, cada pareja escalar/SVE utilizara la misma configuracion de 
 La extraccion de metricas de la ROI y el calculo del speedup de E3 estan completados. De la misma manera, los resultados incluyen 32 corridas y 16 comparaciones
 escalar/SVE, disponibles en la siguiente ruta: `results/e3/summary/`.
 
-Por otra parte los graficos estan completados y el analisis inicial esta documentado. Permanece pendiente completar la explicacion microarquitectonica.
+Por otra parte, los distintos graficos y el posterior analisis inicial estan documentados. Asimismo, la comparacion reproducible de contadores respalda una 
+explicacion basada en mayor presion sobre memoria con un VL=640 para un tamano de N=128. El experimento E3 permanece en curso: faltan la revision final de conclusiones 
+y la integracion de la regeneracion de resultados.
 
 Finalmente, las secciones 6 y 7 describen la preparacion y validacion del entorno. A su vez, la seccion 8 explica como ejecutar o verificar el 
 barrido de E2.
@@ -401,8 +403,8 @@ N=64 y 16 para el tamano de N=128.
 En segundo lugar, tambien se completaron la extraccion de metricas de la ROI a CSV, asi como el calculo de las 16 comparaciones escalar/SVE, el grafico y su respectivo
 analisis inicial.
 
-Por otra parte, el experimento E3 permanece en curso. A su vez, falta completar la explicacion del limite de rendimiento y poder comprobar la causa microarquitectonica
-de la caida observada para un tamano de N=128 entre un VL=512 y un VL=640. Tambien queda pendiente integrar la regeneracion de CSV y figuras en un comando reproducible.
+En tercer lugar, el experimento E3 permanece en curso. A su vez, la comparacion de contadores para un tamano de N=128 con un VL=512 y un VL=640 ya esta automatizada y documentada
+en el repositorio. Falta la revision final de conclusiones y la integracion de la regeneracion de CSV y figuras en un comando reproducible.
 
 La validacion utiliza:
 
@@ -520,13 +522,27 @@ del numero de grupos de columnas y el mismo cuantifica la caida de rendimiento q
 
 [Analisis inicial del experimento E3](docs/experimento_vectorial.md).
 
-Permanece pendiente comprobar la causa microarquitectonica de esa caida y el poder completar la explicacion del limite de rendimiento.
+El analisis realizado incorpora una evidencia de mayor presion sobre la memoria para el caso con un tamano de N=128 y con un VL=640. Asimismo, la causa inicial 
+exacta no se considera demostrada.
+
+**Reproducir la comparacion de memoria**
+
+Desde la raiz del repositorio, en Ubuntu:
+
+```bash
+# Comparar 8 metricas de la ROI para un tamano de N=128 con un VL=512 y un VL=640.
+python3 scripts/comparar_memoria_e3.py
+```
+
+El resultado generado se guardara en la siguiente ruta:
+`results/e3/summary/e3_memoria_n128_vl512_vs_vl640.csv`.
+
+A su vez, se utilizan estadisticas existentes, las cuales no necesitan el volver a repetir las distintas simulaciones. El comando reemplaza solamente ese CSV derivado.
 
 **Trabajo pendiente de E3**
 
-- Completar la explicacion del limite de rendimiento que se genera mediante las estadisticas adicionales de la ROI para un tamano de N=128,
-  especialmente en un VL=512 y en un VL=640.
-- Integrar la regeneracion de CSV y graficos en un comando reproducible.
+- Revisar las conclusiones finales y declarar las distintas incertidumbres de la explicacion del limite de rendimiento.
+- Integrar la regeneracion de CSV y los graficos en un comando reproducible.
 
 #### Otros experimentos
 

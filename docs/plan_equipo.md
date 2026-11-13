@@ -47,11 +47,11 @@ una carpeta o un script en particular.
 | Automatizar la validacion funcional de SVE | Steven Loaiza | Completado | — | scripts/test_gemm_sve.sh: ocho longitudes vectoriales, comprobacion de resultados, VL efectivo y estadisticas |
 | Verificar las diversas instrucciones vectoriales de SVE | Steven Loaiza | Completado | — | results/validation/gemm_sve_suite_o3/kernel_asm.txt: instrucciones vectoriales de multiplicacion y suma |
 | Documentar la validacion y la reproduccion de SVE | Steven Loaiza | Completado | — | docs/validacion_gemm_sve.md y seccion E3 del README.md |
-| Desarrollar el experimento E3 | Steven Loaiza | En curso | Por acordar | Implementacion, validacion, barrido, CSV, speedup y grafico completados, analisis pendiente |
+| Desarrollar el experimento E3 | Steven Loaiza | En curso | Por acordar | Barrido, CSV, grafico y comparacion de memoria publicados, revision final de conclusiones e integracion de reproduccion pendientes |
 | Preparar y ejecutar el barrido oficial para E3 | Steven Loaiza | Completado | — | results/e3/n64/ y results/e3/n128/: 16 corridas por tamaño, con parejas escalar/SVE bajo el mismo hardware |
 | Implementar y validar el extractor basico de ROI | Steven Loaiza | Completado | — | scripts/parse_stats.py y docs/extraccion_roi.md; extraccion comprobada para las 32 corridas de E3 |
 | Generar CSV y calcular speedup de E3 | Steven Loaiza | Completado | — | scripts/resumir_e3.py y results/e3/summary/: 32 corridas y 16 comparaciones escalar/SVE |
-| Analizar instrucciones, los ciclos y el speedup para E3 | Steven Loaiza | En curso | Por acordar | Analisis inicial en docs/experimento_vectorial.md, mesetas de un tamano de N=64 explicadas y caida de un tamano de N=128 cuantificada, causa microarquitectonica pendiente |
+| Analizar instrucciones, los ciclos y el speedup para E3 | Steven Loaiza | En curso | Por acordar | scripts/comparar_memoria_e3.py, CSV comparativo y docs/experimento_vectorial.md; evidencia de mayor presion sobre memoria documentada; revision final pendiente |
 | Generar graficos y conclusiones para E3 | Steven Loaiza | En curso | Por acordar | Grafico publicado y conclusiones iniciales documentadas; explicacion final del limite pendiente |
 | Implementar y validar GEMM paralelo | Steven Loaiza | Pendiente | Por acordar | Reparto por filas, verificacion de resultados y ROI, programa para el experimento E4 |
 | Implementar y validar falso compartido | Steven Loaiza | Pendiente | Por acordar | Variantes sin relleno y con separacion de 64 bytes, comprobacion de contadores y ROI para E5 |
