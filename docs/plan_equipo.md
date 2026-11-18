@@ -54,7 +54,7 @@ una carpeta o un script en particular.
 | Analizar instrucciones, los ciclos y el speedup para E3 | Steven Loaiza | En curso | Por acordar | scripts/comparar_memoria_e3.py, CSV comparativo y docs/experimento_vectorial.md; evidencia de mayor presion sobre memoria documentada; revision final pendiente |
 | Generar graficos y conclusiones para E3 | Steven Loaiza | En curso | Por acordar | Grafico publicado y conclusiones iniciales documentadas; explicacion final del limite pendiente |
 | Implementar y validar el GEMM paralelo | Steven Loaiza | Completado | — | [Programa y prueba funcional](gemm_paralelo.md). Se realizaron 4 corridas en el simulador gem5 con un tamano de N=16 y 1, 2, 4 y 8 hilos y las mismas pasaron con CHECK=PASS. |
-| Implementar y validar el falso compartido | Steven Loaiza | En curso | Por acordar | [Programa y prueba funcional](falso_compartido.md). Pruebas nativas aprobadas en ambos modos. Ademas, falta confirmar las 4 corridas con Ruby despues de la correccion de salida. |
+| Implementar y validar el falso compartido | Steven Loaiza | Completado | — | [Programa y prueba funcional](falso_compartido.md). Las 4 corridas con Ruby pasaron con el mensaje de CHECK=PASS y 0 errores: MESI y MOESI, con y sin relleno, usando 2 nucleos. |
 
 ## Coordinacion
 
