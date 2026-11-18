@@ -53,8 +53,8 @@ una carpeta o un script en particular.
 | Generar CSV y calcular speedup de E3 | Steven Loaiza | Completado | — | scripts/resumir_e3.py y results/e3/summary/: 32 corridas y 16 comparaciones escalar/SVE |
 | Analizar instrucciones, los ciclos y el speedup para E3 | Steven Loaiza | En curso | Por acordar | scripts/comparar_memoria_e3.py, CSV comparativo y docs/experimento_vectorial.md; evidencia de mayor presion sobre memoria documentada; revision final pendiente |
 | Generar graficos y conclusiones para E3 | Steven Loaiza | En curso | Por acordar | Grafico publicado y conclusiones iniciales documentadas; explicacion final del limite pendiente |
-| Implementar y validar GEMM paralelo | Steven Loaiza | Pendiente | Por acordar | Reparto por filas, verificacion de resultados y ROI, programa para el experimento E4 |
-| Implementar y validar falso compartido | Steven Loaiza | Pendiente | Por acordar | Variantes sin relleno y con separacion de 64 bytes, comprobacion de contadores y ROI para E5 |
+| Implementar y validar el GEMM paralelo | Steven Loaiza | Completado | — | [Programa y prueba funcional](gemm_paralelo.md). Se realizaron 4 corridas en el simulador gem5 con un tamano de N=16 y 1, 2, 4 y 8 hilos y las mismas pasaron con CHECK=PASS. |
+| Implementar y validar el falso compartido | Steven Loaiza | En curso | Por acordar | [Programa y prueba funcional](falso_compartido.md). Pruebas nativas aprobadas en ambos modos. Ademas, falta confirmar las 4 corridas con Ruby despues de la correccion de salida. |
 
 ## Coordinacion
 
