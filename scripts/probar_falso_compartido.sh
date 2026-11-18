@@ -10,15 +10,19 @@ cd "$raiz" # Utiliza esta raiz como la carpeta de trabajo para este script
 gem5=/opt/gem5 # Se localiza el simulador gem5 en la imagen del equipo
 configuracion="$gem5/configs/deprecated/example/se.py" # Se utiliza la configuracion SE
 biblioteca="$gem5/util/m5/build/arm64/out/libm5.a" # Se localizan las marcas de la region de interes para este script
-mkdir -p bin # Se prepara la carpeta de archivos locales
-salida=$(mktemp -d "$raiz/bin/prueba_falso_compartido.XXXXXX") # Se genera una carpeta nueva por cada una de las pruebas
-echo "SALIDA=$salida" # Muestra en pantalla donde quedan los registros
+validaciones="$raiz/results/validation" # Se define ruta para la carpeta de validaciones
+mkdir -p "$validaciones" # Se genera la carpeta si hace falta
+salida=$(mktemp -d "$validaciones/falso_compartido_n2.XXXXXX") # Se separa los registros de cada una de las ejecuciones
+ejecutables="$raiz/bin/${salida##*/}" # Se utiliza el mismo nombre de corrida para los binarios
+mkdir -p "$ejecutables" # Se genera la carpeta de los binarios
+echo "SALIDA=$salida" # Se muestra en pantalla donde quedan los resultados
+
 
 fuente=src/falso_compartido.c # Selecciona el programa que se va a probar (falso_compartido.c)
 opciones=(-std=c11 -O2 -Wall -Wextra -Werror -fopenmp) # Se comparte las opciones de compilacion
-gcc "${opciones[@]}" "$fuente" -o "$salida/nativo" # Se realiza la compilacion para la maquina que ejecuta el Docker
+gcc "${opciones[@]}" "$fuente" -o "$ejecutables/nativo" # Se realiza la compilacion para la maquina que ejecuta el Docker
 arm=(-static -DUSE_GEM5 "-I$gem5/include") # Se activa el enlace estatico y las marcas de simulador geme5
-aarch64-linux-gnu-gcc "${opciones[@]}" "${arm[@]}" "$fuente" "$biblioteca" -o "$salida/arm" # Se compila para AArch64
+aarch64-linux-gnu-gcc "${opciones[@]}" "${arm[@]}" "$fuente" "$biblioteca" -o "$ejecutables/arm" # Se compila para AArch64
 
 hilos=2 # Se van a utilizar 2 hilos y 2 nucleos para la prueba funcional
 iteraciones=1000 # Se decidio utilizar 1000 incrementos por hilo para que la prueba sea corta y no se extienda demasiado
@@ -27,7 +31,7 @@ modos=(sin_relleno con_relleno) # Prueba ambas distribuciones de la memoria
 
 #------------------------------------------------------------------------------------------------------------------------------
 for modo in "${modos[@]}"; do # Primero se valida ambos modos en nativo
-    "$salida/nativo" "$hilos" "$modo" "$iteraciones" | tee "$salida/nativo_$modo.log" # Se realiza y se guarda el resultado nativo
+    "$ejecutables/nativo" "$hilos" "$modo" "$iteraciones" | tee "$salida/nativo_$modo.log" # Se realiza y se guarda el resultado nativo
 done
 
 for protocolo in MESI MOESI; do # Segundo se prueba las 2 versiones de Ruby del equipo
@@ -40,7 +44,7 @@ for protocolo in MESI MOESI; do # Segundo se prueba las 2 versiones de Ruby del 
         cpu=(--ruby --cpu-type=ArmTimingSimpleCPU "--num-cpus=$hilos" --cacheline_size=64 --mem-size=512MiB) # Se configura el  Ruby y los 2 nucleos
 
 
-        if ! "$simulador" -d "$corrida" "$configuracion" "${cpu[@]}" -c "$salida/arm" -o "$hilos $modo $iteraciones" > "$corrida/run.log" 2>&1; then # Se simula el programa en cuestion
+        if ! "$simulador" -d "$corrida" "$configuracion" "${cpu[@]}" -c "$ejecutables/arm" -o "$hilos $modo $iteraciones" > "$corrida/run.log" 2>&1; then # Se simula el programa en cuestion
             tail -n 30 "$corrida/run.log" >&2 # Se muesta el error si el simulador gem5 se detiene
             exit 1 # Se sale al fallar una corrida
         fi
