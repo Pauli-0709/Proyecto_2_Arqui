@@ -544,9 +544,12 @@ A su vez, se utilizan estadisticas existentes, las cuales no necesitan el volver
 - Revisar las conclusiones finales y declarar las distintas incertidumbres de la explicacion del limite de rendimiento.
 - Integrar la regeneracion de CSV y los graficos en un comando reproducible.
 
-#### Otros experimentos
+#### Pruebas funcionales para los experimento E4 y el experimento E5
 
-Las instrucciones de ejecucion de E1 y E4–E6 se incorporaran conforme se implementen y validen.
+- [GEMM paralelo por filas](docs/gemm_paralelo.md): prueba en el simulador gem5 con un tamano de N=16 y 1, 2, 4 y 8 hilos.
+- [Falso compartido](docs/falso_compartido.md): prueba con y sin relleno de 64 bytes, con 2 nucleos y los protocolos MESI y MOESI.
+
+Quedan pendientes los barridos de rendimiento de los experimentos E4 y E5 y las instrucciones de ejecucion de los experimentos E1 y E6.
 
 ### 9) Resultados y reproducibilidad
 
@@ -646,5 +649,6 @@ documentacion de los mismo. Antes de subir cambios se debe revisar la lista de l
 - E3: extractor de ROI implementado en scripts/parse_stats.py y documentado en docs/extraccion_roi.md.
 - E3: CSV de 32 corridas y 16 comparaciones escalar/SVE generados mediante scripts/resumir_e3.py y publicados en results/e3/summary/.
 - E3: graficos y analisis inicial estan completados.
-- Benchmarks pendientes: GEMM paralelo y falso compartido.
+- GEMM paralelo por filas implementado y validado en gem5 con un tamano de N=16 y 1, 2, 4 y 8 hilos.
+- Falso compartido implementado con y sin relleno de 64 bytes. Ademas, las pruebas nativas pasaron y solo falta confirmar las 4 corridas con Ruby despues de la correccion de salida.
 - Experimentos pendientes: E1 y E4–E6.
