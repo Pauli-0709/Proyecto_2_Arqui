@@ -650,5 +650,5 @@ documentacion de los mismo. Antes de subir cambios se debe revisar la lista de l
 - E3: CSV de 32 corridas y 16 comparaciones escalar/SVE generados mediante scripts/resumir_e3.py y publicados en results/e3/summary/.
 - E3: graficos y analisis inicial estan completados.
 - GEMM paralelo por filas implementado y validado en gem5 con un tamano de N=16 y 1, 2, 4 y 8 hilos.
-- Falso compartido implementado con y sin relleno de 64 bytes. Ademas, las pruebas nativas pasaron y solo falta confirmar las 4 corridas con Ruby despues de la correccion de salida.
+- Falso compartido implementado y validado en el simulador gem5 con Ruby. Las 4 corridas con 2 nucleos y 1000 incrementos por hilo pasaron con el mensaje de CHECK=PASS y se tuvo 0 errores: MESI y MOESI, con y sin relleno de 64 bytes.
 - Experimentos pendientes: E1 y E4–E6.
