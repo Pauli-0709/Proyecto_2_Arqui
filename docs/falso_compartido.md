@@ -21,8 +21,13 @@ bash scripts/arm_env.sh bash scripts/probar_falso_compartido.sh
 Esta prueba usa 2 hilos, 2 nucleos y 1000 incrementos por hilo. Ademas, verifica ambos modos en nativo y en el simulador gem5 con Ruby, una vez por cada modo:
 una con MESI_Two_Level y otra con MOESI_CMP_directory.
 
-El resultado esperado es `VALIDACION_FALSO_COMPARTIDO_OK CORRIDAS_GEM5=4`. Ademas, la linea `SALIDA=` indica donde quedan `run.log` y `stats.txt` para
-cada combinacion de protocolo y modo. De la misma manera, el primer bloque de estadisticas corresponde a la region de interes.
+
+De la misma forma, esta prueba termina con `VALIDACION_FALSO_COMPARTIDO_OK CORRIDAS_GEM5=4`. Ademas, la linea `SALIDA=` indica la carpeta de la corrida en
+`results/validation/falso_compartido_n2.XXXXXX/`. Asismismo, es importante mencionar que los ejecutables se guardan en la carpeta `bin/`. 
+
+El primer bloque de `stats.txt` corresponde a la region de interes.
+
+[Evidencia de las cuatro corridas](../results/validation/falso_compartido_n2.0e1qLs/).
 
 Finalmente, el paso 11 del enunciado completa E5 con el barrido de nucleos y protocolos, las corridas de GEMM paralelo y el analisis de invalidaciones, 
 mensajes y latencia de fallos.

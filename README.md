@@ -544,10 +544,10 @@ A su vez, se utilizan estadisticas existentes, las cuales no necesitan el volver
 - Revisar las conclusiones finales y declarar las distintas incertidumbres de la explicacion del limite de rendimiento.
 - Integrar la regeneracion de CSV y los graficos en un comando reproducible.
 
-#### Pruebas funcionales para los experimento E4 y el experimento E5
+#### Pruebas funcionales de los experimentos: E4 y E5
 
-- [GEMM paralelo por filas](docs/gemm_paralelo.md): prueba en el simulador gem5 con un tamano de N=16 y 1, 2, 4 y 8 hilos.
-- [Falso compartido](docs/falso_compartido.md): prueba con y sin relleno de 64 bytes, con 2 nucleos y los protocolos MESI y MOESI.
+- [GEMM paralelo por filas](docs/gemm_paralelo.md). 4 corridas en el simulador gem5 con un tamano de N=16 y 1, 2, 4 y 8 hilos. [Evidencia publicada](results/validation/gemm_paralelo_n16.BJhgEJ/).
+- [Falso compartido](docs/falso_compartido.md). 4 corridas en el simulador gem5 con 2 nucleos, con y sin relleno de 64 bytes, usando MESI y MOESI. [Evidencia publicada](results/validation/falso_compartido_n2.0e1qLs/).
 
 Quedan pendientes los barridos de rendimiento de los experimentos E4 y E5 y las instrucciones de ejecucion de los experimentos E1 y E6.
 

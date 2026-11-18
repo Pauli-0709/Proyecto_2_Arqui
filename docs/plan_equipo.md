@@ -53,8 +53,8 @@ una carpeta o un script en particular.
 | Generar CSV y calcular speedup de E3 | Steven Loaiza | Completado | — | scripts/resumir_e3.py y results/e3/summary/: 32 corridas y 16 comparaciones escalar/SVE |
 | Analizar instrucciones, los ciclos y el speedup para E3 | Steven Loaiza | En curso | Por acordar | scripts/comparar_memoria_e3.py, CSV comparativo y docs/experimento_vectorial.md; evidencia de mayor presion sobre memoria documentada; revision final pendiente |
 | Generar graficos y conclusiones para E3 | Steven Loaiza | En curso | Por acordar | Grafico publicado y conclusiones iniciales documentadas; explicacion final del limite pendiente |
-| Implementar y validar el GEMM paralelo | Steven Loaiza | Completado | — | [Programa y prueba funcional](gemm_paralelo.md). Se realizaron 4 corridas en el simulador gem5 con un tamano de N=16 y 1, 2, 4 y 8 hilos y las mismas pasaron con CHECK=PASS. |
-| Implementar y validar el falso compartido | Steven Loaiza | Completado | — | [Programa y prueba funcional](falso_compartido.md). Las 4 corridas con Ruby pasaron con el mensaje de CHECK=PASS y 0 errores: MESI y MOESI, con y sin relleno, usando 2 nucleos. |
+| Implementar y validar el GEMM paralelo | Steven Loaiza | Completado | — | [Guia de prueba](gemm_paralelo.md). Las 4 corridas con un tamano de N=16 y 1, 2, 4 y 8 hilos dieron el mensaje de `CHECK=PASS`. [Evidencia publicada](../results/validation/gemm_paralelo_n16.BJhgEJ/). |
+| Implementar y validar el falso compartido | Steven Loaiza | Completado | — | [Guia de prueba](falso_compartido.md). Las 4 corridas con Ruby dieron el mensanje de `CHECK=PASS` con 2 nucleos, MESI y MOESI, con y sin relleno. [Evidencia publicada](../results/validation/falso_compartido_n2.0e1qLs/). |
 
 ## Coordinacion
 
