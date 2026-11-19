@@ -2,6 +2,7 @@
 # La linea anterior permite ejecutar este archivo con Python 3
 
 # Bibliotecas
+from argparse import ArgumentParser  # Permite indicar que la carpeta desde la terminal
 import csv  # Permite leer el CSV de resultados
 import math  # Permite validar numeros y comparar razones
 import sys  # Permite informar errores y devolver el codigo de salida
@@ -12,8 +13,6 @@ matplotlib.use("Agg")  # Permite guardar figuras sin abrir una ventana grafica
 import matplotlib.pyplot as plt  # Proporciona las funciones de dibujo
 
 RAIZ = Path(__file__).resolve().parents[1]  # Obtiene la raiz del repositorio
-ENTRADA = RAIZ / "results/e3/summary/e3_speedup.csv"  # Selecciona las comparaciones
-SALIDA = RAIZ / "results/e3/figures"  # Define la carpeta de las figuras
 LONGITUDES = tuple(range(128, 1025, 128))  # Define los 8 valores de VL
 
 #----------------------------------------------------------------------------------------------
@@ -22,6 +21,12 @@ LONGITUDES = tuple(range(128, 1025, 128))  # Define los 8 valores de VL
 # Valida los datos y genera la figura
 
 def main():
+    opciones = ArgumentParser()  # Se preparo las opciones del programa
+    opciones.add_argument("carpeta", nargs="?", type=Path, default=RAIZ / "results/e3")  # Se uso la carpeta oficial si no indico otra
+    carpeta = opciones.parse_args().carpeta.resolve()  # Se obtiene la ruta completa de la carpeta elegida
+    ENTRADA = carpeta / "summary/e3_speedup.csv"  # Se realiza la lectura del CSV con las comparaciones de speedup
+    SALIDA = carpeta / "figures"  # Se guardo el PNG y el SVG en la carpeta elegida
+
     try:  # Captura problemas de archivos
         with ENTRADA.open(newline="", encoding="utf-8") as archivo:  # Abre el CSV
             filas = list(csv.DictReader(archivo))  # Lee las filas por nombre de columna
