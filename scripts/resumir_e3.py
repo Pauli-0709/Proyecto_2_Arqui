@@ -10,8 +10,7 @@ from pathlib import Path  # Permite construir rutas de archivos
 from parse_stats import extraer_fila  # Reutiliza el extractor de ROI ya validado
 
 RAIZ = Path(__file__).resolve().parents[1]  # Ubica la raiz del repositorio
-ENTRADA = RAIZ / "results/e3"  # Selecciona las simulaciones
-SALIDA = ENTRADA / "summary"  # Separa las tablas de las carpetas de simulacion
+from argparse import ArgumentParser  # Esta instruccion permite indicar una carpeta al ejecutar el programa
 TAMANOS = (64, 128)  # Define los tamanos establecidos en el enunciado
 LONGITUDES = tuple(range(128, 1025, 128))  # Define las ocho longitudes vectoriales
 PROGRAMAS = ("scalar", "sve")  # Define las versiones que se comparan
@@ -32,6 +31,11 @@ def guardar_csv(ruta, filas):  # Escribe una tabla sin truncar primero el CSV an
 #---------------------------------------------------------------------------------------------------------------------------
 # Funcion principal
 def main():  # Coordina la extraccion, las comparaciones y la escritura
+    opciones = ArgumentParser()  # Se preparo las opciones que acepta el programa
+    opciones.add_argument("carpeta", nargs="?", type=Path, default=RAIZ / "results/e3")  # Se uso los datos del experimento E3 si no se indico otra carpeta
+    ENTRADA = opciones.parse_args().carpeta.resolve()  # Obtengo la ruta completa de las corridas elegidas
+    SALIDA = ENTRADA / "summary"  # Se guardo los 2 CSV dentro de la carpeta elegida
+    base_rutas = RAIZ if RAIZ in ENTRADA.parents or ENTRADA == RAIZ else ENTRADA  # Elijo desde donde mostrar las rutas en el CSV
     try:  # Captura fallos de lectura y de validacion
         esperadas = set()  # Guarda las rutas exactas de las 32 corridas esperadas
         for n in TAMANOS:  # Recorre ambos tamanos de matriz
@@ -41,8 +45,8 @@ def main():  # Coordina la extraccion, las comparaciones y la escritura
 
         encontradas = set(ENTRADA.rglob("stats.txt"))  # Busca las estadisticas disponibles
         if encontradas != esperadas:  # Rechaza corridas faltantes o adicionales
-            faltantes = sorted(str(p.relative_to(RAIZ)) for p in esperadas - encontradas)  # Lista faltantes
-            adicionales = sorted(str(p.relative_to(RAIZ)) for p in encontradas - esperadas)  # Lista adicionales
+            faltantes = sorted(str(p.relative_to(base_rutas)) for p in esperadas - encontradas)  # Lista faltantes
+            adicionales = sorted(str(p.relative_to(base_rutas)) for p in encontradas - esperadas)  # Lista adicionales
             raise ValueError(f"Faltantes: {faltantes}; adicionales: {adicionales}")  # Explica la diferencia
 
         corridas = []  # Acumula las 32 filas de metricas
@@ -60,7 +64,7 @@ def main():  # Coordina la extraccion, las comparaciones y la escritura
                     if validacion != esperado:  # Comprueba que la evidencia corresponde a esa configuracion
                         raise ValueError(f"Validacion incompatible: {ruta.parent}")  # Rechaza evidencia que sea equivocada
                     fila = extraer_fila(ruta)  # Extrae solamente las metricas del primer bloque
-                    fila["ruta"] = ruta.relative_to(RAIZ).as_posix()  # Evita guardar las rutas personales absolutas
+                    fila["ruta"] = ruta.relative_to(base_rutas).as_posix()  # Evita guardar las rutas personales absolutas
                     corridas.append({"N": n, "VL_BITS": vl, "programa": programa, **fila})  # Agrega parametros y metricas
                     pareja[programa] = fila  # Conserva la fila para calcular el speedup
 
