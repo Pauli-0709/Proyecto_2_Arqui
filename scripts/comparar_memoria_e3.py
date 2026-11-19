@@ -1,4 +1,5 @@
 # Seccion de las bibliotecas
+from argparse import ArgumentParser  # Permite indicar la carpeta desde la terminal
 import csv	# Importar las herramientas para leer y escribir CSV
 import io	# Importar un buffer para preparar todo el CSV antes de guardarlo
 import sys	# Importar la salida de errores y el codigo de terminacion
@@ -8,8 +9,6 @@ from parse_stats import extraer_fila, INICIO, FIN	# Reutilizar la validacion exi
 
 # Localizar la raiz independientemente del directorio de ejecucion
 RAIZ = Path(__file__).resolve().parents[1]
-# Definir exclusivamente el CSV derivado de esta comparacion
-SALIDA = RAIZ / "results/e3/summary/e3_memoria_n128_vl512_vs_vl640.csv"
 
 
 # Definir los contadores y la tasa que se comparam.
@@ -36,9 +35,9 @@ METRICAS = (
 #-----------------------------------------------------------------------------------------------------------------
 # Funcion auxiliar
 # Leer y validar una corrida antes de aceptar sus metricas
-def leer_memoria(vl):
-    # Seleccionar la corrida SVE para un tamano de N=128
-    ruta = RAIZ / f"results/e3/n128/vl{vl}/sve/stats.txt"
+def leer_memoria(carpeta, vl):
+    # Se busco la corrida SVE para un tamano de N=128 y el ancho que se quiere comparar
+    ruta = carpeta / f"n128/vl{vl}/sve/stats.txt"
     # Verificar el archivo validation.txt, con CHECK=PASS y el primer bloque completo
     extraer_fila(ruta)
     # Leer el archivo original sin modificarlo
@@ -103,10 +102,15 @@ def leer_memoria(vl):
 # Generar el CSV solamente cuando ambas corridas sean validas
 def main():
 
+    opciones = ArgumentParser()  # Se preparo las opciones del programa
+    opciones.add_argument("carpeta", nargs="?", type=Path, default=RAIZ / "results/e3")  # Se utilizo los resultados oficiales por defecto
+    carpeta = opciones.parse_args().carpeta.resolve()  # Se obtiene la ruta completa de la carpeta elegida
+    SALIDA = carpeta / "summary/e3_memoria_n128_vl512_vs_vl640.csv"  # Se guardo el CSV en summary dentro de esa carpeta
+
     # Capturar errores de archivos y de contenido
     try:
-        # Leer las dos longitudes vectoriales antes de escribir
-        datos = {vl: leer_memoria(vl) for vl in (512, 640)}
+        # Leer las dos corridas de la carpeta elegida
+        datos = {vl: leer_memoria(carpeta, vl) for vl in (512, 640)}
         # Preparar el archivo completo en memoria
         buffer = io.StringIO()
         # Configurar un escritor CSV con saltos de linea uniformes
