@@ -65,3 +65,14 @@ bash scripts/test_gemm_sve.sh \
 Finalmente, el resultado final esperado es:
 
 VALIDACION_SVE_COMPLETA CORRIDAS=16
+
+## Validacion funcional con QEMU
+
+Es importante mencionar que ninguno de los integrantes del equipo disponia de un procesador ARM64 con soporte para instrucciones SVE. Por esa razon, se decidio utilizar
+QEMU en Ubuntu x86_64 para de esta manera poder ejecutar el programa GEMM SVE con matrices de 16 por 16 y comprobar su resultado fuera del simulador gem5.
+
+La prueba reporto un mensaje de `CHECK=PASS` y 0 errores al comparar la multiplicacion con el resultado de la referencia. Asimismo, la ejecucion se realizo mediante 
+emulacion y la validacion nativa utilizando hardware ARM64 con SVE quedo como un pendiente. Por otra parte, la prueba en el simulador gem5 se conserva como parte de la 
+validacion del proyecto.
+
+[Evidencia de la prueba con N=16](../results/validation/gemm_sve_qemu/n16.log)
