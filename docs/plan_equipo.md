@@ -26,8 +26,9 @@ Estados utilizados:
 - En curso: hay trabajo realizado, pero faltan algunas secciones del mismo.
 - Completado: la evidencia está publicada en el repositorio  y fue revisada.
 
-Las fechas objetivo se acuerdan con el equipo. Es importante indicar que una tarea no se marca como completada unicamente porque exista 
-una carpeta o un script en particular.
+En primer lugar, es importante mencionar que para las tareas completadas, se indica la fecha de publicacion del avance
+en GitHub. A su vez, en las tareas pendientes, se indica la fecha objetivo propuesta. Asimismo, es importante indicar que 
+una tarea no se marca como completada unicamente porque exista una carpeta o un script en particular.
 
 | Tarea | Responsable | Estado | Fecha objetivo | Evidencia o criterio de |
 | --- | --- | --- | --- | --- |
@@ -38,21 +39,21 @@ una carpeta o un script en particular.
 | Validar GEMM escalar | Steven Loaiza | Completado | — | results/validation/gemm_scalar_native/ y gemm_scalar_n16/ |
 | Repetir validacion ARM desde el entorno de Paulina Camacho | Paulina Camacho | Completado | — | results/validation/paulina_gemm_scalar_n16/ |
 | Ejecutar y analizar línea base | Todo el equipo | Pendiente | Por acordar | TimingSimple, Minor y O3; N=64 y N=128 |
-| Preparar configuracion O3 parametrizable | Paulina Camacho | Completado | — | configs/configuracion_superescalar.sh y configuracion verificada en las 24 corridas |
+| Preparar la configuracion O3 parametrizable | Paulina Camacho | Completado | 2026-11-08 | Se publico la configuracion para el superescalar y se uso en las 24 corridas correspondientes para el experimento E2. |
 | Preparar automatizacion y extraccion de las diversas metricas | Paulina Camacho y Steven Loaiza | En curso | Por acordar | Barridos implementados; extractor basico de ROI y CSV de E3 disponibles; metricas adicionales de E2 pendientes |
-| Ejecutar barrido completo | Paulina Camacho | Completado | — | 24 corridas verificadas y publicadas: 12 en la carpeta results/e2/n64/ y 12 en la carpeta results/e2/n128/ |
-| Analizar IPC, IQ/ROB y prediccion | Paulina Camacho | Pendiente | Por acordar | CSV y explicacion de los limites del rendimiento |
-| Generar graficos y documentar reproduccion del mismo | Paulina Camacho | Pendiente | Por acordar | Graficos, conclusiones y comandos reproducibles |
+| Ejecutar el barrido completo | Paulina Camacho | Completado | 2026-11-08 | Se publicaron las diferentes 24 corridas del experimento E2, 12 para un tamano de N=64 y 12 para un tamano de N=128. |
+| Analizar el IPC, el IQ/ROB y la prediccion | Paulina Camacho | Pendiente | 2026-11-24 (propuesta) | Se espera el CSV de metricas y la explicacion de los diversos limites del rendimiento. |
+| Generar los graficos y poder documentar la reproduccion del mismo | Paulina Camacho | Pendiente | 2026-11-26 (propuesta) | Se esperan los graficos, las conclusiones y los comandos para reproducir el experimento E2. |
 | Implementar y validar el GEMM SVE en el simulador gem5 | Steven Loaiza | Completado | — | src/gemm_sve.c y results/validation/gemm_sve_suite_o3/: 16 pruebas con CHECK=PASS para N=16 y N=17 |
 | Automatizar la validacion funcional de SVE | Steven Loaiza | Completado | — | scripts/test_gemm_sve.sh: ocho longitudes vectoriales, comprobacion de resultados, VL efectivo y estadisticas |
 | Verificar las diversas instrucciones vectoriales de SVE | Steven Loaiza | Completado | — | results/validation/gemm_sve_suite_o3/kernel_asm.txt: instrucciones vectoriales de multiplicacion y suma |
 | Documentar la validacion y la reproduccion de SVE | Steven Loaiza | Completado | — | docs/validacion_gemm_sve.md y seccion E3 del README.md |
-| Desarrollar el experimento E3 | Steven Loaiza | Completado | Por acordar | Se probaron las 32 corridas realizadas del experimento E3. A su vez, los comandos para repetirlas y las conclusiones quedaron documentados. |
+| Desarrollar el experimento E3 | Steven Loaiza | Completado | 2026-11-19 | Se probaron las 32 corridas correspondientes. Se documentaron los comandos para repetirlas y las conclusiones de las mismas. |
 | Preparar y ejecutar el barrido oficial para E3 | Steven Loaiza | Completado | — | results/e3/n64/ y results/e3/n128/: 16 corridas por tamaño, con parejas escalar/SVE bajo el mismo hardware |
 | Implementar y validar el extractor basico de ROI | Steven Loaiza | Completado | — | scripts/parse_stats.py y docs/extraccion_roi.md; extraccion comprobada para las 32 corridas de E3 |
 | Generar CSV y calcular speedup de E3 | Steven Loaiza | Completado | — | scripts/resumir_e3.py y results/e3/summary/: 32 corridas y 16 comparaciones escalar/SVE |
-| Analizar instrucciones, los ciclos y el speedup para E3 | Steven Loaiza | Completado | Por acordar | Se documentaron las 16 comparaciones y se analizo la caida de rendimiento entre un VL=512 y un VL=640 para un tamano de N=128. |
-| Generar graficos y conclusiones para E3 | Steven Loaiza | Completado | Por acordar | Se publico el grafico de speedup y se dejaron las conclusiones finales en la ruta: `docs/experimento_vectorial.md`. |
+| Analizar las instrucciones, los ciclos y el speedup para el experimento E3 | Steven Loaiza | Completado | 2026-11-19 | Se documentaron las 16 comparaciones correspodientes y se analizo la caida de rendimiento entre un VL=512 y un VL=640 para un tamano de N=128. |
+| Generar los graficos y las conclusiones para el experimento E3 | Steven Loaiza | Completado | 2026-11-19 | Se publico el grafico  y termino las conclusiones correspondientes y se logran visualizar en: `docs/experimento_vectorial.md`. |
 | Implementar y validar el GEMM paralelo | Steven Loaiza | Completado | — | [Guia de prueba](gemm_paralelo.md). Las 4 corridas con un tamano de N=16 y 1, 2, 4 y 8 hilos dieron el mensaje de `CHECK=PASS`. [Evidencia publicada](../results/validation/gemm_paralelo_n16.BJhgEJ/). |
 | Implementar y validar el falso compartido | Steven Loaiza | Completado | — | [Guia de prueba](falso_compartido.md). Las 4 corridas con Ruby dieron el mensanje de `CHECK=PASS` con 2 nucleos, MESI y MOESI, con y sin relleno. [Evidencia publicada](../results/validation/falso_compartido_n2.0e1qLs/). |
 
@@ -65,9 +66,14 @@ una carpeta o un script en particular.
 - Acordar y registrar quien realiza la integracion cada semana.
 - Mantener las responsabilidades generales E3–E6 y AC1–AC4 del tablero inicial.
 
-## Registro de revisiones
+## Calendario de seguimiento del equipo
 
-Agregar una fila despues de cada revision real del equipo.
-
-| Fecha | Participantes | Avances revisados | Bloqueos y acuerdos | Proxima revision |
-| --- | --- | --- | --- | --- |
+| Fecha | Actividad | Estado | Evidencia o tema por revisar |
+| --- | --- | --- | --- |
+| 2026-11-08 | Publicacion del barrido del experimento E2 | Realizado | Se publicaron las 24 corridas correspondientes, 12 para un tamano de N=64 y 12 para un tamano de N=128. |
+| 2026-11-12 | Publicacion de los resultados del experimento E3 | Realizado | Se publicaron los diversos CSV y el grafico de speedup correspondiente. |
+| 2026-11-19 | Cierre del analisis del experimento E3 | Realizado | Se publicaron el comando del barrido completo y las conclusiones. |
+| 2026-11-23 | Revision de avances del equipo | Por hacer | Se revisaran los avances de los experimentos E2 a E5 y se acordaran los pendientes del informe. |
+| 2026-11-26 | Revision de resultados para el informe | Por hacer | Se revisaran las metricas y los graficos del experimento E2 y se comprobara que el informe incluya los resultados del experimento de E3. |
+| 2026-11-29 | Revision final del proyecto | Por hacer | Se revisaran el informe, el video y el repositorio antes de la entrega. |
+| 2026-11-30 | Entrega del proyecto | Por hacer | Se entregaran los archivos y enlaces solicitados. |
