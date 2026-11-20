@@ -136,7 +136,7 @@ Proyecto_2_Arqui/
 ```
 
 Por otra parte, la carpeta configs/ contiene la configuracion superescalar de E2. Asi como, los scripts de ejecucion individual y barrido estan 
-implementados en la carpeta scripts/. Por otra parte, la carpeta report/ conserva la documentacion inicial del informe.
+implementados en la carpeta de `scripts/`. A su vez, la carpeta [report/](report/README.md) incluye el [aporte de E3](report/e3.md) para el informe grupal.
 
 Archivos del entorno Docker y sus pruebas:
 
@@ -585,8 +585,8 @@ De la misma manera, la region de interes esta delimitada por m5_reset_stats() y 
 actuales, el primer bloque de stats.txt corresponde al volcado de la ROI. Asimismo, el bloque final va a incluir el trabajo posterior y el mismo
 no debe usarse como sustituto del primero.
 
-Asimismo, los scripts de barrido ejecutan las simulaciones y validan sus evidencias. El procesamiento posterior del experimento E3 se realiza con
-`scripts/resumir_e3.py`, el cual genera los CSV de metricas y speedup. Los graficos de E3 estan completados.
+Asimismo, los diversos scripts de barrido ejecutan las simulaciones y los mismos validan las corridas realizadas. A su vez, a partir de estos datos 
+almacenados, `scripts/reproducir_e3.sh`  genera los 3 diferentes archivos tipo CSV y el gráfico de speedup correspondiente en formatos PNG y SVG.
 
 Para el experimento E2, la extraccion de sus metricas completas, el analisis y los graficos permanecen pendientes.
 
@@ -658,7 +658,7 @@ documentacion de los mismo. Antes de subir cambios se debe revisar la lista de l
 - Validacion funcional SVE completada: 16 pruebas con un CPU ArmO3CPU para un tamano de N=16 y de N=17 y 8 longitudes vectoriales y que las mismas imprimieron en pantalla con CHECK=PASS.
 - Vectorizacion SVE comprobada mediante el desensamblado del kernel.
 - E3: 32 corridas de rendimiento publicadas, 16 para un tamano de  N=64 y 16 para un tamano de  N=128 y hardware equivalente en cada pareja escalar/SVE.
-- E3: extractor de ROI implementado en scripts/parse_stats.py y documentado en docs/extraccion_roi.md.
+- El [extractor de ROI](docs/extraccion_roi.md) se comprobo con las 32 corridas ejecutadas para el experimento E3. La opcion `--solo-globales` se probo con el GEMM paralelo de 4 hilos y el falso compartido con MESI sin relleno.
 - E3: CSV de 32 corridas y 16 comparaciones escalar/SVE generados mediante scripts/resumir_e3.py y publicados en results/e3/summary/.
 - E3: graficos, analisis y conclusiones finales completados.
 - GEMM paralelo por filas implementado y validado en gem5 con un tamano de N=16 y 1, 2, 4 y 8 hilos.

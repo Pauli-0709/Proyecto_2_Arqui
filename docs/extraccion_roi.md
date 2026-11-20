@@ -140,7 +140,8 @@ Estos valores permiten contrastar la salida del extractor contra los archivos or
 
 ## 8. Alcance y pendientes
 
-Esta version extrae las metricas basicas de las corridas actuales de un nucleo de los experimentos E2 y E3.
+El modo original logra extraer las diversas metricas basicas de las corridas de un nucleo de los experimentos E2 y E3. La opcion `--solo-globales` logra extraer las
+instrucciones y el tiempo simulado del primer bloque. Esto se comprobo con corridas de GEMM paralelo y de falso compartido.
 
 A su vez, para el experimento E3 ya se implemento el procesamiento de las 32 corridas mediante el script de la ruta `scripts/resumir_e3.py`.
 
