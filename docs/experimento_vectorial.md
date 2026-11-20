@@ -219,7 +219,9 @@ implementacion de las operaciones vectoriales en el simulador gem5. Por la anter
 ## Pendientes para cerrar el analisis
 
 - Revisar las conclusiones finales, separando la evidencia de mayor presion sobre la memoria de las hipotesis sobre su posible origen.
-- Integrar la regeneracion de CSV y las distitnas figuras en un solo comando.
+
+Por otra parte, los comandos para simular y procesar el experimento E3 estan en la
+[seccion de reproduccion del README](../README.md#reproducir-e3-con-un-solo-comando).
 
 Finalmente, como un procedimiento extra, se puede aislar el efecto de la alineacion y de los distintos accesos que cruzan lineas. Asimismo, esta comprobacion
 adicional no se presenta como una exigencia explicita en el enunciado del proyecto (HTML).

@@ -29,8 +29,9 @@ La extraccion de metricas de la ROI y el calculo del speedup de E3 estan complet
 escalar/SVE, disponibles en la siguiente ruta: `results/e3/summary/`.
 
 Por otra parte, los distintos graficos y el posterior analisis inicial estan documentados. Asimismo, la comparacion reproducible de contadores respalda una 
-explicacion basada en mayor presion sobre memoria con un VL=640 para un tamano de N=128. El experimento E3 permanece en curso: faltan la revision final de conclusiones 
-y la integracion de la regeneracion de resultados.
+explicacion basada en mayor presion sobre memoria con un VL=640 para un tamano de N=128. A su vez, la reproduccion completa ya esta automatizada. Asimismo, queda 
+pendiente la revision final de las conclusiones.
+
 
 Finalmente, las secciones 6 y 7 describen la preparacion y validacion del entorno. A su vez, la seccion 8 explica como ejecutar o verificar el 
 barrido de E2.
@@ -404,7 +405,7 @@ En segundo lugar, tambien se completaron la extraccion de metricas de la ROI a C
 analisis inicial.
 
 En tercer lugar, el experimento E3 permanece en curso. A su vez, la comparacion de contadores para un tamano de N=128 con un VL=512 y un VL=640 ya esta automatizada y documentada
-en el repositorio. Falta la revision final de conclusiones y la integracion de la regeneracion de CSV y figuras en un comando reproducible.
+en el repositorio. El barrido y la regeneracion de los CSV y las figuras ya se pueden ejecutar con un solo comando. Por otra parte, falta la revision final de las conclusiones.
 
 La validacion utiliza:
 
@@ -539,10 +540,33 @@ El resultado generado se guardara en la siguiente ruta:
 
 A su vez, se utilizan estadisticas existentes, las cuales no necesitan el volver a repetir las distintas simulaciones. El comando reemplaza solamente ese CSV derivado.
 
+### Reproducir E3 con un solo comando
+
+Desde la raiz del repositorio, ejecuta este comando para correr el experimento E3 desde su punto inicial:
+
+```bash
+bash scripts/arm_env.sh bash scripts/ejecutar_e3_completo.sh
+```
+
+En primer lugar, es importante mencionar que el script ejecuta 16 corridas para un tamano de N=64 y 16 para un tamano de N=128. Asimsimo, al comenzar el mismo imprime
+una carpeta nueva `results/e3_repeticion.XXXXXX`. Dentro de esa carpeta, `n64/` y `n128/` se guardan las corridas, `summary/` contiene los tres CSV y `figures/` 
+contiene el grafico en PNG y SVG.
+
+Por otra parte, tambien es clave indicar que si ya se tienen realizadas las corridas oficiales del experimento y se quiere volver a generar sus CSV y figuras, ejecutar el
+siguiente comando:
+
+```bash
+bash scripts/arm_env.sh bash scripts/reproducir_e3.sh
+```
+
+En segundo lugar, para procesar otro barrido guardado, se debe pasar su carpeta como un argumento. A su vez, esa carpeta debe contener `n64/` y `n128/`, y estar dentro del 
+repositorio para que el Docker pueda leerla.
+
+Finalmente, el mensaje `REPRODUCCION_E3_OK CSV=3 FIGURAS=2` confirma que termino el procesamiento de forma correcta y exitosamente.
+
 **Trabajo pendiente de E3**
 
-- Revisar las conclusiones finales y declarar las distintas incertidumbres de la explicacion del limite de rendimiento.
-- Integrar la regeneracion de CSV y los graficos en un comando reproducible.
+- Revisar las conclusiones finales y explicar que causas del limite de rendimiento siguen siendo hipotesis.
 
 #### Pruebas funcionales de los experimentos: E4 y E5
 
