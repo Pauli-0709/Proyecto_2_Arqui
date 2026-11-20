@@ -47,12 +47,12 @@ una carpeta o un script en particular.
 | Automatizar la validacion funcional de SVE | Steven Loaiza | Completado | — | scripts/test_gemm_sve.sh: ocho longitudes vectoriales, comprobacion de resultados, VL efectivo y estadisticas |
 | Verificar las diversas instrucciones vectoriales de SVE | Steven Loaiza | Completado | — | results/validation/gemm_sve_suite_o3/kernel_asm.txt: instrucciones vectoriales de multiplicacion y suma |
 | Documentar la validacion y la reproduccion de SVE | Steven Loaiza | Completado | — | docs/validacion_gemm_sve.md y seccion E3 del README.md |
-| Desarrollar el experimento E3 | Steven Loaiza | En curso | Por acordar | Barrido completo y regeneracion de los CSV y las figuras automatizados y probadas. Ademas, la revision final de conclusiones queda pendiente. |
+| Desarrollar el experimento E3 | Steven Loaiza | Completado | Por acordar | Se probaron las 32 corridas realizadas del experimento E3. A su vez, los comandos para repetirlas y las conclusiones quedaron documentados. |
 | Preparar y ejecutar el barrido oficial para E3 | Steven Loaiza | Completado | — | results/e3/n64/ y results/e3/n128/: 16 corridas por tamaño, con parejas escalar/SVE bajo el mismo hardware |
 | Implementar y validar el extractor basico de ROI | Steven Loaiza | Completado | — | scripts/parse_stats.py y docs/extraccion_roi.md; extraccion comprobada para las 32 corridas de E3 |
 | Generar CSV y calcular speedup de E3 | Steven Loaiza | Completado | — | scripts/resumir_e3.py y results/e3/summary/: 32 corridas y 16 comparaciones escalar/SVE |
-| Analizar instrucciones, los ciclos y el speedup para E3 | Steven Loaiza | En curso | Por acordar | scripts/comparar_memoria_e3.py, CSV comparativo y docs/experimento_vectorial.md; evidencia de mayor presion sobre memoria documentada; revision final pendiente |
-| Generar graficos y conclusiones para E3 | Steven Loaiza | En curso | Por acordar | Grafico publicado y conclusiones iniciales documentadas; explicacion final del limite pendiente |
+| Analizar instrucciones, los ciclos y el speedup para E3 | Steven Loaiza | Completado | Por acordar | Se documentaron las 16 comparaciones y se analizo la caida de rendimiento entre un VL=512 y un VL=640 para un tamano de N=128. |
+| Generar graficos y conclusiones para E3 | Steven Loaiza | Completado | Por acordar | Se publico el grafico de speedup y se dejaron las conclusiones finales en la ruta: `docs/experimento_vectorial.md`. |
 | Implementar y validar el GEMM paralelo | Steven Loaiza | Completado | — | [Guia de prueba](gemm_paralelo.md). Las 4 corridas con un tamano de N=16 y 1, 2, 4 y 8 hilos dieron el mensaje de `CHECK=PASS`. [Evidencia publicada](../results/validation/gemm_paralelo_n16.BJhgEJ/). |
 | Implementar y validar el falso compartido | Steven Loaiza | Completado | — | [Guia de prueba](falso_compartido.md). Las 4 corridas con Ruby dieron el mensanje de `CHECK=PASS` con 2 nucleos, MESI y MOESI, con y sin relleno. [Evidencia publicada](../results/validation/falso_compartido_n2.0e1qLs/). |
 

@@ -6,7 +6,7 @@ multiplicación de matrices densas (GEMM, C = A × B) utilizando la herramienta 
 arquitectura AArch64 implementada con ARMv8.
 
 Asimismo, el presente trabajo analiza el paralelismo a nivel de instrucciones, el ancho superescalar y el búfer de reordenamiento (ROB), 
-la vectorización Arm SVE, la ejecución multinúcleo y la coherencia de memoria. El objetivo final es recomendar una arquitectura respaldada 
+wla vectorización Arm SVE, la ejecución multinúcleo y la coherencia de memoria. El objetivo final es recomendar una arquitectura respaldada 
 por las diversas mediciones de GEMM y teniendo en cuenta una restricción de costo.
 
 Estado del proyecto: entorno del Docker ARM preparado y el GEMM escalar validado. Asimismo, el barrido de E2 esta completado y publicado: 24 
@@ -19,19 +19,12 @@ Por otro lado, la validacion funcional de GEMM SVE esta completada en el simulad
 un tamano de N=16 y N=17, utilizando las longitudes vectoriales de 128 a 1024 bits en incrementos de 128 bits cada una de ellas. A su vez, todas terminaron
 con la impresion en pantalla del CHECK=PASS y  errores=0.
 
-El experimento E3 esta en curso. Asimismo, la implementacion y la validacion funcional de GEMM SVE estan totalmente completadas. A su vez, también esta publicado 
-el barrido de rendimiento. la cual consta de 32 corridas y son correspondientes a 16 para un tamano de  N=64 y 16 para un tamano de N=128.
+El experimento E3 ya esta completado. Este experimento se implemento y valido el GEMM SVE y de la misma manera, se publicaron las 32 corridas de rendimiento, 
+16 para un tamano de  N=64 y 16 para un tamano de N=128. A su vez, cada pareja escalar/SVE uso la misma configuracion de hardware en sus pruebas respectivas, 
+con un VL de 128, 256, 384, 512, 640, 768, 896 y 1024 bits.
 
-Asimismo, para cada uno de los tamanos se ejecutaron las versiones escalar y SVE con longitudes vectoriales de 128, 256, 384, 512, 640, 768, 896 y 1024 bits. 
-De la misma manera, cada pareja escalar/SVE utilizara la misma configuracion de hardware.
-
-La extraccion de metricas de la ROI y el calculo del speedup de E3 estan completados. De la misma manera, los resultados incluyen 32 corridas y 16 comparaciones
-escalar/SVE, disponibles en la siguiente ruta: `results/e3/summary/`.
-
-Por otra parte, los distintos graficos y el posterior analisis inicial estan documentados. Asimismo, la comparacion reproducible de contadores respalda una 
-explicacion basada en mayor presion sobre memoria con un VL=640 para un tamano de N=128. A su vez, la reproduccion completa ya esta automatizada. Asimismo, queda 
-pendiente la revision final de las conclusiones.
-
+A su vez, los distitnos CSV generados para la region de interes y las 16 comparaciones de speedup ejecutadas estan en la ruta `results/e3/summary/`. Asimismo, el 
+barrido completo, la generacion de los CSV y las figuras y por ultimo, las conclusiones estan documentados en la seccion del experimento E3.
 
 Finalmente, las secciones 6 y 7 describen la preparacion y validacion del entorno. A su vez, la seccion 8 explica como ejecutar o verificar el 
 barrido de E2.
@@ -396,16 +389,13 @@ estan en:
 
 Responsable: Steven Loaiza
 
-Estado: en curso. 
+Estado: Completado
 
-En primer lugar, la implementacion, la validacion funcional y el barrido de rendimiento estan completados. Ademas, se publicaron las 16 corridas para el tamano de
-N=64 y 16 para el tamano de N=128.
+En primer lugar, se logro validar y publicar las 32 corridas del barrido correspondiente, 16 para un tamano de N=64 y 16 para un tamano de N=128. Asimsimo, los 
+resultados incluyen los CSV de la region de interes, las 16 comparaciones escalar/SVE y el grafico de speedup correspondiente.
 
-En segundo lugar, tambien se completaron la extraccion de metricas de la ROI a CSV, asi como el calculo de las 16 comparaciones escalar/SVE, el grafico y su respectivo
-analisis inicial.
-
-En tercer lugar, el experimento E3 permanece en curso. A su vez, la comparacion de contadores para un tamano de N=128 con un VL=512 y un VL=640 ya esta automatizada y documentada
-en el repositorio. El barrido y la regeneracion de los CSV y las figuras ya se pueden ejecutar con un solo comando. Por otra parte, falta la revision final de las conclusiones.
+De la misma manera, el barrido y la generacion de los CSV y las figuras se pueden ejecutar con un solo comando (solicitud del enunciado html). A su vez, es importante
+mencionar que el analisis incluye la comparacion de contadores entre un VL=512 y un VL=640 para un tamano de N=128.
 
 La validacion utiliza:
 
@@ -518,10 +508,10 @@ entre tiempo SVE.
 
 ![Speedup de E3 frente a VL](results/e3/figures/e3_speedup_vs_vl.png)
 
-Por otra parte, el grafico y el analisis inicial estan disponibles. El documento explica las mesetas/zonas de estabilización para un tamano de  N=64 a partir
-del numero de grupos de columnas y el mismo cuantifica la caida de rendimiento que se observa para un tamano de N=128 entre un VL=512 y un VL=640.
+Por otra parte, el analisis explica las mesetas que se logran visualizar en el grafico para un tamano de N=64 a partir del numero de grupos de columnas. A su vez, 
+para un tamano de N=128, se cuantifica la caida de rendimiento al pasar de un VL=512 a un VL=640.
 
-[Analisis inicial del experimento E3](docs/experimento_vectorial.md).
+[Analisis y conclusiones del experimento E3](docs/experimento_vectorial.md#conclusiones-de-e3).
 
 El analisis realizado incorpora una evidencia de mayor presion sobre la memoria para el caso con un tamano de N=128 y con un VL=640. Asimismo, la causa inicial 
 exacta no se considera demostrada.
@@ -548,9 +538,9 @@ Desde la raiz del repositorio, ejecuta este comando para correr el experimento E
 bash scripts/arm_env.sh bash scripts/ejecutar_e3_completo.sh
 ```
 
-En primer lugar, es importante mencionar que el script ejecuta 16 corridas para un tamano de N=64 y 16 para un tamano de N=128. Asimsimo, al comenzar el mismo imprime
-una carpeta nueva `results/e3_repeticion.XXXXXX`. Dentro de esa carpeta, `n64/` y `n128/` se guardan las corridas, `summary/` contiene los tres CSV y `figures/` 
-contiene el grafico en PNG y SVG.
+En primer lugar, es importan mencioanr que el script ejecuta las 16 corridas correspondientes para un tamano de N=64 y 16 para un tamano de N=128. A su vez, al comenzar,
+se crea una carpeta `results/e3_repeticion.XXXXXX` e imprime su debida ruta. Asimismo, las corridas se guardan en las carpetas `n64/` y `n128/` y los 3 CSV quedan en la
+carpeta `summary/` y el grafico en formato PNG y SVG queda en la carpeta `figures/`.
 
 Por otra parte, tambien es clave indicar que si ya se tienen realizadas las corridas oficiales del experimento y se quiere volver a generar sus CSV y figuras, ejecutar el
 siguiente comando:
@@ -564,9 +554,7 @@ repositorio para que el Docker pueda leerla.
 
 Finalmente, el mensaje `REPRODUCCION_E3_OK CSV=3 FIGURAS=2` confirma que termino el procesamiento de forma correcta y exitosamente.
 
-**Trabajo pendiente de E3**
-
-- Revisar las conclusiones finales y explicar que causas del limite de rendimiento siguen siendo hipotesis.
+[Conclusiones del experimento E3](docs/experimento_vectorial.md#conclusiones-de-e3).
 
 #### Pruebas funcionales de los experimentos: E4 y E5
 
@@ -672,7 +660,7 @@ documentacion de los mismo. Antes de subir cambios se debe revisar la lista de l
 - E3: 32 corridas de rendimiento publicadas, 16 para un tamano de  N=64 y 16 para un tamano de  N=128 y hardware equivalente en cada pareja escalar/SVE.
 - E3: extractor de ROI implementado en scripts/parse_stats.py y documentado en docs/extraccion_roi.md.
 - E3: CSV de 32 corridas y 16 comparaciones escalar/SVE generados mediante scripts/resumir_e3.py y publicados en results/e3/summary/.
-- E3: graficos y analisis inicial estan completados.
+- E3: graficos, analisis y conclusiones finales completados.
 - GEMM paralelo por filas implementado y validado en gem5 con un tamano de N=16 y 1, 2, 4 y 8 hilos.
 - Falso compartido implementado y validado en el simulador gem5 con Ruby. Las 4 corridas con 2 nucleos y 1000 incrementos por hilo pasaron con el mensaje de CHECK=PASS y se tuvo 0 errores: MESI y MOESI, con y sin relleno de 64 bytes.
 - Experimentos pendientes: E1 y E4–E6.

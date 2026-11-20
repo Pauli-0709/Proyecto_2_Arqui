@@ -201,30 +201,24 @@ implementacion de las operaciones vectoriales en el simulador gem5. Por la anter
 - [Configuracion VL=512](../results/e3/n128/vl512/sve/config.ini).
 - [Configuracion VL=640](../results/e3/n128/vl640/sve/config.ini).
 
-## Conclusiones iniciales
+## Conclusiones del experimento E3
 
-1. SVE reduce el tiempo respecto a su referencia escalar en todas las configuraciones estudiadas y analizadas.
+1. En las 16 comparaciones realizadas, GEMM SVE tardo menos que su contraparte GEMM escalar. A su vez, el mayor speedup observado fue de 21.529 veces para un tamano 
+   de N=64 y de 15.874 veces para un tamano de N=128. Es fundamental indicar que ambos se obtuvieron con un VL=1024 bits.
 
-2. El mayor speedup que fue medido dentro del barrido ocurre con la siguiente configuracion de un VL=1024: 21.529 para un tamano de N=64 y 
-   15.874 para un tamano de N=128. Asimismo, estos valores no establecen un maximo fuera del rango medido.
+2. Para un tamano de N=64, aumentar VL de los 512 bits a los 640 bits mantiene 4 grupos de columnas por fila. Asimismo, entre los 768 bits y los 896 bits se mantienen 
+   3 grupos. En cada par de estos se ejecuta el mismo numero de instrucciones y los ciclos cambian relativamente poco. Lo anterior explica las mesetas del grafico generado.
 
-3. La ganancia no escala de forma estrictamente proporcional con VL. Puesto que para el tamano de N=64, el numero entero de grupos de columnas
-   explica las principales zonas de estabilizacion de la grafica.
+3. Para un tamano de N=128, pasar de un VL=512 a un VL=640 redujo las instrucciones un 12.49 % y aumento los ciclos un 59.93 %. A su vez, la tasa de fallos de L1D subio de
+   un 52.52 % a un 66.65 %, y por ende tambien se aumentaron los eventos de cola de las cargas llena. De la misma manera, estos datos apuntan a una mayor presion sobre la 
+   cache L1D y la cola de las cargas. Por otra parte, los cruces de linea de la cache son una posible explicacion que la misma requiera una prueba especifica de alineacion 
+   para llegar a confirmarse.
 
-4. Para un tamano de N=128, la caida entre un VL=512 y un VL=640 demuestra que el contar las instrucciones no basta para predecir los ciclos.
+4. Las ganancias corresponden a la configuracion del simulador gem5 y al GEMM evaluado en este experimento en especifico.
 
-5. Asimismo, estos resultados corresponden al programa y al modelo de hardware simulados, los mismos no representan una medicion de un 
-   procesador ARM en formato fisico.
-
-## Pendientes para cerrar el analisis
-
-- Revisar las conclusiones finales, separando la evidencia de mayor presion sobre la memoria de las hipotesis sobre su posible origen.
-
-Por otra parte, los comandos para simular y procesar el experimento E3 estan en la
+Finalmente, los comandos para poder simular y poder procesar el experimento E3 estan en la
 [seccion de reproduccion del README](../README.md#reproducir-e3-con-un-solo-comando).
 
-Finalmente, como un procedimiento extra, se puede aislar el efecto de la alineacion y de los distintos accesos que cruzan lineas. Asimismo, esta comprobacion
-adicional no se presenta como una exigencia explicita en el enunciado del proyecto (HTML).
 
 ## Referencia tecnica del enunciado
 
