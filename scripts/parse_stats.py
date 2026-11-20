@@ -22,13 +22,18 @@ from pathlib import Path
 
 # Nombres usados por las corridas de un nucleo.
 METRICAS = ("simInsts", "system.cpu.numCycles", "simTicks", "simFreq")
+
+# Se indican las metricas globales del primer bloque
+METRICAS_GLOBALES = ("simInsts", "simTicks", "simFreq")
+
 INICIO = "---------- Begin Simulation Statistics ----------"
 FIN = "---------- End Simulation Statistics   ----------"
 
 #-------------------------------------------------------------------------------
 
 # Funcion principal para leer y validar el bloque ROI de un archivo
-def leer_roi(ruta):
+def leer_roi(ruta, metricas=METRICAS):
+
     """Leer el primer bloque sin sustituirlo por un bloque posterior."""
     # Variable para almacenar las metricas extraidas
     valores = {}
@@ -76,7 +81,7 @@ def leer_roi(ruta):
 
             # Quitar comentarios y separar el nombre de su valor
             partes = texto.split("#", 1)[0].split()
-            if not partes or partes[0] not in METRICAS:
+            if not partes or partes[0] not in metricas:
                 continue
 
             # Extrae el nombre de la metrica asignandole el primer elemento de la lista
@@ -111,7 +116,7 @@ def leer_roi(ruta):
 
 
     # Calcula que metricas obligatorias faltan en la variable
-    faltantes = set(METRICAS) - valores.keys()
+    faltantes = set(metricas) - valores.keys()
     if faltantes:
         # Genera el error indicando cuales metricas no se encontraron
         raise ValueError(f"{ruta}: faltan metricas: {', '.join(sorted(faltantes))}")
@@ -120,39 +125,47 @@ def leer_roi(ruta):
 
 #--------------------------------------------------------------------------------------------------
 
-# FUncion para procesar un archivo y extraer una fila de datos.
-def extraer_fila(ruta):
+# FUncion para procesar un archivo y extraer una fila de datos. Ademas, permite elegir el modo de extraccion.
+def extraer_fila(ruta, solo_globales=False):
     """Exigir evidencia de validacion antes de exportar una corrida."""
 
     # Obtener la carpeta que contiene el archivo stats.txt.
     carpeta = ruta.parent
 
-    # Leer las evidencias generadas por el lanzador.
-    validacion = (carpeta / "validation.txt").read_text(encoding="utf-8")
-    registro = (carpeta / "run.log").read_text(encoding="utf-8")
+    # If para exegir el archivo adicional en el modo original
+    if not solo_globales:
 
-    # Comprobar que el archivo de validacion no este vacio.
-    if not validacion.strip():
-        # Detener la extraccion si falta la confirmacion de validacion.
-        raise ValueError(f"{carpeta}: validation.txt vacio")
+        # Se lee el archivo de validacion correspondiente
+        validacion = (carpeta / "validation.txt").read_text(encoding="utf-8")
+
+        # Se comprueba que el archivo tenga algun contenido
+        if not validacion.strip():
+
+            # Se indica que carpeta necesita la revision
+            raise ValueError(f"{carpeta}: validation.txt vacio")
+
+    # Se lee el registro que el mismo confirma el resultado en ambos modos
+    registro = (carpeta / "run.log").read_text(encoding="utf-8")
 
     # Comprobar que la multiplicacion termino con resultados correctos.
     if not re.search(r"\bCHECK=PASS\s+errores=0\b", registro):
         # Detener la extraccion si no aparece la comprobacion esperada.
         raise ValueError(f"{carpeta}: falta CHECK=PASS con errores=0")
 
-    # Extraer las metricas del primer bloque completo de la ROI.
-    valores = leer_roi(ruta)
+    # Selecciona las matricas
+    metricas = METRICAS_GLOBALES if solo_globales else METRICAS
+
+    # Lectura las metricas del primer bloque
+    valores = leer_roi(ruta, metricas)
 
     # Calcular el tiempo simulado a partir de ticks y frecuencia.
     segundos = Decimal(valores["simTicks"]) / Decimal(valores["simFreq"])
 
     # Construir una fila con la ruta, el bloque y las metricas.
     return {"ruta": ruta.as_posix(), "roi_block": 1, **valores, "roi_seconds": str(segundos),}
+
+
 #----------------------------------------------------------------------------------------------------
-
-
-
 
 # Funcion principal
 def main():
@@ -160,6 +173,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     # Anade un argumento posicional obligatorio para el parser
     parser.add_argument("entrada", type=Path, help="Archivo stats.txt o carpeta")
+
+    # Se habilita el modo para extraer solo las metricas globales
+    parser.add_argument("--solo-globales", action="store_true", help="Usar run.log y extraer metricas globales")
+
     # Parsea los argumentos introducidos  y los guardara en la variable
     args = parser.parse_args()
 
@@ -184,7 +201,7 @@ def main():
 
         # Validar todas las corridas antes de imprimir el CSV
         # Si una falla, no imprimir filas parciales
-        filas = [extraer_fila(ruta) for ruta in archivos]
+        filas = [extraer_fila(ruta, args.solo_globales) for ruta in archivos]
 
     # Captura cualquier excepcion de tipo OSError o ValueError se que pudo haber generado
     except (OSError, ValueError) as error:
@@ -194,7 +211,9 @@ def main():
 
     # Reservar stdout para el CSV y stderr para el mensaje de comprobacion
     # Define la lista ordenada con los nombres de las columnas para el archivo CSV
-    columnas = ["ruta", "roi_block", *METRICAS, "roi_seconds"]
+    metricas = METRICAS_GLOBALES if args.solo_globales else METRICAS  # Selecciona las columnas
+    columnas = ["ruta", "roi_block", *metricas, "roi_seconds"]  # Define el orden del CSV
+
     # Se incia un escritor para el CSV basado en diccionarios (DictWriter)
     escritor = csv.DictWriter(sys.stdout, fieldnames=columnas, lineterminator="\n")
     # Escribe la linea de cabeceras
