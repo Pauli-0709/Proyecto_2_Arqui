@@ -76,3 +76,25 @@ emulacion y la validacion nativa utilizando hardware ARM64 con SVE quedo como un
 validacion del proyecto.
 
 [Evidencia de la prueba con N=16](../results/validation/gemm_sve_qemu/n16.log)
+
+### Como repetir la prueba con el uso del emulador QEMU
+
+En Ubuntu x86_64, se instalan las herramientas necesarias con el siguiete comando: `sudo apt install qemu-user gcc-aarch64-linux-gnu libc6-dev-arm64-cross`. Continuamente,
+desde la raiz del repositorio, se debe ejecutar los siguientes comandos:
+
+```bash
+# Se crea una carpeta temporal para esta repeticion
+salida_qemu=$(mktemp -d) &&
+
+# Se compila el programa ARM64 con soporte para SVE
+aarch64-linux-gnu-gcc -std=c11 -O2 -static -march=armv8-a+sve -msve-vector-bits=scalable -ffp-contract=off src/gemm_sve.c -lm -o "$salida_qemu/gemm_sve" &&
+
+# Se ejecuta la prueba con un tamano de N=16 y se guarda la salida
+qemu-aarch64 -cpu max "$salida_qemu/gemm_sve" 16 > "$salida_qemu/n16.log" 2>&1 &&
+
+# Se muestran la longitud vectorial y el resultado de la prueba ejecutada
+cat "$salida_qemu/n16.log"
+```
+
+La prueba se considera correcta cuando aparece en pantalla el mensaje de `N=16 CHECK=PASS errores=0`. Asimismo, la longitud vectorial que fue utilizada se muestra en la linea
+`SVE VL_BITS=`. Ademas, en la corrida publicada se registraron 512 bits.
