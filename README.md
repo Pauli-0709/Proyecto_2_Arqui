@@ -511,7 +511,7 @@ entre tiempo SVE.
 Por otra parte, el analisis explica las mesetas que se logran visualizar en el grafico para un tamano de N=64 a partir del numero de grupos de columnas. A su vez, 
 para un tamano de N=128, se cuantifica la caida de rendimiento al pasar de un VL=512 a un VL=640.
 
-[Analisis y conclusiones del experimento E3](docs/experimento_vectorial.md#conclusiones-de-e3).
+[Analisis y conclusiones del experimento E3](docs/experimento_vectorial.md#conclusiones-del-experimento-e3)
 
 El analisis realizado incorpora una evidencia de mayor presion sobre la memoria para el caso con un tamano de N=128 y con un VL=640. Asimismo, la causa inicial 
 exacta no se considera demostrada.
@@ -554,7 +554,7 @@ repositorio para que el Docker pueda leerla.
 
 Finalmente, el mensaje `REPRODUCCION_E3_OK CSV=3 FIGURAS=2` confirma que termino el procesamiento de forma correcta y exitosamente.
 
-[Conclusiones del experimento E3](docs/experimento_vectorial.md#conclusiones-de-e3).
+[Conclusiones del experimento E3](docs/experimento_vectorial.md#conclusiones-del-experimento-e3)
 
 #### Pruebas funcionales de los experimentos: E4 y E5
 
