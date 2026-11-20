@@ -23,7 +23,7 @@ automaticamente que bloque corresponde al kernel.
 
 - Python 3.
 - Un archivo stats.txt o una carpeta que contenga esos archivos.
-- Un validation.txt no vacio en cada carpeta de corrida.
+- En el modo original se va a exiger un `validation.txt` con contenido por cada corrida. Asimismo, con `--solo-globales`, la validacion se comprueba en `run.log`.
 - Un run.log que contenga CHECK=PASS y errores=0.
 
 A su vez, el script utiliza solamente bibliotecas incluidas en Python. No necesita ejecutar el Docker ni repetir ninguna de las simulaciones.
@@ -35,7 +35,7 @@ A su vez, el script utiliza solamente bibliotecas incluidas en Python. No necesi
 | ruta | Ruta del archivo stats.txt de origen |
 | roi_block | Numero del bloque seleccionado: 1 |
 | simInsts | Instrucciones de la ROI |
-| system.cpu.numCycles | Ciclos del nucleo |
+| system.cpu.numCycles | Ciclos del nucleo. Esta columna aparece en el modo original |
 | simTicks | Ticks simulados durante la ROI |
 | simFreq | Ticks por segundo simulado |
 | roi_seconds | Tiempo simulado calculado como simTicks / simFreq |
@@ -82,6 +82,22 @@ De la misma manera, para las 32 corridas completas, el mensaje esperado es:
 EXTRACCION_OK CORRIDAS=32 BLOQUE_ROI=1
 ```
 
+### Procesar corridas con varios nucleos
+
+La opcion `--solo-globales` extrae `simInsts`, `simTicks` y `simFreq` del primer bloque del archivo `stats.txt`. A su vez, esta tambien calcula 
+`roi_seconds` como `simTicks / simFreq`. Asimismo, cada una de las corridas debe tener el mensaje de `CHECK=PASS errores=0` en el archivo `run.log`.
+
+```bash
+# Se extraen las metricas de GEMM paralelo con cuatro hilos.
+python3 scripts/parse_stats.py --solo-globales results/validation/gemm_paralelo_n16.BJhgEJ/hilos_4
+
+# Se extraen las metricas de falso compartido con MESI y sin relleno.
+python3 scripts/parse_stats.py --solo-globales results/validation/falso_compartido_n2.0e1qLs/MESI_sin_relleno
+```
+
+Finalmente cada uno de los comandos genera una fila de CSV y muestra en pantalla el mensaje: `EXTRACCION_OK CORRIDAS=1 BLOQUE_ROI=1`.
+
+
 ### Guardar un CSV de prueba
 
 ```bash
@@ -100,7 +116,7 @@ fi
 El script va a rechazar:
 
 - Entradas inexistentes o carpetas sin archivos stats.txt.
-- Evidencias de validacion ausentes o vacias.
+- Archivos `validation.txt` ausentes o vacios cuando se va a utilizar el modo original.
 - Registros sin CHECK=PASS y errores=0.
 - Un primer bloque de estadisticas incompleto.
 - Metricas requeridas ausentes o duplicadas.
@@ -147,7 +163,8 @@ la confirmacion individual de cada programa, N y VL.
 
 Por otra parte, las comprobaciones del script no sustituyen la revision del hardware registrado en config.ini.
 
-FInalmente, permanecen pendientes los graficos, el analisis de las tendencias y la integracion de la generacion de CSV y graficos en un comando.
+Fnalmente, los graficos y el analisis del experimento E3 estan disponibles en el [documento del experimento vectorial](experimento_vectorial.md). Ademas, los CSV y las figuras 
+correspondientes se pueden volver a regenerar desde las corridas guardadas con el comando: `bash scripts/arm_env.sh bash scripts/reproducir_e3.sh`.
 
 Para el experimento E2 todavia deben incorporarse las metricas adicionales de IPC, ocupacion de IQ/ROB y prediccion requeridas por el enunciado.
 
