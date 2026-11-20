@@ -14,4 +14,9 @@ del equipo.
 Por otra parte, los datos crudos, CSV y los graficos se conservaran en la ruta de results/. De forma similar, los scripts para generarlos se 
 conservaran en la siguiente ruta: scripts/.
 
-Estado: pendiente de elaboracion.
+## Aportes al informe
+
+- [E3. Multiplicacion de matrices con SVE](e3.md). Este archivo incluyen la comparacion con el GEMM escalar, ademas de los resultados principales y
+el enlace al grafico.
+
+El informe grupal en formato IEEE sigue pendiente de integracion.
