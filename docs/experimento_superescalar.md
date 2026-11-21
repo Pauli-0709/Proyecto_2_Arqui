@@ -153,8 +153,40 @@ Es importante mencionar que el fallo de TimeBuffer no volvio a aparecer en las 2
 
 Avance del barrido: 24 de 24 corridas verificadas.
 
-Finalmente, la extraccion a CSV, el analisis y los graficos siguen pendientes. Por lo tanto, el barrido esta completo, pero el experimento E2
-todavia no se considera terminado en su totalidad.
+## Resultados de rendimiento de E2
+
+El primer analisis se ejecuto para un tamano de N=64 y un ROB de 32 entradas, ademas el subir el ancho de 4 a 8 cambio el IPC de 1.899512 a 1.983104. 
+Al mismo tiempo, los bloqueos en el rename por el ROB lleno subieron de un 156030 a un 287389. Asimsimo, al mantener el ancho en 8 y al ampliar el ROB
+de 32 a 192, se observo que el IPC subio de 1.983104 a 3.714634. En conclusion para este caso en especifico, el ampliar el ROB permitio poder aprovechar
+de mejor manera el nucleo ancho.
+
+El segundo analisis se ejecuto para un tamano de N=128 y un ROB de 64 entradas, ademas al pasar de un ancho de 4 a ancho de 8 se observo un cambio en el
+IPC de 1.033379 a 1.033452, esto significa una mejora aproximada de 0.007 %. A su vez, los fallos de L1D fueron de 2168535 y 2168556. En conclusion el 
+duplicar el ancho genero muy poco efecto sobre el rendimiento de estas 2 configuraciones en especifico. De la misma manera, los datos son compatibles 
+con una presion de la memoria y del ROB. Asimismo se necesitarian mas mediciones adicionales para poder aislar el efecto de cada causa en especifico.
+
+Los saltos que estan comprometidos y mal predichos se mantuvieron en 4169 para las 12 configuraciones ejecutadas en un tamano de N=64 y 
+en 16521 para las 12 configuraciones ejecutadas en un tamano de N=128. Finalmente, dentro de cada uno de los tamanos el IPC cambio mientras ese 
+conteo permanecio igual o constante.
+
+Por otro lado, para el caso de una matriz con tamano de N=128 y un ROB de 64 entradas, se observo que al pasar de ancho de 4 a ancho de 8, la ocupacion 
+media de la IQ bajo desde un 39.10 % a un 38.06 %, mientras que la ocupacion media del ROB subio aproximadamente de un 94.16 % a un 94.65 %. Asimismo, en 
+promedio el ROB se mantuvo ocupadas mas de 60 entradas de sus 64 entradas con ambos anchos en cuestion. Ademas, la IQ mantuvo ocupadas cerca de 25 entradas
+de sus 64 entradas.
+
+A su vezm, en los 1024 ciclos centrales de la ROI, el ROB fue la estructura que estuvo mas cerca de llenarse. Asimismo, se concluye que el duplicar el ancho
+cambio muy poco la ocupacion de ambas estructuras, esto a su vez coincide con el pequeno cambio del IPC medido en la prueba de la ROI completa, de un 1.033379
+a un 1.033452. Finalmente, la alta ocupacion del ROB es sumamente compatible con una limitacion de rendimiento aunque cabe recalcar que en esta medicion no
+permite identificar una causa unica a este comportamiento.
+
+
+[CSV de rendimiento](../results/e2/summary/e2_metricas.csv)
+
+[CSV de ocupacion](../results/e2/summary/e2_ocupacion.csv)
+
+![IPC por ancho del nucleo](../results/e2/figures/e2_ipc.png)
+
+![Ocupacion de IQ y ROB](../results/e2/figures/e2_ocupacion.png)
 
 ## Incidencia importante para notificar durante el primer bloque del barrido
 

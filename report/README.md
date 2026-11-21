@@ -16,6 +16,9 @@ conservaran en la siguiente ruta: scripts/.
 
 ## Aportes al informe
 
+- [E2. Arquitectura superescalar](e2.md). El texto incluye el IPC, la ocupacion del IQ y del ROB, ademas de los fallos de prediccion y el aporte de
+E2.
+
 - [E3. Multiplicacion de matrices con SVE](e3.md). Este archivo incluyen la comparacion con el GEMM escalar, ademas de los resultados principales y
 el enlace al grafico.
 
