@@ -32,3 +32,4 @@ results/**/config.dot
 results/**/config.dot.pdf
 results/**/config.dot.svg
 results/**/fs/
+bin/
