@@ -39,8 +39,13 @@ bash scripts/arm_env.sh bash scripts/barrido_superescalar.sh 128
 Por otra parte, si las carpetas ya existen, el barrido debe verificar sus evidencias sin repetir ninguna de las simulaciones. A su vez, si estas
 no existen, debe ejecutar las corridas respectivas.
 
-Finalmente, los detalles de ejecucion y del ajuste utilizado estan en
+Por otro lado, los detalles de ejecucion y del ajuste utilizado estan en
 [la documentacion del experimento E2](../docs/experimento_superescalar.md).
+
+Finalmente, para poder verificar las corridas correspondientes del experimento E2 y que las mismas puedan regenerar sus 2 archivos CSV y sus 2
+graficos, se debe ejecutar el comando `bash scripts/arm_env.sh bash scripts/reproducir_e2.sh` desde la raiz del repositorio en Ubuntu. Asimismo, el
+[analisis de E2](../docs/experimento_superescalar.md) explica los resultados obtenidos.
+
 
 ## Configuracion implementada para E3
 

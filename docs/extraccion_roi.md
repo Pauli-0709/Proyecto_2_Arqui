@@ -167,5 +167,7 @@ Por otra parte, las comprobaciones del script no sustituyen la revision del hard
 Fnalmente, los graficos y el analisis del experimento E3 estan disponibles en el [documento del experimento vectorial](experimento_vectorial.md). Ademas, los CSV y las figuras 
 correspondientes se pueden volver a regenerar desde las corridas guardadas con el comando: `bash scripts/arm_env.sh bash scripts/reproducir_e3.sh`.
 
-Para el experimento E2 todavia deben incorporarse las metricas adicionales de IPC, ocupacion de IQ/ROB y prediccion requeridas por el enunciado.
-
+Para el experimento E2 en la ruta `scripts/resumir_e2.py` se incorporo un script que lee el primer bloque de la ROI de cada una de las corridas y el mismo genera el archivo CSV
+de rendimiento solicitado en el proyecto con el IPC y los fallos de prediccion. A su vez, la ocupacion del IQ y del ROB se obtienen con el script que se encuentra en la ruta
+`scripts/medir_ocupacion_e2.py` y el mismo registra 1024 ciclos centrales por cada configuracion. Finalmente, el procedimiento y los resultados se explican en 
+[el documento de E2](experimento_superescalar.md).

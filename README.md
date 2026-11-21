@@ -12,8 +12,9 @@ por las diversas mediciones de GEMM y teniendo en cuenta una restricción de cos
 Estado del proyecto: entorno del Docker ARM preparado y el GEMM escalar validado. Asimismo, el barrido de E2 esta completado y publicado: 24 
 corridas, las cuales corresponden a 12 configuraciones para un tamano de N=64 y 12 para un tamano de N=128.
 
-Por otra parte, la extracción de metricas a CSV, el analisis y los graficos de E2 permanecen pendientes. E2 todavía no se puede considerar como 
-terminado en su totalidad.
+Par otra parte, para el experimento E2 se publicaron el [CSV de rendimiento](results/e2/summary/e2_metricas.csv) y el [CSV de ocupacion](results/e2/summary/e2_ocupacion.csv).
+Ademas, la ocupacion del IQ y del ROB se logro medir durante los 1024 ciclos centrales de la ROI de cada una de las corridas. Asimismo, los [graficos](results/e2/figures/)
+y el [analisis del IPC](docs/experimento_superescalar.md) estan disponibles en el repositorio.
 
 Por otro lado, la validacion funcional de GEMM SVE esta completada en el simulador de gem5 con un nucleo ArmO3CPU. Ademas, se publicaron 16 pruebas para
 un tamano de N=16 y N=17, utilizando las longitudes vectoriales de 128 a 1024 bits en incrementos de 128 bits cada una de ellas. A su vez, todas terminaron
@@ -26,8 +27,9 @@ con un VL de 128, 256, 384, 512, 640, 768, 896 y 1024 bits.
 A su vez, los distitnos CSV generados para la region de interes y las 16 comparaciones de speedup ejecutadas estan en la ruta `results/e3/summary/`. Asimismo, el 
 barrido completo, la generacion de los CSV y las figuras y por ultimo, las conclusiones estan documentados en la seccion del experimento E3.
 
-Finalmente, las secciones 6 y 7 describen la preparacion y validacion del entorno. A su vez, la seccion 8 explica como ejecutar o verificar el 
-barrido de E2.
+Finalmente, las secciones 6 y 7 van a explicar como poder preparar y poder validar el entorno correspondiente. Ademas, la seccion 8 explica como se puede verificar
+las 24 corridas realizadas para el experimento E2 y poder de este manera regenerar sus 2 CSV y sus 2 graficos con un solo comando respectivamente.
+
 
 La documentacion detallada se puede observar y analizar en:
 [Experimento E2: arquitectura superescalar](docs/experimento_superescalar.md).
@@ -85,7 +87,7 @@ es importante indicar que las guías detalladas permanecen en docs/ y en los doc
 
 | Rol | Responsabilidad técnica | Archivos y evidencias principales |
 | --- | --- | --- |
-| **Paulina Camacho** | Organizar Git/GitHub, preparar gem5 ARM, establecer el entorno común y liderar **E2**. Participar en E1 y E6. |  |
+| **Paulina Camacho** | Organizar el Git o GitHub, tambien el preparar el simulador gem5 ARM, poder establecer el entorno comun y liderar el experimento **E2**. Asimsimo, debe participar en los experimentos E1 y E6. | [Entorno Docker](docker/), [pruebas de ARM](results/environment/), [resultados de E2](results/e2/), [analisis tecnico](docs/experimento_superescalar.md) y [aporte al informe](report/e2.md). |
 | **Steven Loaiza** | Desarrollar/validar los benchmarks, automatizar simulaciones y liderar **E3 (SVE)**. Facilitar programas a C y D; participar en E1 y E6. |  |
 | **Sary Vargas** | Liderar **E4**, evaluar 1/2/4/8 núcleos, calcular eficiencia y estimar la fracción serial con Amdahl. Coordinar el avance de resultados E1–E3. | |
 | **Tomas Campos** | Liderar **E5**, comparar protocolos de coherencia y cuantificar el falso compartido, con y sin relleno. |  |
@@ -136,7 +138,8 @@ Proyecto_2_Arqui/
 ```
 
 Por otra parte, la carpeta configs/ contiene la configuracion superescalar de E2. Asi como, los scripts de ejecucion individual y barrido estan 
-implementados en la carpeta de `scripts/`. A su vez, la carpeta [report/](report/README.md) incluye el [aporte de E3](report/e3.md) para el informe grupal.
+implementados en la carpeta de `scripts/`. A su vez, la carpeta [report/](report/README.md) incluye los aportes de [E2](report/e2.md) y [E3](report/e3.md) 
+para el informe grupal.
 
 Archivos del entorno Docker y sus pruebas:
 
@@ -385,6 +388,20 @@ Por otra parte, las instrucciones para repetir las distintas simulaciones, poder
 estan en:
 [documentación de E2](docs/experimento_superescalar.md).
 
+**Reproducir los CSV y los graficos de E2**
+
+Desde la raiz del repositorio en Ubuntu, ejecutar los siguientes comandos:
+
+```bash
+# Verificar las 24 corridas y regenerar las tablas y los graficos de E2.
+bash scripts/arm_env.sh bash scripts/reproducir_e2.sh
+```
+
+Es importante mencionar que el script utiliza las estadisticas oficiales y las muestras publicadas en la ruta `results/e2/ocupacion/`. Ademas, este
+genera el archivo `e2_metricas.csv` y el archivo `e2_ocupacion.csv` en la ruta `results/e2/summary/`, y los graficos: `e2_ipc.png` y `e2_ocupacion.png`
+en la ruta `results/e2/figures/`. Finalmente, al terminar imprime en pantalla `REPRODUCCION_E2_OK`, para saber que todo fue ejecutado correctamente. 
+
+
 #### E3: extensiones vectoriales SVE
 
 Responsable: Steven Loaiza
@@ -588,7 +605,9 @@ no debe usarse como sustituto del primero.
 Asimismo, los diversos scripts de barrido ejecutan las simulaciones y los mismos validan las corridas realizadas. A su vez, a partir de estos datos 
 almacenados, `scripts/reproducir_e3.sh`  genera los 3 diferentes archivos tipo CSV y el gráfico de speedup correspondiente en formatos PNG y SVG.
 
-Para el experimento E2, la extraccion de sus metricas completas, el analisis y los graficos permanecen pendientes.
+Para el experimento E2, el [CSV de rendimiento](results/e2/summary/e2_metricas.csv) presenta el resumen de las 24 corridas ejecutada y el [CSV de ocupacion](results/e2/summary/e2_ocupacion.csv)
+presenta el resumen de las muestras del IQ y del ROB. Asimismo, ambos archivos CSV y los 2 graficos ejecutados se pueden regenerar con el comando de E2
+el cual esta documentado en la seccion 8.
 
 Por otra parte, la prueba de hola mundo comprueba el entorno y no sustituye las validaciones de GEMM.
 
@@ -653,7 +672,7 @@ documentacion de los mismo. Antes de subir cambios se debe revisar la lista de l
 - Configuracion ARM O3 parametrizable de E2 implementada.
 - Barrido secuencial y verificacion de corridas existentes implementados.
 - E2: 24 corridas publicadas y verificadas respectivamente, 12 para un tamano de  N=64 y 12 para un tamano de N=128.
-- E2 pendiente: extraccion de metricas de la ROI a CSV, analisis y graficos.
+- E2: se publicaron los 2 archivos CSV, los graficos correspondientes del IPC y de la ocupacion. Ademas se publico en el repositorio el analisis de resultados y el comando de reproduccion del experimento.
 - GEMM SVE implementado en la ruta src/gemm_sve.c y con verificacion contra una referencia teniendo variables de tipo double y medicion delimitada por m5_reset_stats() y m5_dump_stats().
 - Validacion funcional SVE completada: 16 pruebas con un CPU ArmO3CPU para un tamano de N=16 y de N=17 y 8 longitudes vectoriales y que las mismas imprimieron en pantalla con CHECK=PASS.
 - Vectorizacion SVE comprobada mediante el desensamblado del kernel.
