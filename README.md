@@ -326,6 +326,42 @@ La imagen y los resultados permanecen guardados. Para volver a entrar en otro mo
 
 ### 8) Ejecucion de los experimentos
 
+#### E1: linea base
+
+En primer lugar, el experimento ejecuta el GEMM escalar con un solo nucleo. A su vez, este va a comparar los modelos `ArmTimingSimpleCPU`,
+`ArmMinorCPU` y `ArmO3CPU` para un tamano de N=64 y un tamano de N=128 con 3 corridas por cada tamano y 6 en total.
+
+**Repetir el barrido y generar el CSV y el grafico**
+
+Desde la raiz del repositorio en Ubuntu ya con la imagen del Docker de la seccion 6 descargada, ejecuta los siguientes comandos:
+
+```bash
+# Reserva una carpeta local nueva para esta reproduccion en especifico.
+mkdir -p .local &&
+repeticion=$(mktemp -d .local/e1.XXXXXX) &&
+
+# Ejecuta las 6 corridas en el Docker del equipo.
+bash scripts/arm_env.sh bash scripts/ejecutar_linea_base.sh \
+  barrido "$repeticion/corridas" &&
+
+# Se van aExtrae los ciclos, IPC, CPI y fallos de L1D y L2 de la region de interes.
+bash scripts/arm_env.sh python3 scripts/resumir_linea_base.py \
+  "$repeticion/corridas" "$repeticion/resumen_linea_base.csv" &&
+
+# Genera el grafico de IPC y ciclos y calcula la aceleracion de O3.
+bash scripts/arm_env.sh python3 scripts/graficar_linea_base.py \
+  "$repeticion/resumen_linea_base.csv" "$repeticion/grafico_linea_base.png"
+```
+
+El archivo CSV generado contiene las 6 filas de datos. Ademas, las salidas de la repeticion quedan en la carpeta `.local/`, en la carpeta
+creada por `mktemp`.
+
+Consulta las [corridas oficiales](results/e1/corridas/), el
+[CSV de rendimiento](results/e1/resumen_linea_base.csv), el
+[grafico de IPC y ciclos](results/e1/grafico_linea_base.png) y el
+[analisis de E1](report/e1.md).
+
+
 #### E2: arquitectura superescalar
 
 El barrido utiliza la funcion GEMM escalar con un nucleo ARM O3 y tiene en cuenta las siguientes caracteristicas:
