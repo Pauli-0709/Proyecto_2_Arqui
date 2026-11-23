@@ -1,0 +1,2 @@
+/work/bin/e4/arm: ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, BuildID[sha1]=de3516bf871b57c2570531fe5f6fef54bceedc87, for GNU/Linux 3.7.0, not stripped
+-rwxr-xr-x 1 1000 1000 892256 Nov 23 19:23 /work/bin/e4/arm

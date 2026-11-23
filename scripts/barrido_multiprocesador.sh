@@ -16,7 +16,7 @@ FORWARD_COM=${FORWARD_COM:-256}
 PARALELO=${PARALELO:-2}
 SALIDA=${SALIDA:-$RAIZ/results/e4}
 FUENTE=${FUENTE:-$RAIZ/src/gemm_paralelo.c}
-BINARIO=$RAIZ/bin/e4/arm
+BINARIO=${BINARIO:-$RAIZ/bin/e4/arm}
 
 verificar_entorno
 [[ -f $FUENTE ]] || error "no existe $FUENTE"

@@ -1,0 +1,10 @@
+# simInsts de la ROI (primer bloque de stats): ambos kernels deben hacer un trabajo similar
+corrida            kernel_B       kernel_ikj    
+n128/nucleos1      14813955       16885393      
+n128/nucleos2      14822592       16890862      
+n128/nucleos4      14907471       16910617      
+n128/nucleos8      15205101       17028673      
+n64/nucleos1       1869733        2126195       
+n64/nucleos2       1874034        2130268       
+n64/nucleos4       1894673        2153469       
+n64/nucleos8       2002213        2265429       

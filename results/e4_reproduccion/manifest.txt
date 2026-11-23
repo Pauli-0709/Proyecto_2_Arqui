@@ -1,0 +1,19 @@
+fecha=2026-11-23T13:23:41-06:00
+commit=0e8c40e5e1e1d542bf03aca488c26ea810346d99
+archivos_modificados=11
+host=Linux 7.0.0-31-generic x86_64 nproc=12
+paralelo=3 rehacer=0
+imagen=ghcr.io/pauli-0709/proyecto2-gem5:24.1.0.1-env2
+python=Python 3.10.20
+matplotlib=3.10.8
+duracion_s=21
+--- sha256 de fuentes y scripts ---
+2f8633f911b2c634e471e2a9604a17162dec727bfe45951ca8076cd3fdb2f544  src/gemm_paralelo.c
+23713f3aa0732c995494c446901b7a949e5afdc0ec7fa7a218f07f2a90932fca  src/gemm_paralelo_ikj.c
+c43430992c54b491c0cb02e286cd8aa9d32c3c835bcece3c3a238de03aed26a6  scripts/arm_env.sh
+d02c7d873e52dfd412d1e4506de26cd59461982cac4403b899e5150f58b0f095  scripts/lib_evidencia.sh
+c4969b83af8b6c3869464ca0f6aa1761067b208d6cd9d238909890489c32d646  scripts/barrido_multiprocesador.sh
+d8809cda6d092759f140f7b74d46bafefa96a5cc997ea6db0e2399b6826dd66e  scripts/stats_gem5.py
+c9599f3f62dd28a5b8bf503ca22c4b2865a22e446d4d9cadf34cd0a14e485869  scripts/analizar_e4.py
+52c157e1c58fbd8aaf9f2f4a8985e163269213f660e8190056b4a60bda5c2611  scripts/comparar_e4_ikj.py
+f67b5b552e1359fc6436656d787db7b7b92acb4005d43c2d7b8191795ae6bb5c  scripts/reproducir_e4.sh

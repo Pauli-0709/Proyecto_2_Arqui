@@ -1,0 +1,5 @@
+fecha=2026-11-23T19:23:28+00:00
+commit=0e8c40e5e1e1d542bf03aca488c26ea810346d99
+archivos_modificados=11
+host=Linux 7.0.0-31-generic x86_64 nproc=12
+gem5_bin=/opt/gem5/build/ARM_MESI/gem5.opt

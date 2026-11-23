@@ -1,0 +1,67 @@
+00000000004037a0 <multiplicar._omp_fn.0>:
+  4037a0:	a9be7bfd 	stp	x29, x30, [sp, #-32]!
+  4037a4:	910003fd 	mov	x29, sp
+  4037a8:	a90153f3 	stp	x19, x20, [sp, #16]
+  4037ac:	aa0003f4 	mov	x20, x0
+  4037b0:	940003a4 	bl	404640 <gomp_ialias_omp_get_num_threads>
+  4037b4:	2a0003f3 	mov	w19, w0
+  4037b8:	940003ab 	bl	404664 <gomp_ialias_omp_get_thread_num>
+  4037bc:	b9401a88 	ldr	w8, [x20, #24]
+  4037c0:	2a0003ea 	mov	w10, w0
+  4037c4:	1ad30d0c 	sdiv	w12, w8, w19
+  4037c8:	1b13a180 	msub	w0, w12, w19, w8
+  4037cc:	6b00015f 	cmp	w10, w0
+  4037d0:	5400064b 	b.lt	403898 <multiplicar._omp_fn.0+0xf8>  // b.tstop
+  4037d4:	1b0a018a 	madd	w10, w12, w10, w0
+  4037d8:	52800013 	mov	w19, #0x0                   	// #0
+  4037dc:	0b0a018c 	add	w12, w12, w10
+  4037e0:	6b0c015f 	cmp	w10, w12
+  4037e4:	540004ca 	b.ge	40387c <multiplicar._omp_fn.0+0xdc>  // b.tcont
+  4037e8:	a9404281 	ldp	x1, x16, [x20]
+  4037ec:	1b087d4b 	mul	w11, w10, w8
+  4037f0:	f9400a8e 	ldr	x14, [x20, #16]
+  4037f4:	937e7d04 	sbfiz	x4, x8, #2, #32
+  4037f8:	5100050d 	sub	w13, w8, #0x1
+  4037fc:	9100102f 	add	x15, x1, #0x4
+  403800:	7100011f 	cmp	w8, #0x0
+  403804:	5400032d 	b.le	403868 <multiplicar._omp_fn.0+0xc8>
+  403808:	8b2bc1a3 	add	x3, x13, w11, sxtw
+  40380c:	937e7d67 	sbfiz	x7, x11, #2, #32
+  403810:	8b070029 	add	x9, x1, x7
+  403814:	aa1003e6 	mov	x6, x16
+  403818:	8b0701c7 	add	x7, x14, x7
+  40381c:	8b0309e3 	add	x3, x15, x3, lsl #2
+  403820:	d2800005 	mov	x5, #0x0                   	// #0
+  403824:	d503201f 	nop
+  403828:	0f000401 	movi	v1.2s, #0x0
+  40382c:	aa0603e2 	mov	x2, x6
+  403830:	aa0903e0 	mov	x0, x9
+  403834:	d503201f 	nop
+  403838:	bd400042 	ldr	s2, [x2]
+  40383c:	8b040042 	add	x2, x2, x4
+  403840:	bc404400 	ldr	s0, [x0], #4
+  403844:	1e220800 	fmul	s0, s0, s2
+  403848:	1e202821 	fadd	s1, s1, s0
+  40384c:	eb03001f 	cmp	x0, x3
+  403850:	54ffff41 	b.ne	403838 <multiplicar._omp_fn.0+0x98>  // b.any
+  403854:	bc2578e1 	str	s1, [x7, x5, lsl #2]
+  403858:	910004a5 	add	x5, x5, #0x1
+  40385c:	910010c6 	add	x6, x6, #0x4
+  403860:	6b05011f 	cmp	w8, w5
+  403864:	54fffe2c 	b.gt	403828 <multiplicar._omp_fn.0+0x88>
+  403868:	1100054a 	add	w10, w10, #0x1
+  40386c:	0b08016b 	add	w11, w11, w8
+  403870:	6b0a019f 	cmp	w12, w10
+  403874:	54fffc61 	b.ne	403800 <multiplicar._omp_fn.0+0x60>  // b.any
+  403878:	52800033 	mov	w19, #0x1                   	// #1
+  40387c:	94000075 	bl	403a50 <GOMP_barrier>
+  403880:	91007281 	add	x1, x20, #0x1c
+  403884:	2a1303e0 	mov	w0, w19
+  403888:	94006ce6 	bl	41ec20 <__aarch64_ldadd4_relax>
+  40388c:	a94153f3 	ldp	x19, x20, [sp, #16]
+  403890:	a8c27bfd 	ldp	x29, x30, [sp], #32
+  403894:	d65f03c0 	ret
+  403898:	1100058c 	add	w12, w12, #0x1
+  40389c:	52800000 	mov	w0, #0x0                   	// #0
+  4038a0:	17ffffcd 	b	4037d4 <multiplicar._omp_fn.0+0x34>
+

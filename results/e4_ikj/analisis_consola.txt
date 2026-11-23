@@ -1,0 +1,11 @@
+    N  nuc  speedup   efic.  f_serial    L1D%  accesosL2  desbal.
+   64    1    1.000   1.000       nan    0.39       1002    0.00%
+   64    2    1.952   0.976    0.0247    0.53       1131    2.17%
+   64    4    3.750   0.938    0.0222    0.76       1269    5.72%
+   64    8    6.694   0.837    0.0279    1.15       1713   14.79%
+  128    1    1.000   1.000       nan    6.60     104557    0.00%
+  128    2    1.993   0.997    0.0034    5.96      55020    0.27%
+  128    4    3.963   0.991    0.0031    5.72      32020    0.77%
+  128    8    7.779   0.972    0.0041    5.51      21746    2.20%
+N=64: f ajustada = 0.0254, speedup maximo teorico = 39.4x, desviacion maxima del modelo = 1.49%
+N=128: f ajustada = 0.0036, speedup maximo teorico = 276.6x, desviacion maxima del modelo = 0.31%

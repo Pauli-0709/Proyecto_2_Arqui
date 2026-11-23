@@ -1,0 +1,10 @@
+tamanos=64 128
+nucleos=1 2 4 8
+ancho=2
+etapas=fetchWidth decodeWidth renameWidth dispatchWidth issueWidth wbWidth commitWidth
+rob=192
+iq=64
+forwardComSize=256
+mem=512MiB
+cpu=ArmO3CPU
+cache=clasica L1 32KiB/2v L2 256KiB/8v linea 64B DDR3_1600_8x8 2GHz

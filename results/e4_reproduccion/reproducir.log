@@ -1,0 +1,206 @@
+
+=== 1. Validacion nativa de ambos kernels (N=16, 1/2/4/8 hilos) ===
+N=16 HILOS=1 HILOS_USADOS=1 CHECK=PASS errores=0
+N=16 HILOS=2 HILOS_USADOS=2 CHECK=PASS errores=0
+N=16 HILOS=4 HILOS_USADOS=4 CHECK=PASS errores=0
+N=16 HILOS=8 HILOS_USADOS=8 CHECK=PASS errores=0
+N=16 HILOS=1 HILOS_USADOS=1 CHECK=PASS errores=0
+N=16 HILOS=2 HILOS_USADOS=2 CHECK=PASS errores=0
+N=16 HILOS=4 HILOS_USADOS=4 CHECK=PASS errores=0
+N=16 HILOS=8 HILOS_USADOS=8 CHECK=PASS errores=0
+
+=== 2. Kernel de B (resultado oficial): barrido (N=64 y 128; 1, 2, 4 y 8 nucleos) ===
+[iniciada] N=64 nucleos=8
+[iniciada] N=64 nucleos=4
+[iniciada] N=64 nucleos=2
+[lista   ] N=64 nucleos=2
+[iniciada] N=64 nucleos=1
+[lista   ] N=64 nucleos=4
+[iniciada] N=128 nucleos=8
+[lista   ] N=64 nucleos=1
+[iniciada] N=128 nucleos=4
+[lista   ] N=64 nucleos=8
+[iniciada] N=128 nucleos=2
+[lista   ] N=128 nucleos=2
+[iniciada] N=128 nucleos=1
+[lista   ] N=128 nucleos=4
+[lista   ] N=128 nucleos=8
+[lista   ] N=128 nucleos=1
+E4: 8/8 corridas validas en /work/results/e4
+
+=== 2. Kernel de B (resultado oficial): analisis (speedup, eficiencia, Amdahl, memoria, balance) ===
+    N  nuc  speedup   efic.  f_serial    L1D%  accesosL2  desbal.
+   64    1    1.000   1.000       nan    2.58       7357    0.00%
+   64    2    1.950   0.975    0.0256    2.65       5876    2.10%
+   64    4    3.749   0.937    0.0223    2.84       5218    5.62%
+   64    8    6.730   0.841    0.0270    3.03       5936   14.44%
+  128    1    1.000   1.000       nan   39.84    1638413    0.00%
+  128    2    1.975   0.987    0.0129   40.10    1208798    0.27%
+  128    4    2.787   0.697    0.1451   39.91    1212211    0.54%
+  128    8    3.221   0.403    0.2120   39.14    1168442    0.92%
+N=64: f ajustada = 0.0251, speedup maximo teorico = 39.8x, desviacion maxima del modelo = 1.12%
+N=128: f ajustada = 0.1566, speedup maximo teorico = 6.4x, desviacion maxima del modelo = 18.49%
+
+=== 3. Variante i-k-j (extra comparativo): barrido (N=64 y 128; 1, 2, 4 y 8 nucleos) ===
+[iniciada] N=64 nucleos=8
+[iniciada] N=64 nucleos=4
+[iniciada] N=64 nucleos=2
+[lista   ] N=64 nucleos=2
+[iniciada] N=64 nucleos=1
+[lista   ] N=64 nucleos=4
+[iniciada] N=128 nucleos=8
+[lista   ] N=64 nucleos=1
+[iniciada] N=128 nucleos=4
+[lista   ] N=64 nucleos=8
+[iniciada] N=128 nucleos=2
+[lista   ] N=128 nucleos=4
+[iniciada] N=128 nucleos=1
+[lista   ] N=128 nucleos=2
+[lista   ] N=128 nucleos=8
+[lista   ] N=128 nucleos=1
+E4: 8/8 corridas validas en /work/results/e4_ikj
+
+=== 3. Variante i-k-j (extra comparativo): analisis (speedup, eficiencia, Amdahl, memoria, balance) ===
+    N  nuc  speedup   efic.  f_serial    L1D%  accesosL2  desbal.
+   64    1    1.000   1.000       nan    0.39       1002    0.00%
+   64    2    1.952   0.976    0.0247    0.53       1131    2.17%
+   64    4    3.750   0.938    0.0222    0.76       1269    5.72%
+   64    8    6.694   0.837    0.0279    1.15       1713   14.79%
+  128    1    1.000   1.000       nan    6.60     104557    0.00%
+  128    2    1.993   0.997    0.0034    5.96      55020    0.27%
+  128    4    3.963   0.991    0.0031    5.72      32020    0.77%
+  128    8    7.779   0.972    0.0041    5.51      21746    2.20%
+N=64: f ajustada = 0.0254, speedup maximo teorico = 39.4x, desviacion maxima del modelo = 1.49%
+N=128: f ajustada = 0.0036, speedup maximo teorico = 276.6x, desviacion maxima del modelo = 0.31%
+
+=== 4. Comparacion kernel de B vs i-k-j ===
+| N | Núcleos | Tiempo B (s) | Tiempo i-k-j (s) | Mejora (x) | Speedup B | Speedup i-k-j | L1D B | L1D i-k-j |
+|---|---|---|---|---|---|---|---|---|
+| 64 | 1 | 8.210e-04 | 8.100e-04 | 1.01 | 1.00 | 1.00 | 2.6% | 0.4% |
+| 64 | 2 | 4.210e-04 | 4.150e-04 | 1.01 | 1.95 | 1.95 | 2.7% | 0.5% |
+| 64 | 4 | 2.190e-04 | 2.160e-04 | 1.01 | 3.75 | 3.75 | 2.8% | 0.8% |
+| 64 | 8 | 1.220e-04 | 1.210e-04 | 1.01 | 6.73 | 6.69 | 3.0% | 1.2% |
+| 128 | 1 | 6.429e-03 | 6.464e-03 | 0.99 | 1.00 | 1.00 | 39.8% | 6.6% |
+| 128 | 2 | 3.256e-03 | 3.243e-03 | 1.00 | 1.97 | 1.99 | 40.1% | 6.0% |
+| 128 | 4 | 2.307e-03 | 1.631e-03 | 1.41 | 2.79 | 3.96 | 39.9% | 5.7% |
+| 128 | 8 | 1.996e-03 | 8.310e-04 | 2.40 | 3.22 | 7.78 | 39.1% | 5.5% |
+
+# simInsts de la ROI (primer bloque de stats): ambos kernels deben hacer un trabajo similar
+corrida            kernel_B       kernel_ikj    
+n128/nucleos1      14813955       16885393      
+n128/nucleos2      14822592       16890862      
+n128/nucleos4      14907471       16910617      
+n128/nucleos8      15205101       17028673      
+n64/nucleos1       1869733        2126195       
+n64/nucleos2       1874034        2130268       
+n64/nucleos4       1894673        2153469       
+n64/nucleos8       2002213        2265429       
+
+=== Verificacion final ===
+E4 COMPLETO: todas las evidencias existen. Duracion: 498 s
+Resumen de la comparacion:
+| N | Núcleos | Tiempo B (s) | Tiempo i-k-j (s) | Mejora (x) | Speedup B | Speedup i-k-j | L1D B | L1D i-k-j |
+|---|---|---|---|---|---|---|---|---|
+| 64 | 1 | 8.210e-04 | 8.100e-04 | 1.01 | 1.00 | 1.00 | 2.6% | 0.4% |
+| 64 | 2 | 4.210e-04 | 4.150e-04 | 1.01 | 1.95 | 1.95 | 2.7% | 0.5% |
+| 64 | 4 | 2.190e-04 | 2.160e-04 | 1.01 | 3.75 | 3.75 | 2.8% | 0.8% |
+| 64 | 8 | 1.220e-04 | 1.210e-04 | 1.01 | 6.73 | 6.69 | 3.0% | 1.2% |
+| 128 | 1 | 6.429e-03 | 6.464e-03 | 0.99 | 1.00 | 1.00 | 39.8% | 6.6% |
+| 128 | 2 | 3.256e-03 | 3.243e-03 | 1.00 | 1.97 | 1.99 | 40.1% | 6.0% |
+| 128 | 4 | 2.307e-03 | 1.631e-03 | 1.41 | 2.79 | 3.96 | 39.9% | 5.7% |
+| 128 | 8 | 1.996e-03 | 8.310e-04 | 2.40 | 3.22 | 7.78 | 39.1% | 5.5% |
+
+=== 1. Validacion nativa de ambos kernels (N=16, 1/2/4/8 hilos) ===
+N=16 HILOS=1 HILOS_USADOS=1 CHECK=PASS errores=0
+N=16 HILOS=2 HILOS_USADOS=2 CHECK=PASS errores=0
+N=16 HILOS=4 HILOS_USADOS=4 CHECK=PASS errores=0
+N=16 HILOS=8 HILOS_USADOS=8 CHECK=PASS errores=0
+N=16 HILOS=1 HILOS_USADOS=1 CHECK=PASS errores=0
+N=16 HILOS=2 HILOS_USADOS=2 CHECK=PASS errores=0
+N=16 HILOS=4 HILOS_USADOS=4 CHECK=PASS errores=0
+N=16 HILOS=8 HILOS_USADOS=8 CHECK=PASS errores=0
+
+=== 2. Kernel de B (resultado oficial): barrido (N=64 y 128; 1, 2, 4 y 8 nucleos) ===
+[omitida ] N=64 nucleos=8
+[omitida ] N=64 nucleos=4
+[omitida ] N=64 nucleos=2
+[omitida ] N=64 nucleos=1
+[omitida ] N=128 nucleos=8
+[omitida ] N=128 nucleos=4
+[omitida ] N=128 nucleos=2
+[omitida ] N=128 nucleos=1
+E4: 8/8 corridas validas en /work/results/e4
+
+=== 2. Kernel de B (resultado oficial): analisis (speedup, eficiencia, Amdahl, memoria, balance) ===
+    N  nuc  speedup   efic.  f_serial    L1D%  accesosL2  desbal.
+   64    1    1.000   1.000       nan    2.58       7357    0.00%
+   64    2    1.950   0.975    0.0256    2.65       5876    2.10%
+   64    4    3.749   0.937    0.0223    2.84       5218    5.62%
+   64    8    6.730   0.841    0.0270    3.03       5936   14.44%
+  128    1    1.000   1.000       nan   39.84    1638413    0.00%
+  128    2    1.975   0.987    0.0129   40.10    1208798    0.27%
+  128    4    2.787   0.697    0.1451   39.91    1212211    0.54%
+  128    8    3.221   0.403    0.2120   39.14    1168442    0.92%
+N=64: f ajustada = 0.0251, speedup maximo teorico = 39.8x, desviacion maxima del modelo = 1.12%
+N=128: f ajustada = 0.1566, speedup maximo teorico = 6.4x, desviacion maxima del modelo = 18.49%
+
+=== 3. Variante i-k-j (extra comparativo): barrido (N=64 y 128; 1, 2, 4 y 8 nucleos) ===
+[omitida ] N=64 nucleos=8
+[omitida ] N=64 nucleos=4
+[omitida ] N=64 nucleos=2
+[omitida ] N=64 nucleos=1
+[omitida ] N=128 nucleos=8
+[omitida ] N=128 nucleos=4
+[omitida ] N=128 nucleos=2
+[omitida ] N=128 nucleos=1
+E4: 8/8 corridas validas en /work/results/e4_ikj
+
+=== 3. Variante i-k-j (extra comparativo): analisis (speedup, eficiencia, Amdahl, memoria, balance) ===
+    N  nuc  speedup   efic.  f_serial    L1D%  accesosL2  desbal.
+   64    1    1.000   1.000       nan    0.39       1002    0.00%
+   64    2    1.952   0.976    0.0247    0.53       1131    2.17%
+   64    4    3.750   0.938    0.0222    0.76       1269    5.72%
+   64    8    6.694   0.837    0.0279    1.15       1713   14.79%
+  128    1    1.000   1.000       nan    6.60     104557    0.00%
+  128    2    1.993   0.997    0.0034    5.96      55020    0.27%
+  128    4    3.963   0.991    0.0031    5.72      32020    0.77%
+  128    8    7.779   0.972    0.0041    5.51      21746    2.20%
+N=64: f ajustada = 0.0254, speedup maximo teorico = 39.4x, desviacion maxima del modelo = 1.49%
+N=128: f ajustada = 0.0036, speedup maximo teorico = 276.6x, desviacion maxima del modelo = 0.31%
+
+=== 4. Comparacion kernel de B vs i-k-j ===
+| N | Núcleos | Tiempo B (s) | Tiempo i-k-j (s) | Mejora (x) | Speedup B | Speedup i-k-j | L1D B | L1D i-k-j |
+|---|---|---|---|---|---|---|---|---|
+| 64 | 1 | 8.210e-04 | 8.100e-04 | 1.01 | 1.00 | 1.00 | 2.6% | 0.4% |
+| 64 | 2 | 4.210e-04 | 4.150e-04 | 1.01 | 1.95 | 1.95 | 2.7% | 0.5% |
+| 64 | 4 | 2.190e-04 | 2.160e-04 | 1.01 | 3.75 | 3.75 | 2.8% | 0.8% |
+| 64 | 8 | 1.220e-04 | 1.210e-04 | 1.01 | 6.73 | 6.69 | 3.0% | 1.2% |
+| 128 | 1 | 6.429e-03 | 6.464e-03 | 0.99 | 1.00 | 1.00 | 39.8% | 6.6% |
+| 128 | 2 | 3.256e-03 | 3.243e-03 | 1.00 | 1.97 | 1.99 | 40.1% | 6.0% |
+| 128 | 4 | 2.307e-03 | 1.631e-03 | 1.41 | 2.79 | 3.96 | 39.9% | 5.7% |
+| 128 | 8 | 1.996e-03 | 8.310e-04 | 2.40 | 3.22 | 7.78 | 39.1% | 5.5% |
+
+# simInsts de la ROI (primer bloque de stats): ambos kernels deben hacer un trabajo similar
+corrida            kernel_B       kernel_ikj    
+n128/nucleos1      14813955       16885393      
+n128/nucleos2      14822592       16890862      
+n128/nucleos4      14907471       16910617      
+n128/nucleos8      15205101       17028673      
+n64/nucleos1       1869733        2126195       
+n64/nucleos2       1874034        2130268       
+n64/nucleos4       1894673        2153469       
+n64/nucleos8       2002213        2265429       
+
+=== Verificacion final ===
+E4 COMPLETO: todas las evidencias existen. Duracion: 21 s
+Resumen de la comparacion:
+| N | Núcleos | Tiempo B (s) | Tiempo i-k-j (s) | Mejora (x) | Speedup B | Speedup i-k-j | L1D B | L1D i-k-j |
+|---|---|---|---|---|---|---|---|---|
+| 64 | 1 | 8.210e-04 | 8.100e-04 | 1.01 | 1.00 | 1.00 | 2.6% | 0.4% |
+| 64 | 2 | 4.210e-04 | 4.150e-04 | 1.01 | 1.95 | 1.95 | 2.7% | 0.5% |
+| 64 | 4 | 2.190e-04 | 2.160e-04 | 1.01 | 3.75 | 3.75 | 2.8% | 0.8% |
+| 64 | 8 | 1.220e-04 | 1.210e-04 | 1.01 | 6.73 | 6.69 | 3.0% | 1.2% |
+| 128 | 1 | 6.429e-03 | 6.464e-03 | 0.99 | 1.00 | 1.00 | 39.8% | 6.6% |
+| 128 | 2 | 3.256e-03 | 3.243e-03 | 1.00 | 1.97 | 1.99 | 40.1% | 6.0% |
+| 128 | 4 | 2.307e-03 | 1.631e-03 | 1.41 | 2.79 | 3.96 | 39.9% | 5.7% |
+| 128 | 8 | 1.996e-03 | 8.310e-04 | 2.40 | 3.22 | 7.78 | 39.1% | 5.5% |

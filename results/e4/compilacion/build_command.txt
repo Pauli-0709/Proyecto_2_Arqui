@@ -1,0 +1,1 @@
+aarch64-linux-gnu-gcc -O2 -Wall -Wextra -Werror -fopenmp -fno-tree-vectorize -ffp-contract=off -static -DUSE_GEM5 -I/opt/gem5/include /work/src/gemm_paralelo.c /opt/gem5/util/m5/build/arm64/out/libm5.a -lm -o /work/bin/e4/arm 
