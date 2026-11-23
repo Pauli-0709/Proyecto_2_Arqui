@@ -1,0 +1,1 @@
+aarch64-linux-gnu-gcc -std=c11 -O2 -fno-tree-vectorize -fno-tree-slp-vectorize -ffp-contract=off -static -DUSE_GEM5 -I/opt/gem5/include src/gemm_scalar.c /opt/gem5/util/m5/build/arm64/out/libm5.a -lm -o /work/bin/e1.RS7ujE/gemm_escalar 

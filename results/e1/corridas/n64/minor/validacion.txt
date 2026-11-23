@@ -1,0 +1,1 @@
+N=64 CHECK=PASS errores=0 max_abs_error=0 checksum=0.12109375

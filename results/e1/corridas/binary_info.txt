@@ -1,0 +1,2 @@
+/work/bin/e1.RS7ujE/gemm_escalar: ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, BuildID[sha1]=2fe393f493a902afc3f010da951bcc2a1164e1db, for GNU/Linux 3.7.0, not stripped
+-rwxr-xr-x 1 1000 1000 647696 Nov 23 22:17 /work/bin/e1.RS7ujE/gemm_escalar
