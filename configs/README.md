@@ -69,10 +69,10 @@ no existen, debe ejecutar las corridas respectivas.
 Por otro lado, los detalles de ejecucion y del ajuste utilizado estan en
 [la documentacion del experimento E2](../docs/experimento_superescalar.md).
 
-Finalmente, para poder verificar las corridas correspondientes del experimento E2 y que las mismas puedan regenerar sus 2 archivos CSV y sus 2
-graficos, se debe ejecutar el comando `bash scripts/arm_env.sh bash scripts/reproducir_e2.sh` desde la raiz del repositorio en Ubuntu. Asimismo, el
-[analisis de E2](../docs/experimento_superescalar.md) explica los resultados obtenidos.
-
+Finalmente, desde la raiz del repositorio en Ubuntu, se ejecuta el comando `bash scripts/arm_env.sh bash scripts/reproducir_e2.sh` el cual ejecuta
+las 24 corridas del experimento en interes y regenera los 2 archivos CSV y los 2 graficos correspondientes. Asimismo, para poder calcular la ocupacion
+de la IQ y del ROB, el script llega a reutilizar las muestras publicadas en la ruta `results/e2/ocupacion/`. De la misma manera el [analisis de E2](../docs/experimento_superescalar.md)
+explica los resultados obtenidos.
 
 ## Configuracion implementada para E3
 
@@ -99,19 +99,9 @@ En cuarto lugar, las 32 corridas para los tamanos de N=64 y de N=128 estan publi
 calculo del speedup estan completados, con los CSV disponibles en la siguiente ruta: `results/e3/summary/`. De la misma manera, el grafico de speedup frente a VL
 se encuentra en la siguiente ruta: `results/e3/figures/`, en formatos PNG y SVG. 
 
-En quinto lugar, el analisis inicial y la comparacion de los contadores de memoria estan documentados en la seccion:
-[el experimento E3](../docs/experimento_vectorial.md).
+En quinto lugar, el experimento E3 ya esta completado. A su vez, el [analisis y las conclusiones de E3](../docs/experimento_vectorial.md#conclusiones-del-experimento-e3)
+incluyen la comparacion de los diversos contadores de la memoria memoria. Asimismo la [seccion de reproduccion del README principal](../README.md#reproducir-e3-con-un-solo-comando)
+tiene como objetivo indicar como ejecutar el barrido completo y como poder regenerar los archivos CSV y las distintas figuras a partir de las corridas publicadas
+en el repositorio.
 
-El experimento E3 permanece en curso, con la revision final de conclusiones y la integracion de la reproduccion pendientes.
-
-
-## Pendientes
-
-- Configuracion para E1: TimingSimple, Minor y O3.
-
-E2 utiliza GEMM escalar con N=64 y N=128. Estos mismos tamanos estan previstos para el experimento E1.
-
-Es importante mencionar que cada configuracion debera documentar CPU, frecuencia, caches, memoria y paremetros modificados. Los diversos parametros
-que no formen parte del barrido deberan mantenerse constantes y quedar registrados.
-
-Finalmente es fundamental indicar que los resultados de las distintas simulaciones se guardan en la ruta de results/ y no en esta carpeta.
+Finalmente, los distintos resultados de las simulaciones que se llevaron a cabo se guardan en la ruta `results/`.

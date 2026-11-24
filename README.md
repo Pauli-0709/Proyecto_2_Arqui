@@ -137,9 +137,9 @@ Proyecto_2_Arqui/
 └── report/       # Informe tecnico y materiales de exposicion
 ```
 
-Por otra parte, la carpeta configs/ contiene la configuracion superescalar de E2. Asi como, los scripts de ejecucion individual y barrido estan 
-implementados en la carpeta de `scripts/`. A su vez, la carpeta [report/](report/README.md) incluye los aportes de [E2](report/e2.md) y [E3](report/e3.md) 
-para el informe grupal.
+Por otra parte, la carpeta [configs/](configs/README.md) documenta las distintas configuraciones de E1, E2 y E3. Asimismos, los scripts de ejecucion
+individual y barrido estan en la ruta `scripts/`. A su vez, la carpeta [report/](report/README.md) incluye los aportes de [E1](report/e1.md),
+[E2](report/e2.md) y [E3](report/e3.md) para el informe grupal.
 
 Archivos del entorno Docker y sus pruebas:
 
@@ -417,10 +417,10 @@ Desde la raiz del repositorio en Ubuntu, ejecutar los siguientes comandos:
 bash scripts/arm_env.sh bash scripts/reproducir_e2.sh
 ```
 
-Es importante mencionar que el script utiliza las estadisticas oficiales y las muestras publicadas en la ruta `results/e2/ocupacion/`. Ademas, este
-genera el archivo `e2_metricas.csv` y el archivo `e2_ocupacion.csv` en la ruta `results/e2/summary/`, y los graficos: `e2_ipc.png` y `e2_ocupacion.png`
-en la ruta `results/e2/figures/`. Finalmente, al terminar imprime en pantalla `REPRODUCCION_E2_OK`, para saber que todo fue ejecutado correctamente. 
-
+Es imporntante mencionar que el script verifica las 24 corridas y regenera el archivo `e2_metricas.csv` a partir de las estadisticas de la region
+de interes. Asimismo, para poder calcular `e2_ocupacion.csv`, se reutiliza las diversas muestras publicadas en la ruta `results/e2/ocupacion/`.
+Estos archivos CSV quedan en la ruta `results/e2/summary/`. De la misma manera, los graficos `e2_ipc.png` y `e2_ocupacion.png` quedan en la ruta
+`results/e2/figures/`. Finalmente, el mensaje en pantalla de `REPRODUCCION_E2_OK` confirma que el proceso termino correctamente.
 
 #### E3: extensiones vectoriales SVE
 
