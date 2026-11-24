@@ -2,6 +2,33 @@
 
 En esta carpeta contiene las diversas configuraciones de simulacion desarrolladas por el equipo de trabajo.
 
+
+## Configuracion implementada para E1
+
+El script `scripts/ejecutar_linea_base.sh` ejecuta el mismo GEMM escalar con un nucleo en los modelos: `ArmTimingSimpleCPU`,
+`ArmMinorCPU` y `ArmO3CPU`. Asimismo, se prueban matrices de tamano de N=64 y de N=128, para un total de 6 corridas.
+
+La configuracion se carga desde `scripts/lib_evidencia.sh`:
+
+- CPU a una frecuencia de 2 GHz y reloj del sistema a una frecuencia de 1 GHz.
+- Caches L1I y L1D de 32 KiB y 2 vias cada una de ellas.
+- Cache L2 de 256 KiB y 8 vias.
+- Lineas de cache de 64 bytes.
+- Memoria DDR3_1600_8x8 de 512 MiB por defecto.
+
+Desde la raiz del repositorio en Ubuntu, con la imagen Docker instalada en el pc, reproducir el siguiente comando para reproducir
+el experimento E1:
+
+```bash
+bash scripts/arm_env.sh bash scripts/reproducir_e1.sh
+```
+
+Es importante mencionar que el comando ejecuta y valida las 6 corridas, genera el archivo CSV de metricas y el grafico de IPC y ciclos
+correspondiente y guarda las salidas en la ruta `.local/e1.XXXXXX`.
+
+Finalmente, los resultados oficiales generados para el experimento y su posterior interpretacion estan en el [informe de E1](../report/e1.md).
+
+
 ## Configuracion implementada para E2
 
 EN primer lugar, el archivo configuracion_superescalar.sh contiene los parametros utilizados para el experimento superescalar.

@@ -16,6 +16,9 @@ conservaran en la siguiente ruta: scripts/.
 
 ## Aportes al informe
 
+- [E1. Linea base de un nucleo](e1.md). El texto incluye la comparacion de los 3 modelos/configuraciones, sus respectivas evidencias y el comando de reproduccion
+del experimento.
+
 - [E2. Arquitectura superescalar](e2.md). El texto incluye el IPC, la ocupacion del IQ y del ROB, ademas de los fallos de prediccion y el aporte de
 E2.
 

@@ -326,40 +326,24 @@ La imagen y los resultados permanecen guardados. Para volver a entrar en otro mo
 
 ### 8) Ejecucion de los experimentos
 
-#### E1: linea base
+#### E1: linea base de un nucleo
 
-En primer lugar, el experimento ejecuta el GEMM escalar con un solo nucleo. A su vez, este va a comparar los modelos `ArmTimingSimpleCPU`,
-`ArmMinorCPU` y `ArmO3CPU` para un tamano de N=64 y un tamano de N=128 con 3 corridas por cada tamano y 6 en total.
+El experimento E1 tiene como objetivo el comparar el mismo GEMM escalar teniendo en cuenta las siguientes configuraciones: el TimingSimple, el
+Minor y el O3 con un nucleo y teniendo matrices de tamano de N=64 y de tamano de N=128.
 
-**Repetir el barrido y generar el CSV y el grafico**
-
-Desde la raiz del repositorio en Ubuntu ya con la imagen del Docker de la seccion 6 descargada, ejecuta los siguientes comandos:
+Asimismo, desde la raiz del repositorio en Ubuntu, con la imagen del Docker de la seccion 6 ya instalada y probada, se puede reproducir este experimento
+por completo con un solo comando:
 
 ```bash
-# Reserva una carpeta local nueva para esta reproduccion en especifico.
-mkdir -p .local &&
-repeticion=$(mktemp -d .local/e1.XXXXXX) &&
-
-# Ejecuta las 6 corridas en el Docker del equipo.
-bash scripts/arm_env.sh bash scripts/ejecutar_linea_base.sh \
-  barrido "$repeticion/corridas" &&
-
-# Se van aExtrae los ciclos, IPC, CPI y fallos de L1D y L2 de la region de interes.
-bash scripts/arm_env.sh python3 scripts/resumir_linea_base.py \
-  "$repeticion/corridas" "$repeticion/resumen_linea_base.csv" &&
-
-# Genera el grafico de IPC y ciclos y calcula la aceleracion de O3.
-bash scripts/arm_env.sh python3 scripts/graficar_linea_base.py \
-  "$repeticion/resumen_linea_base.csv" "$repeticion/grafico_linea_base.png"
+bash scripts/arm_env.sh bash scripts/reproducir_e1.sh
 ```
 
-El archivo CSV generado contiene las 6 filas de datos. Ademas, las salidas de la repeticion quedan en la carpeta `.local/`, en la carpeta
-creada por `mktemp`.
+De la misma manera, es importante mencionar que el comando ejecuta y valida las 6 corridas diferentes, ademas extrae el archivo CSV del primer bloque
+de la region de interes y a su vez genera el grafico de la IPC y los distintos ciclos. Finalmente, el mensaje en pantalla de `REPRODUCCION_E1_OK` indica que
+termino correctamente la ejecucion del experimento y tambien muestra la carpeta `.local/e1.XXXXXX`, donde se almacenan los archivos generados en la prueba.
 
-Consulta las [corridas oficiales](results/e1/corridas/), el
-[CSV de rendimiento](results/e1/resumen_linea_base.csv), el
-[grafico de IPC y ciclos](results/e1/grafico_linea_base.png) y el
-[analisis de E1](report/e1.md).
+Por otra parte, se pueden consultar las [corridas oficiales](results/e1/corridas/), el archivo [CSV de metricas](results/e1/resumen_linea_base.csv), el [grafico de IPC y ciclos](results/e1/grafico_linea_base.png)
+y el [analisis de E1](report/e1.md).
 
 
 #### E2: arquitectura superescalar
@@ -614,7 +598,7 @@ Finalmente, el mensaje `REPRODUCCION_E3_OK CSV=3 FIGURAS=2` confirma que termino
 - [GEMM paralelo por filas](docs/gemm_paralelo.md). 4 corridas en el simulador gem5 con un tamano de N=16 y 1, 2, 4 y 8 hilos. [Evidencia publicada](results/validation/gemm_paralelo_n16.BJhgEJ/).
 - [Falso compartido](docs/falso_compartido.md). 4 corridas en el simulador gem5 con 2 nucleos, con y sin relleno de 64 bytes, usando MESI y MOESI. [Evidencia publicada](results/validation/falso_compartido_n2.0e1qLs/).
 
-Quedan pendientes los barridos de rendimiento de los experimentos E4 y E5 y las instrucciones de ejecucion de los experimentos E1 y E6.
+Quedan pendientes los barridos de rendimiento de los experimentos E4 y E5 y las instrucciones de ejecucion de E6.
 
 ### 9) Resultados y reproducibilidad
 
@@ -718,4 +702,5 @@ documentacion de los mismo. Antes de subir cambios se debe revisar la lista de l
 - E3: graficos, analisis y conclusiones finales completados.
 - GEMM paralelo por filas implementado y validado en gem5 con un tamano de N=16 y 1, 2, 4 y 8 hilos.
 - Falso compartido implementado y validado en el simulador gem5 con Ruby. Las 4 corridas con 2 nucleos y 1000 incrementos por hilo pasaron con el mensaje de CHECK=PASS y se tuvo 0 errores: MESI y MOESI, con y sin relleno de 64 bytes.
-- Experimentos pendientes: E1 y E4–E6.
+- E1: 6 corridas validadas, el archivo CSV, el grafico correspondiente, el analisis y la reproduccion del experimento con un solo comando.
+- Experimentos pendientes: E4–E6.
