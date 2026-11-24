@@ -25,4 +25,8 @@ E2.
 - [E3. Multiplicacion de matrices con SVE](e3.md). Este archivo incluyen la comparacion con el GEMM escalar, ademas de los resultados principales y
 el enlace al grafico.
 
+- [E4. Escalabilidad de GEMM en un multiprocesador](e4.md). Este archivo incluye los resultados con 1, 2, 4 y 8 nucleos, ademas el analisis de eficiencia y
+los diversos fallos de L2, su estimacion correspondiente de la fraccion serial con Amdahl y la comparacion realizada con la variante `i-k-j`.
+
+
 El informe grupal en formato IEEE sigue pendiente de integracion.

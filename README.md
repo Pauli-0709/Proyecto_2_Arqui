@@ -64,7 +64,7 @@ es importante indicar que las guías detalladas permanecen en docs/ y en los doc
 | --- | --- | --- |
 | **Paulina Camacho** | Organizar el Git o GitHub, tambien el preparar el simulador gem5 ARM, poder establecer el entorno comun y liderar el experimento **E2**. Asimsimo, debe participar en los experimentos E1 y E6. | [Entorno Docker](docker/), [pruebas de ARM](results/environment/), [resultados de E2](results/e2/), [analisis tecnico](docs/experimento_superescalar.md) y [aporte al informe](report/e2.md). |
 | **Steven Loaiza** | Desarrollar/validar los benchmarks, automatizar simulaciones y liderar **E3 (SVE)**. Facilitar programas a C y D; participar en E1 y E6. |  |
-| **Sary Vargas** | Liderar **E4**, evaluar 1/2/4/8 núcleos, calcular eficiencia y estimar la fracción serial con Amdahl. Coordinar el avance de resultados E1–E3. | |
+| **Sary Vargas** | Liderar **E4**, evaluar 1, 2, 4 y 8 nucleos, calcular la eficiencia y estimar la fracción serial con Amdahl. Coordinar el avance de resultados de E6. | [Script de reproducción](scripts/reproducir_e4.sh), [resultados oficiales](results/e4/), [comparación i-k-j](results/e4_comparacion/) y [aporte al informe](report/e4.md). |
 | **Tomas Campos** | Liderar **E5**, comparar protocolos de coherencia y cuantificar el falso compartido, con y sin relleno. |  |
 
 
@@ -114,7 +114,7 @@ Proyecto_2_Arqui/
 
 Por otra parte, la carpeta [configs/](configs/README.md) documenta las distintas configuraciones de E1, E2 y E3. Asimismos, los scripts de ejecucion
 individual y barrido estan en la ruta `scripts/`. A su vez, la carpeta [report/](report/README.md) incluye los aportes de [E1](report/e1.md),
-[E2](report/e2.md) y [E3](report/e3.md) para el informe grupal.
+[E2](report/e2.md), [E3](report/e3.md) y [E4](report/e4.md) para el informe grupal.
 
 Archivos del entorno Docker y sus pruebas:
 
@@ -573,7 +573,30 @@ Finalmente, el mensaje `REPRODUCCION_E3_OK CSV=3 FIGURAS=2` confirma que termino
 - [GEMM paralelo por filas](docs/gemm_paralelo.md). 4 corridas en el simulador gem5 con un tamano de N=16 y 1, 2, 4 y 8 hilos. [Evidencia publicada](results/validation/gemm_paralelo_n16.BJhgEJ/).
 - [Falso compartido](docs/falso_compartido.md). 4 corridas en el simulador gem5 con 2 nucleos, con y sin relleno de 64 bytes, usando MESI y MOESI. [Evidencia publicada](results/validation/falso_compartido_n2.0e1qLs/).
 
-Quedan pendientes los barridos de rendimiento de los experimentos E4 y E5 y las instrucciones de ejecucion de E6.
+
+#### E4. Multiprocesador con el GEMM paralelo por filas
+
+El experimento E4 mide matrices de tamaños de N = 64 y de N = 128 con 1, 2, 4 y 8 nucleos en ArmO3CPU de ancho 2 y un hilo por nucleo. Asimismo, el barrido
+oficial usa el archivo de la ruta: `src/gemm_paralelo.c`. Es importante mencionar que la variante que se encuentra en la ruta: `src/gemm_paralelo_ikj.c` se ejecuto con las
+mismas configuraciones para comparar el efecto del orden de los bucles.
+
+Por otra parte, desde la raíz del repositorio en Ubuntu, con el Docker, la imagen ARM de la sección 6, el Python 3 y la herramienta de Matplotlib instalados, ejecutar el siguiente
+comando:
+
+```bash
+bash scripts/reproducir_e4.sh
+```
+
+Este script invoca el contenedor para las simulaciones correspondientes. Asimismo, este script por defecto va a reutilizar las corridas validas disponibles y regenera los
+resumenes y los diversos graficos del experimento. Finalmente, el mensaje en pantalla de `E4 COMPLETO` confirma la comprobacion final del experimento E4.
+
+- [CSV del barrido oficial](results/e4/summary/e4_metricas.csv)
+- [Gráfico de speedup medido, ideal y ajustado con Amdahl](results/e4/summary/e4_speedup.png)
+- [Comparación con i-k-j](results/e4_comparacion/e4_comparacion.md)
+- [Informe de E4](report/e4.md)
+
+Quedan pendientes el barrido de rendimiento de E5 y las instrucciones de ejecucion de E6.
+
 
 ### 9) Resultados y reproducibilidad
 
@@ -678,4 +701,5 @@ documentacion de los mismo. Antes de subir cambios se debe revisar la lista de l
 - GEMM paralelo por filas implementado y validado en gem5 con un tamano de N=16 y 1, 2, 4 y 8 hilos.
 - Falso compartido implementado y validado en el simulador gem5 con Ruby. Las 4 corridas con 2 nucleos y 1000 incrementos por hilo pasaron con el mensaje de CHECK=PASS y se tuvo 0 errores: MESI y MOESI, con y sin relleno de 64 bytes.
 - E1: 6 corridas validadas, el archivo CSV, el grafico correspondiente, el analisis y la reproduccion del experimento con un solo comando.
-- Experimentos pendientes: E4–E6.
+- E4 completado: 8 corridas oficiales y 8 corridas de la variante `i-k-j` validadas y publicadas en el repositorio, con el archivo CSV, los graficos correspondientes, el ajuste de Amdahl y [análisis de resultados](report/e4.md).
+- Pendientes: barrido de rendimiento de E5 e instrucciones de ejecución de E6.
