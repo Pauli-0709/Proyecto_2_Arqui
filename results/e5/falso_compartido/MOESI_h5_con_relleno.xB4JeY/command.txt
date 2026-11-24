@@ -1,0 +1,1 @@
+/opt/gem5/build/ARM_MOESI/gem5.opt -d /work/results/e5/falso_compartido/MOESI_h5_con_relleno.xB4JeY /opt/gem5/configs/deprecated/example/se.py --ruby --cpu-type=ArmTimingSimpleCPU --num-cpus=5 --cacheline_size=64 --mem-size=512MiB -c /work/bin/e5/falso_compartido_arm -o 5\ con_relleno\ 100000 

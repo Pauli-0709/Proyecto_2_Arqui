@@ -1,0 +1,1 @@
+/opt/gem5/build/ARM_MESI/gem5.opt -d /work/results/e5/falso_compartido/MESI_h3_sin_relleno.ZASJQd /opt/gem5/configs/deprecated/example/se.py --ruby --cpu-type=ArmTimingSimpleCPU --num-cpus=3 --cacheline_size=64 --mem-size=512MiB -c /work/bin/e5/falso_compartido_arm -o 3\ sin_relleno\ 100000 
