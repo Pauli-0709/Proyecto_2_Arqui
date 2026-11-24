@@ -1,0 +1,2 @@
+/usr/lib/gcc-cross/aarch64-linux-gnu/11/../../../../aarch64-linux-gnu/bin/ld: /usr/lib/gcc-cross/aarch64-linux-gnu/11/libgomp.a(oacc-profiling.o): in function `goacc_profiling_initialize':
+(.text+0x7d4): warning: Using 'dlopen' in statically linked applications requires at runtime the shared libraries from the glibc version used for linking
