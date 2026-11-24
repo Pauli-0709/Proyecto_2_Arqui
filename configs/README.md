@@ -69,10 +69,10 @@ no existen, debe ejecutar las corridas respectivas.
 Por otro lado, los detalles de ejecucion y del ajuste utilizado estan en
 [la documentacion del experimento E2](../docs/experimento_superescalar.md).
 
-Finalmente, desde la raiz del repositorio en Ubuntu, se ejecuta el comando `bash scripts/arm_env.sh bash scripts/reproducir_e2.sh` el cual ejecuta
-las 24 corridas del experimento en interes y regenera los 2 archivos CSV y los 2 graficos correspondientes. Asimismo, para poder calcular la ocupacion
-de la IQ y del ROB, el script llega a reutilizar las muestras publicadas en la ruta `results/e2/ocupacion/`. De la misma manera el [analisis de E2](../docs/experimento_superescalar.md)
-explica los resultados obtenidos.
+Finalmente, desde la raiz del repositorio, se debe ejecutar el siguiente comando: `bash scripts/arm_env.sh bash scripts/reproducir_e2.sh`. Este script
+verifica las 24 corridas cuando ya estan publicadas y ejecuta las configuraciones cuyas carpetas faltan. Asimismo, el script regenera los 2 archivos CSV
+y los 2 graficos. A su vez, el resumen correspondiente de ocupacion de IQ y de ROB usa las muestras guardadas en la ruta `results/e2/ocupacion/`. Por ultimo, el
+[analisis de E2](../docs/experimento_superescalar.md) explica los diversos resultados y el alcance de esa ventana de medicion en especifico.
 
 ## Configuracion implementada para E3
 

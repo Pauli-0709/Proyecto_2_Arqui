@@ -38,7 +38,7 @@ una tarea no se marca como completada unicamente porque exista una carpeta o un 
 | Verificar ejecucion inicial en ARM | Paulina Camacho | Completado | 2026-11-04 | results/environment/ |
 | Validar GEMM escalar | Steven Loaiza | Completado | 2026-11-07 | results/validation/gemm_scalar_native/ y gemm_scalar_n16/ |
 | Repetir validacion ARM desde el entorno de Paulina Camacho | Paulina Camacho | Completado | 2026-11-07 | results/validation/paulina_gemm_scalar_n16/ |
-| Ejecutar y analizar línea base | Steven Loaiza y Paulina Camacho | Pendiente | Por acordar | TimingSimple, Minor y O3; N=64 y N=128 |
+| Ejecutar y analizar la linea base de experimento E1 | Steven Loaiza y Paulina Camacho | Completado | 2026-11-23 | [Seis corridas](../results/e1/resumen_linea_base.csv), [grafico de IPC y ciclos](../results/e1/grafico_linea_base.png) e [informe y reproduccion](../report/e1.md). |
 | Preparar la configuracion O3 parametrizable | Paulina Camacho | Completado | 2026-11-08 | Se publico la configuracion para el superescalar y se uso en las 24 corridas correspondientes para el experimento E2. |
 | Preparar la automatizacion y la extraccion de las diversas metricas | Paulina Camacho y Steven Loaiza | En curso | 2026-11-21 | [Extractor comun de ROI](../scripts/parse_stats.py), [resumen de E2](../scripts/resumir_e2.py), [CSV de E2](../results/e2/summary/) y [CSV de E3](../results/e3/summary/). |
 | Ejecutar el barrido completo | Paulina Camacho | Completado | 2026-11-08 | Se publicaron las diferentes 24 corridas del experimento E2, 12 para un tamano de N=64 y 12 para un tamano de N=128. |
