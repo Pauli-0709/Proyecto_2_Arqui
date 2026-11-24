@@ -39,7 +39,7 @@ interés (ROI), marcada mediante el uso de las instrucciones m5_reset_stats() y 
 
 | Experimento | Qué se estudia | Variantes y métricas principales | Liderazgo |
 | --- | --- | --- | --- |
-| **E1: línea base** | Procesadores TimingSimple, Minor y O3 | 1 núcleo; ciclos, IPC, CPI y fallos de caché L1D/L2 | Paulina Camacho y Steven |
+| **E1: línea base** | Procesadores TimingSimple, Minor y O3 | 1 núcleo; ciclos, IPC, CPI y fallos de caché L1D/L2 | Paulina Camacho y Steven Loaiza |
 | **E2: superescalar** | Paralelismo a nivel de instrucciones | Anchos 1, 2, 4 y 8; ROB 32, 64 y 192; IPC, ocupación IQ/ROB y predicción | Paulina Camacho |
 | **E3: vectorial** | Extensiones SVE | Escalar frente a SVE; VL de 128, 256, 384, 512, 640, 768, 896 y 1024 bits, ciclos, instrucciones y *speedup* | Steven Loaiza |
 | **E4: multinúcleo** | Memoria compartida y escalabilidad | 1, 2, 4 y 8 núcleos O3; *speedup*, eficiencia y fallos L2 | Sary Vargas |
@@ -67,9 +67,10 @@ es importante indicar que las guías detalladas permanecen en docs/ y en los doc
 | **Sary Vargas** | Liderar **E4**, evaluar 1, 2, 4 y 8 nucleos, calcular la eficiencia y estimar la fracción serial con Amdahl. Coordinar el avance de resultados de E6. | [Script de reproducción](scripts/reproducir_e4.sh), [resultados oficiales](results/e4/), [comparación i-k-j](results/e4_comparacion/) y [aporte al informe](report/e4.md). |
 | **Tomas Campos** | Liderar **E5**, comparar protocolos de coherencia y cuantificar el falso compartido, con y sin relleno. |  |
 
+Paulina Camacho y Steven Loaiza realizaron el experimento E1 en conjunto. Ademas, Sary Vargas y Tomas Campos estan a cargo del experimento E6.
 
-Actividades compartidas: E1, E6, revisión de resultados, informe IEEE, presentación/video, coevaluación y actividades individuales de 
-aprendizaje continuo AC1–AC4. Todos deben poder explicar los resultados del equipo.
+Finalmente, la revision de distintos resultados, el informe IEEE y la presentacion en video son tareas del equipo, cada integrante debe completar sus actividades 
+correspondientes a AC1 a AC4 y la coevaluacion.
 
 ### 4) Tecnologías y requisitos
 - Ubuntu nativo o en WSL2 (entorno de trabajo propuesto).

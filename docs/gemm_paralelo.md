@@ -23,4 +23,4 @@ Ademas, si OpenMP falla al iniciar los hilos en modo SE, el enunciado indica usa
 
 Por otra parte, esta guia valida el programa con matrices de tamano de N = 16. A su vez, el barrido de rendimiento del experimento E4 usa un tamano de N = 64 y un tamano de N = 128
 con 1, 2, 4 y 8 nucleos. Asimismo, el [informe de E4](../report/e4.md) reune la configuracion utilizada en el experimento, los diversos resultados obtenidos y su interpretacion
-correspondiente. Finalmente, el [README principal](../README.md#e4-multiprocesador-con-gemm-paralelo-por-filas) documenta como se puede reproducir el barrido con un solo comando.
+correspondiente. Finalmente, el [README principal](../README.md#e4-multiprocesador-con-el-gemm-paralelo-por-filas) documenta como se puede reproducir el barrido con un solo comando.
