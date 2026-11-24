@@ -56,6 +56,11 @@ una tarea no se marca como completada unicamente porque exista una carpeta o un 
 | Generar los graficos y las conclusiones para el experimento E3 | Steven Loaiza | Completado | 2026-11-19 | Se publico el grafico  y termino las conclusiones correspondientes y se logran visualizar en: `docs/experimento_vectorial.md`. |
 | Implementar y validar el GEMM paralelo | Steven Loaiza | Completado | 2026-11-18 | [Guia de prueba](gemm_paralelo.md). Las 4 corridas con un tamano de N=16 y 1, 2, 4 y 8 hilos dieron el mensaje de `CHECK=PASS`. [Evidencia publicada](../results/validation/gemm_paralelo_n16.BJhgEJ/). |
 | Implementar y validar el falso compartido | Steven Loaiza | Completado | 2026-11-18 | [Guia de prueba](falso_compartido.md). Las 4 corridas con Ruby dieron el mensanje de `CHECK=PASS` con 2 nucleos, MESI y MOESI, con y sin relleno. [Evidencia publicada](../results/validation/falso_compartido_n2.0e1qLs/). |
+| Repetir la validacion del GEMM paralelo para el experimento E4 | Sary Vargas | Completado | 2026-11-23 | [Validacion de N=16](../results/validation/gemm_paralelo_n16.SxJQKd/) con 1, 2, 4 y 8 hilos. Las pruebas nativas y en gem5 dieron `CHECK=PASS`. |
+| Automatizar y ejecutar el barrido multiprocesador del experimento E4 | Sary Vargas | Completado | 2026-11-23 | [Script del barrido](../scripts/barrido_multiprocesador.sh) y [ocho corridas base](../results/e4/) para N=64 y N=128, con 1, 2, 4 y 8 nucleos ArmO3 de ancho de emision 2. |
+| Calcular el speedup, la eficiencia, los fallos de L2 y la fraccion serial de E4 | Sary Vargas | Completado | 2026-11-23 | [CSV de metricas](../results/e4/summary/e4_metricas.csv), [resumen con el ajuste de Amdahl](../results/e4/summary/e4_resumen.md) y [grafico de speedup medido contra el ideal](../results/e4/summary/e4_speedup.png). |
+| Comparar el GEMM base con la variante i-k-j | Sary Vargas | Completado | 2026-11-23 | [Ocho corridas de la variante](../results/e4_ikj/) y [comparacion de tiempos y cache](../results/e4_comparacion/e4_comparacion.md). Para N=128 y 8 nucleos, la variante fue 2,40 veces mas rapida que el GEMM base. |
+| Publicar la reproduccion del experimento E4 con un solo comando | Sary Vargas | Completado | 2026-11-23 | [Script de reproduccion](../scripts/reproducir_e4.sh) y [registro de la validacion y regeneracion del analisis](../results/e4_reproduccion/reproducir.log). |
 
 ## Coordinacion
 
@@ -73,7 +78,8 @@ una tarea no se marca como completada unicamente porque exista una carpeta o un 
 | 2026-11-08 | Publicacion del barrido del experimento E2 | Realizado | Se publicaron las 24 corridas correspondientes, 12 para un tamano de N=64 y 12 para un tamano de N=128. |
 | 2026-11-12 | Publicacion de los resultados del experimento E3 | Realizado | Se publicaron los diversos CSV y el grafico de speedup correspondiente. |
 | 2026-11-19 | Cierre del analisis del experimento E3 | Realizado | Se publicaron el comando del barrido completo y las conclusiones. |
-| 2026-11-23 | Revision de avances del equipo | Por hacer | Se revisaran los avances de los experimentos E2 a E5 y se acordaran los pendientes del informe. |
+| 2026-11-23 | Revision de avances del equipo | Realizado | Se revisaran los avances de los experimentos E2 a E5 y se acordaran los pendientes del informe. |
+| 2026-11-23 | Publicacion de los resultados del experimento E4 | Realizado | Sary Vargas publico las 16 corridas, las metricas, el ajuste de Amdahl, los distntos graficos y el script de reproduccion correspondiente. |
 | 2026-11-26 | Revision de resultados para el informe | Por hacer | Se revisaran las metricas y los graficos del experimento E2 y se comprobara que el informe incluya los resultados del experimento de E3. |
 | 2026-11-29 | Revision final del proyecto | Por hacer | Se revisaran el informe, el video y el repositorio antes de la entrega. |
 | 2026-11-30 | Entrega del proyecto | Por hacer | Se entregaran los archivos y enlaces solicitados. |

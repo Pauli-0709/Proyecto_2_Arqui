@@ -2,37 +2,12 @@
 Instituto Tecnológico de Costa Rica (TEC) · Arquitectura de Computadoras · Proyecto grupal #2
 
 Este repositorio contiene los diversos programas, configuraciones, scripts y evidencias las cuales son necesarias para estudiar el rendimiento de la 
-multiplicación de matrices densas (GEMM, C = A × B) utilizando la herramienta de  simulacion gem5, en modo System-call Emulation (SE) sobre 
+multiplicación de matrices (GEMM, C = A × B) utilizando la herramienta de  simulacion gem5, en modo System-Call Emulation (SE) sobre la 
 arquitectura AArch64 implementada con ARMv8.
 
 Asimismo, el presente trabajo analiza el paralelismo a nivel de instrucciones, el ancho superescalar y el búfer de reordenamiento (ROB), 
 wla vectorización Arm SVE, la ejecución multinúcleo y la coherencia de memoria. El objetivo final es recomendar una arquitectura respaldada 
 por las diversas mediciones de GEMM y teniendo en cuenta una restricción de costo.
-
-Estado del proyecto: entorno del Docker ARM preparado y el GEMM escalar validado. Asimismo, el barrido de E2 esta completado y publicado: 24 
-corridas, las cuales corresponden a 12 configuraciones para un tamano de N=64 y 12 para un tamano de N=128.
-
-Par otra parte, para el experimento E2 se publicaron el [CSV de rendimiento](results/e2/summary/e2_metricas.csv) y el [CSV de ocupacion](results/e2/summary/e2_ocupacion.csv).
-Ademas, la ocupacion del IQ y del ROB se logro medir durante los 1024 ciclos centrales de la ROI de cada una de las corridas. Asimismo, los [graficos](results/e2/figures/)
-y el [analisis del IPC](docs/experimento_superescalar.md) estan disponibles en el repositorio.
-
-Por otro lado, la validacion funcional de GEMM SVE esta completada en el simulador de gem5 con un nucleo ArmO3CPU. Ademas, se publicaron 16 pruebas para
-un tamano de N=16 y N=17, utilizando las longitudes vectoriales de 128 a 1024 bits en incrementos de 128 bits cada una de ellas. A su vez, todas terminaron
-con la impresion en pantalla del CHECK=PASS y  errores=0.
-
-El experimento E3 ya esta completado. Este experimento se implemento y valido el GEMM SVE y de la misma manera, se publicaron las 32 corridas de rendimiento, 
-16 para un tamano de  N=64 y 16 para un tamano de N=128. A su vez, cada pareja escalar/SVE uso la misma configuracion de hardware en sus pruebas respectivas, 
-con un VL de 128, 256, 384, 512, 640, 768, 896 y 1024 bits.
-
-A su vez, los distitnos CSV generados para la region de interes y las 16 comparaciones de speedup ejecutadas estan en la ruta `results/e3/summary/`. Asimismo, el 
-barrido completo, la generacion de los CSV y las figuras y por ultimo, las conclusiones estan documentados en la seccion del experimento E3.
-
-Finalmente, las secciones 6 y 7 van a explicar como poder preparar y poder validar el entorno correspondiente. Ademas, la seccion 8 explica como se puede verificar
-las 24 corridas realizadas para el experimento E2 y poder de este manera regenerar sus 2 CSV y sus 2 graficos con un solo comando respectivamente.
-
-
-La documentacion detallada se puede observar y analizar en:
-[Experimento E2: arquitectura superescalar](docs/experimento_superescalar.md).
 
 # Tabla de contenido
 1. Integrantes
@@ -58,21 +33,21 @@ El presente proyecto es desarrollado por los siguientes estudiantes:
 
 ### 2) Objetivos y experimentos
 Se utilizan programas disenados utilizando el lenguage de programacion C, matrices float de tamaño N × N y compilación estática AArch64. 
-De la misma manera, los tamaños oficiales principales son N = 64 y N = 128. Por otra parte, las mediciones se realizan sobre la región de 
-interés (ROI), marcada mediante m5_reset_stats() y m5_dump_stats().
+De la misma manera, los tamaños oficiales principales son de N = 64 y de N = 128. Por otra parte, las mediciones se realizan sobre la región de 
+interés (ROI), marcada mediante el uso de las instrucciones m5_reset_stats() y m5_dump_stats().
 
 
 | Experimento | Qué se estudia | Variantes y métricas principales | Liderazgo |
 | --- | --- | --- | --- |
-| **E1: línea base** | Procesadores TimingSimple, Minor y O3 | 1 núcleo; ciclos, IPC, CPI y fallos de caché L1D/L2 | Equipo completo |
+| **E1: línea base** | Procesadores TimingSimple, Minor y O3 | 1 núcleo; ciclos, IPC, CPI y fallos de caché L1D/L2 | Paulina Camacho y Steven |
 | **E2: superescalar** | Paralelismo a nivel de instrucciones | Anchos 1, 2, 4 y 8; ROB 32, 64 y 192; IPC, ocupación IQ/ROB y predicción | Paulina Camacho |
 | **E3: vectorial** | Extensiones SVE | Escalar frente a SVE; VL de 128, 256, 384, 512, 640, 768, 896 y 1024 bits, ciclos, instrucciones y *speedup* | Steven Loaiza |
 | **E4: multinúcleo** | Memoria compartida y escalabilidad | 1, 2, 4 y 8 núcleos O3; *speedup*, eficiencia y fallos L2 | Sary Vargas |
 | **E5: coherencia** | MESI, MOESI y falso compartido | `MESI_Two_Level` y `MOESI_CMP_directory`; invalidaciones, mensajes y latencias | Tomas Campos |
-| **E6: integración** | Selección de arquitectura | Al menos 6 configuraciones con costo ≤ 32 y GEMM con `N = 128` | Equipo completo |
+| **E6: integración** | Selección de arquitectura | Al menos 6 configuraciones con costo ≤ 32 y GEMM con `N = 128` | Sary Vargas y Tomas Campos |
 
 
-Modelo de costo del enunciado:
+#### Modelo de costo del enunciado:
 Costo = # de núcleos × (ancho_de_emisión / 2 + VL(longitud_vectorial)_en_bits / 128)
 Costo máximo = 32 unidades
 
@@ -105,7 +80,7 @@ aprendizaje continuo AC1–AC4. Todos deben poder explicar los resultados del eq
 - Espacio de disco y memoria suficientes para compilar gem5, asimismo la capacidad requerida depende del equipo y del nivel de paralelismo de la compilación respectiva.
 
 #### Entorno compartido del Docker
-El entorno está disponible como una imagen Docker ya compilada. Asimismo, para usarlo, cada integrante necesita Docker funcionando y la 
+El entorno está disponible como una imagen Docker ya compilada. Asimismo, para usarlo, cada integrante necesita tener el Docker funcionando y la 
 herramienta de Git, de la misma manera no necesita instalar gem5, SCons ni el compilador AArch64 por separado en Ubuntu.
 
 | Elemento | Configuración |
