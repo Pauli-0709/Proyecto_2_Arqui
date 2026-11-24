@@ -94,11 +94,16 @@ def extraer(carpeta, n, modelo, tipo):
 
     # Convierte la duracion de la ROI de ticks a ciclos y la guarda.
     ciclos = roi["simTicks"] / periodo
-    # Guarda las instrucciones simuladas en la ROI.
-    instrucciones = roi["simInsts"]
-    # Lee los contadores de las caches del primer bloque y actualiza la variable.
+
+    # Lee las estadisticas del primer bloque las cuales corresponde a la ROI.
     datos = primer_bloque(ruta)
 
+    # Guarda el total de instrucciones retiradas por el nucleo.
+    instrucciones = int(datos["system.cpu.commitStats0.numInsts"])
+
+    # Lee el IPC y el CPI que el simulador gem5 reporta para el nucleo.
+    ipc = datos["system.cpu.ipc"]
+    cpi = datos["system.cpu.cpi"]
 
     # Comprueba la presencia de ambas caches.
     for cache in ("system.cpu.dcache", "system.l2"):
@@ -123,7 +128,7 @@ def extraer(carpeta, n, modelo, tipo):
     # Devuelve la fila con sus ciclos, el IPC, el CPI y los datos de las 2 caches.
     return {
         "n": n, "cpu": modelo, "ciclos": ciclos, "ciclos_cpu": roi["system.cpu.numCycles"],
-        "instrucciones": instrucciones, "ipc": instrucciones / ciclos, "cpi": ciclos / instrucciones,
+		"instrucciones": instrucciones, "ipc": ipc, "cpi": cpi,
         "fallos_l1d": fallos_l1d, "accesos_l1d": accesos_l1d, "tasa_l1d_pct": tasa_l1d,
         "fallos_l2": fallos_l2, "accesos_l2": accesos_l2, "tasa_l2_pct": tasa_l2,
         "ticks_roi": roi["simTicks"], "periodo_ticks": periodo,
