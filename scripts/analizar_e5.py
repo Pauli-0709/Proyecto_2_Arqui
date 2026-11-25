@@ -19,10 +19,12 @@ from stats_gem5 import primer_bloque
 HILOS = range(2, 9)  # Usa las mismas configuraciones que el barrido.
 MODOS = ("con_relleno", "sin_relleno")
 TAMANOS = (64, 128)
+
 EVENTOS = {
-    "MESI": ("S.Inv", "M.Fwd_GETX"),
-    "MOESI": ("S.Inv", "O.Fwd_GETX", "MM.Fwd_GETX", "MM.Fwd_GETS"),
+    "MESI": ("S.Inv", "E.Inv", "E.Fwd_GETX", "M.Inv", "M.Fwd_GETX"),
+    "MOESI": ("S.Inv", "O.Fwd_GETX", "M.Fwd_GETX", "MM.Fwd_GETX", "MM.Fwd_GETS"),
 }
+
 L1 = "system.ruby.L1Cache_Controller."
 RED = "system.ruby.network.msg_count."
 LATENCIA = "system.ruby.m_missLatencyHistSeqr"
@@ -131,7 +133,7 @@ def graficar(carpeta, falso, gemm):
     # Define el nombre, los datos y la unidad de cada figura.
     medidas = (
         ("tiempos", "roi_seconds", "Tiempo de la ROI (ms)", 1000, False),
-        ("invalidaciones", "invalidaciones_estables", "Invalidaciones estables (eventos)", 1, True),
+        ("invalidaciones", "invalidaciones_estables", "Invalidaciones estables de L1 (eventos)", 1, True),
         ("trafico", "trafico_red_suma_msg_count", "Trafico de red (mensajes)", 1, True),
         ("latencia", "latencia_media_ciclos_secuenciador",
          "Latencia media de fallo (ciclos Ruby)", 1, False),
@@ -211,7 +213,7 @@ def resumir(ruta, falso, gemm):
     # Incluye las metricas de Ruby de las comparaciones de mayor numero de nucleos.
     lineas += [
         "", "## Coherencia con 8 nucleos", "",
-        "| Caso | Protocolo | Invalidaciones | Mensajes | Muestras | Latencia (ciclos Ruby) |",
+        "| Caso | Protocolo | Invalidaciones estables de L1 | Mensajes | Muestras | Latencia (ciclos Ruby) |",
         "| --- | --- | ---: | ---: | ---: | ---: |",
     ]
     for nombre, grupo, casos in (("Falso", falso, MODOS), ("GEMM", gemm, TAMANOS)):

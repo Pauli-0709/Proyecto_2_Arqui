@@ -596,8 +596,21 @@ resumenes y los diversos graficos del experimento. Finalmente, el mensaje en pan
 - [Comparación con i-k-j](results/e4_comparacion/e4_comparacion.md)
 - [Informe de E4](report/e4.md)
 
-Quedan pendientes el barrido de rendimiento de E5 y las instrucciones de ejecucion de E6.
+#### E5. Coherencia de memoria y falso compartido
 
+Este experimento en particular compara el MESI_Two_Level y el MOESI_CMP_directory con el Ruby y de 2 a 8 nucleos. Asimismo, el barrido ejecuta las 28 corridas de falso
+compartido con y sin relleno y las 28 corridas del GEMM paralelo con un tamano de N = 64 y con un tamano N = 128.
+
+De la misma manera, desde la raiz del repositorio en Ubuntu, con la imagen Docker del proyecto instalada, se debe ejecutar el siguiente comando:
+
+```bash
+bash scripts/arm_env.sh bash scripts/reproducir_e5.sh
+```
+
+Por otra parte, cada ejecucion genera las corridas en una carpeta nueva `.local/e5.*`. A su vez, la ruta final aparece como `SALIDA_E5`. De la misma forma, la carpeta
+`summary/` contiene los 3 archivos CSV y el resumen, y `figures/` contiene los 4 graficos correspondientes al experimento.
+
+- [Explicacion de la coherencia y el falso compartido](report/e5.md)
 
 ### 9) Resultados y reproducibilidad
 
@@ -703,4 +716,5 @@ documentacion de los mismo. Antes de subir cambios se debe revisar la lista de l
 - Falso compartido implementado y validado en el simulador gem5 con Ruby. Las 4 corridas con 2 nucleos y 1000 incrementos por hilo pasaron con el mensaje de CHECK=PASS y se tuvo 0 errores: MESI y MOESI, con y sin relleno de 64 bytes.
 - E1: 6 corridas validadas, el archivo CSV, el grafico correspondiente, el analisis y la reproduccion del experimento con un solo comando.
 - E4 completado: 8 corridas oficiales y 8 corridas de la variante `i-k-j` validadas y publicadas en el repositorio, con el archivo CSV, los graficos correspondientes, el ajuste de Amdahl y [análisis de resultados](report/e4.md).
-- Pendientes: barrido de rendimiento de E5 e instrucciones de ejecución de E6.
+- E5: el script permite ejecutar el barrido de las 56 corridas y poder generar los archivos CSV, los diversos graficos y el resumen correspondiente con un solo comando.
+- Pendiente: instrucciones de ejecucion de E6.
