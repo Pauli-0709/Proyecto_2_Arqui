@@ -159,6 +159,16 @@ int main(int argc, char *argv[]) // Esta funcion primero recibe N y el numero de
 
     printf("N=%d HILOS=%d HILOS_USADOS=%d CHECK=%s errores=%d\n", n, hilos, hilos_usados, correcto ? "PASS" : "FAIL", errores); // Print para generar el resultado de la prueba
 
+
+#if defined(USE_GEM5) && defined(E5_RUBY) // Activa esta salida solo para el GEMM del experimento E5.
+    if (fflush(stdout) == EOF || !correcto) { // Escribe el resultado y comunica un fallo si corresponde.
+        m5_fail(0, EXIT_FAILURE); // Termina la simulacion con un error.
+    } else {
+        m5_exit(0); // Termina la simulacion Ruby antes del cierre normal de OpenMP.
+    }
+#endif
+
+
 	//Se libera la memoria
     free(a); // Libera la matriz A
     free(b); // Libera la matriz B
