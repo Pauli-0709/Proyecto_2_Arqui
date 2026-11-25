@@ -29,8 +29,15 @@ python3 -c 'import matplotlib' # Comprueba las graficas.
 
 mkdir -p .local bin # Prepara las carpetas de trabajo local para guardar la corrida.
 salida=$(mktemp -d .local/e5.XXXXXX) # Crea una salida nueva para cada una de las ejecuciones.
-binarios="bin/${salida##*/}" # Guarda los binarios por separado.
-mkdir "$binarios" # Reserva la carpeta de binarios de esta corrida.
+
+# Evita que 2 ejecuciones escriban sobre los mismos binarios al mismo tiempo.
+exec 9>.local/e5_reproducible.lock
+flock -n 9 || error "ya hay una ejecucion de E5 en este clon"
+
+# Usa la misma ruta de los binarios dentro del Docker en todas las corridas.
+binarios="bin/e5_reproducible"
+mkdir -p "$binarios"
+
 printf 'SALIDA_E5=%s\n' "$salida" # Muestra la ruta en pantalla.
 
 

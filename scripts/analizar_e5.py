@@ -2,12 +2,16 @@
 
 import csv
 import sys
+from math import isfinite, log10
 from pathlib import Path
 
 import matplotlib
 
 matplotlib.use("Agg")  # Dibuja los graficos sin abrir una ventana.
 import matplotlib.pyplot as plt
+from matplotlib.ticker import (
+    FuncFormatter, LogLocator, MaxNLocator, ScalarFormatter, SymmetricalLogLocator,
+)
 
 from parse_stats import METRICAS_GLOBALES, extraer_fila
 from stats_gem5 import primer_bloque
@@ -69,32 +73,106 @@ def escribir_csv(ruta, filas, columnas):
 
 #----------------------------------------------------------------------
 
+def ajustar_eje_y(eje, etiqueta, es_conteo):
+
+    # Toma los valores validos de todas las curvas de este panel.
+    valores = [
+        valor
+        for curva in eje.get_lines()
+        for valor in curva.get_ydata()
+        if isfinite(valor)
+    ]
+    eje.set_ylabel(etiqueta)
+    if not valores:
+        return
+
+    minimo, maximo = min(valores), max(valores)
+    if minimo > 0 and maximo >= 100 * minimo:
+
+        # Usar la escala logaritmica si los valores abarcan 2 decadas o mas.
+        margen = 0.07 * (log10(maximo) - log10(minimo))
+        eje.set_yscale("log")
+        eje.set_ylim(minimo / 10**margen, maximo * 10**margen)
+        eje.yaxis.set_major_locator(LogLocator(base=10))
+        eje.set_ylabel(f"{etiqueta}\nEscala logaritmica")
+    elif minimo == 0 and maximo >= 100:
+
+        # Conserva el 0 cuando tambien hay valores de varios tamanos.
+        eje.set_yscale("symlog", linthresh=1)
+        eje.set_ylim(0, 1.25 * maximo)
+        eje.yaxis.set_major_locator(SymmetricalLogLocator(base=10, linthresh=1))
+        eje.set_ylabel(f"{etiqueta}\nEscala semilogaritmica con cero")
+    else:
+
+        # Acerca el eje a los datos y deja espacio alrededor de los puntos.
+        margen = 0.10 * (maximo - minimo or abs(maximo) or 1)
+        if es_conteo:
+            margen = max(margen, 1)
+        inferior = max(0, minimo - margen) if minimo >= 0 else minimo - margen
+        eje.set_ylim(inferior, maximo + margen)
+        eje.yaxis.set_major_locator(
+            MaxNLocator(nbins=6, integer=es_conteo, min_n_ticks=2)
+        )
+        if es_conteo:
+
+            # Mostrar conteos enteros.
+            eje.yaxis.set_major_formatter(
+                FuncFormatter(lambda valor, _: f"{valor:,.0f}".replace(",", " "))
+            )
+        else:
+            formato = ScalarFormatter(useOffset=False)
+            formato.set_scientific(False)
+            eje.yaxis.set_major_formatter(formato)
+
+#--------------------------------------------------------------------------
+
 def graficar(carpeta, falso, gemm):
 
-    # Dibuja 3 ventanas para grafico por cada metrica: falso compartido, GEMM con tamano de N=64 y GEMM con tamano de N=128.
+    # Define el nombre, los datos y la unidad de cada figura.
     medidas = (
-        ("tiempos", "roi_seconds", "Tiempo de la ROI (ms)", 1000),
-        ("invalidaciones", "invalidaciones_estables", "Invalidaciones estables", 1),
-        ("trafico", "trafico_red_suma_msg_count", "Mensajes de red sumados por tipo", 1),
-        ("latencia", "latencia_media_ciclos_secuenciador", "Latencia de fallo (ciclos Ruby)", 1),
+        ("tiempos", "roi_seconds", "Tiempo de la ROI (ms)", 1000, False),
+        ("invalidaciones", "invalidaciones_estables", "Invalidaciones estables (eventos)", 1, True),
+        ("trafico", "trafico_red_suma_msg_count", "Trafico de red (mensajes)", 1, True),
+        ("latencia", "latencia_media_ciclos_secuenciador",
+         "Latencia media de fallo (ciclos Ruby)", 1, False),
     )
-    for nombre, columna, etiqueta, factor in medidas:
-        figura, ejes = plt.subplots(1, 3, figsize=(13, 4), constrained_layout=True)
-        for protocolo in EVENTOS:
+    colores = {"MESI": "#2563a6", "MOESI": "#ad460f"}
+    titulos = ("Falso compartido", "GEMM N=64", "GEMM N=128")
+
+    for nombre, columna, etiqueta, factor, es_conteo in medidas:
+        figura, ejes = plt.subplots(
+            1, 3, figsize=(15, 4.7), constrained_layout=True
+        )
+        for protocolo, color in colores.items():
             for modo in MODOS:
-                valores = [float(falso[protocolo, h, modo][columna]) * factor for h in HILOS]
-                ejes[0].plot(HILOS, valores, "o-", label=f"{protocolo} {modo.replace('_', ' ')}")
+                valores = [
+                    float(falso[protocolo, h, modo][columna]) * factor for h in HILOS
+                ]
+
+                # Usa el mismo color por protocolo y distingue los modos con el trazo.
+                estilo = "o--" if modo == "con_relleno" else "s-"
+                ejes[0].plot(
+                    HILOS, valores, estilo, color=color, markersize=5,
+                    label=f"{protocolo} {modo.replace('_', ' ')}",
+                )
             for eje, n in zip(ejes[1:], TAMANOS):
                 valores = [float(gemm[protocolo, h, n][columna]) * factor for h in HILOS]
-                eje.plot(HILOS, valores, "o-", label=protocolo)
-        for eje, titulo in zip(ejes, ("Falso compartido", "GEMM N=64", "GEMM N=128")):
-            eje.set(title=titulo, xlabel="Nucleos", ylabel=etiqueta, xticks=list(HILOS))
-            if nombre in {"invalidaciones", "trafico"}:
-                eje.set_yscale("symlog", linthresh=1)
-            eje.legend()
+                eje.plot(HILOS, valores, "o-", color=color, markersize=5, label=protocolo)
+
+        for eje, titulo in zip(ejes, titulos):
+
+            # Ajusta la escala de cada panel y muestra sus valores y su cuadricula respectiva.
+            eje.set(title=titulo, xlabel="Nucleos / hilos", xticks=list(HILOS))
+            ajustar_eje_y(eje, etiqueta, es_conteo)
+            eje.tick_params(axis="y", labelleft=True)
+            eje.set_axisbelow(True)
+            eje.grid(True, which="major", axis="both", color="0.85", linewidth=0.7)
+
+            # Colocar la leyenda debajo del panel para dejar libres las curvas.
+            eje.legend(loc="upper center", bbox_to_anchor=(0.5, -0.18), ncol=2, fontsize=9)
+
         figura.savefig(carpeta / f"e5_{nombre}.png", dpi=160)
         plt.close(figura)
-
 
 #-------------------------------------------------------
 def resumir(ruta, falso, gemm):
