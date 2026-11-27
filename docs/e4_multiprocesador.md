@@ -8,16 +8,16 @@ Se midió cuánto aceleran 1, 2, 4 y 8 núcleos ArmO3CPU (ancho 2) al GEMM paral
 
 ## Objetivo y metodología
 
-Se evaluo la escalabilidad del GEMM paralelo la cual fue efectuada por filas para las matrices de tamaños N = 64 y de N = 128. Asimismo OpenMP distribuyo las
-filas completas de la matriz de salida con un hilo por nucleo simulado. A su vez, se usaron 1, 2, 4 y 8 nucleos de ArmO3CPU a una frecuencia de 2 GHz y con un
-ancho 2. Por ultimo, la configuracion mantuvo un ROB de 192 entradas, una IQ de 64 entradas, caches L1I y L1D de 32 KiB por nucleo y una cache L2 compartida
+Se evaluó la escalabilidad del GEMM paralelo, la cual fue efectuada por filas para las matrices de tamaños N = 64 y N = 128. Asimismo, OpenMP distribuyó las
+filas completas de la matriz de salida con un hilo por núcleo simulado. A su vez, se usaron 1, 2, 4 y 8 núcleos de ArmO3CPU a una frecuencia de 2 GHz y con un
+ancho 2. Por último, la configuración mantuvo un ROB de 192 entradas, una IQ de 64 entradas, cachés L1I y L1D de 32 KiB por núcleo y una caché L2 compartida
 de 256 KiB.
 
-Por otra parte, el barrido oficial uso la programacion que se encuentra en la ruta `src/gemm_paralelo.c`. Asimismo, las 8 corridas terminaron con el mensaje en
-pantalla de `CHECK=PASS`, 0 errores y la cantidad esperada de hilos activos. A su vez, las diversas metricas se extrajeron del primer bloque del archivo
-`stats.txt` el cual corresponde a la region de interes (ROI). De la misma manera, esa region incluye el calculo y la gestion del equipo de hilos. De la misma
-forma, el *speedup* se calculo con la ecuacion: `T₁ / Tₚ`, donde `T₁` es el tiempo simulado con un nucleo para el mismo tamaño de matriz. Finalmente, la
-eficiencia se calculo como el `speedup / p`, donde `p` es el numero de nucleos.
+Por otra parte, el barrido oficial usó la programación que se encuentra en la ruta `src/gemm_paralelo.c`. Asimismo, las 8 corridas terminaron con el mensaje en
+pantalla de `CHECK=PASS`, 0 errores y la cantidad esperada de hilos activos. A su vez, las diversas métricas se extrajeron del primer bloque del archivo
+`stats.txt`, el cual corresponde a la región de interés (ROI). De la misma manera, esa región incluye el cálculo y la gestión del equipo de hilos. De la misma
+forma, el *speedup* se calculó con la ecuación `T₁ / Tₚ`, donde `T₁` es el tiempo simulado con un núcleo para el mismo tamaño de matriz. Finalmente, la
+eficiencia se calculó como el `speedup / p`, donde `p` es el número de núcleos.
 
 ### Hardware simulado y métricas
 
@@ -29,7 +29,7 @@ eficiencia se calculo como el `speedup / p`, donde `p` es el numero de nucleos.
 
 ## Resultados del barrido oficial
 
-| N | Nucleos | Tiempo de la ROI (ms) | Speedup | Eficiencia | Fallos L2 | Tasa de fallos L2 |
+| N | Núcleos | Tiempo de la ROI (ms) | Speedup | Eficiencia | Fallos L2 | Tasa de fallos L2 |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | 64 | 1 | 0,821 | 1,000× | 100,00 % | 70 | 0,9515 % |
 | 64 | 2 | 0,421 | 1,950× | 97,51 % | 258 | 4,3907 % |
@@ -40,10 +40,10 @@ eficiencia se calculo como el `speedup / p`, donde `p` es el numero de nucleos.
 | 128 | 4 | 2,307 | 2,787× | 69,67 % | 525 | 0,0433 % |
 | 128 | 8 | 1,996 | 3,221× | 40,26 % | 846 | 0,0724 % |
 
-En primer lugar para un tamano de N = 64, el *speedup* con 8 nucleos fue de 6,730× frente al ideal de 8×. En segundo lugar, para un tamano de N = 128, la
-ejecucion con 2 nucleos se acerco al ideal, pero la eficiencia cayo a 40,26 % con 8 nucleos. Es importante mencionar que para este ultimo caso, la tasa de
-fallos de L1D fue de 39,14 % y se registraron 1 168 442 accesos a la cache L2. A su vez, el desbalance de ciclos entre nucleos fue de 0,92 %. Estas mediciones
-apuntan a un costo importante de los diversos accesos a la jerarquia de cache teniendo muy poca diferencia de ciclos entre los distintos nucleos.
+En primer lugar, para un tamaño de N = 64, el *speedup* con 8 núcleos fue de 6,730× frente al ideal de 8×. En segundo lugar, para un tamaño de N = 128, la
+ejecución con 2 núcleos se acercó al ideal, pero la eficiencia cayó a 40,26 % con 8 núcleos. Es importante mencionar que, para este último caso, la tasa de
+fallos de L1D fue de 39,14 % y se registraron 1 168 442 accesos a la caché L2. A su vez, el desbalance de ciclos entre núcleos fue de 0,92 %. Estas mediciones
+apuntan a un costo importante de los diversos accesos a la jerarquía de caché, con muy poca diferencia de ciclos entre los distintos núcleos.
 
 ![Speedup medido, ideal y ajustado con Amdahl](../results/e4/summary/e4_speedup.png)
 
@@ -52,27 +52,27 @@ apuntan a un costo importante de los diversos accesos a la jerarquia de cache te
 ### Análisis de la caída con N = 128
 
 - **No es desbalance de carga:** la diferencia de ciclos entre núcleos fue de 0,92 %.
-- **Sí hay mucho tráfico de cache:** con 8 núcleos, la tasa de fallos de L1D fue de 39,14 % y hubo 1 168 442 accesos a L2.
+- **Sí hay mucho tráfico de caché:** con 8 núcleos, la tasa de fallos de L1D fue de 39,14 % y hubo 1 168 442 accesos a L2.
 - **Causa más probable:** el programa recorre B por columnas con un paso de 512 bytes (128 elementos de 4 bytes). En una L1D de 2 vías, esas direcciones caen en pocos conjuntos y tienden a expulsarse entre sí (fallos por conflicto) [2]. Esto es compatible con los datos, pero **no se aisló con un experimento de control**, por lo que se presenta como hipótesis.
 
-## Estimacion con la ley de Amdahl
+## Estimación con la ley de Amdahl
 
-Se ajusto el modelo con la ecuacion: `1/S(p) = f + (1 − f)/p` por mínimos cuadrados sobre el inverso del *speedup* para 2, 4 y 8 nucleos. A su vez, la fracción
-serial efectiva `f` fue de **2,51 % para un tamano de N = 64** y **15,66 % para un tamano de N = 128**. Asimismo, la maxima desviacion relativa del modelo
+Se ajustó el modelo con la ecuación `1/S(p) = f + (1 − f)/p` por mínimos cuadrados sobre el inverso del *speedup* para 2, 4 y 8 núcleos. A su vez, la fracción
+serial efectiva `f` fue de **2,51 % para un tamaño de N = 64** y **15,66 % para un tamaño de N = 128**. Asimismo, la máxima desviación relativa del modelo
 fue de 1,12 % y 18,49 %, respectivamente.
 
-Para un tamano de N = 128, la estimacion por la configuracion subio de un 1,29 % con 2 nucleos a 21,20 % con 8 nucleos. Por esta razon, el 15,66 % resume el
-comportamiento del barrido, pero a su vez, una fraccion serial constante describe de forma limitada las mediciones de ese tamano en particular.
+Para un tamaño de N = 128, la estimación por configuración subió de 1,29 % con 2 núcleos a 21,20 % con 8 núcleos. Por esta razón, el 15,66 % resume el
+comportamiento del barrido, pero, a su vez, una fracción serial constante describe de forma limitada las mediciones de ese tamaño en particular.
 
-**Interpretación.** La `f` ajustada no representa solo código secuencial: absorbe cualquier pérdida que crezca con el número de núcleos, como el tráfico de cache [3]. Por eso, con N = 128, la `f` calculada punto por punto cambia con `p` y el modelo se desvía 18,49 %.
+**Interpretación.** La `f` ajustada no representa solo código secuencial: absorbe cualquier pérdida que crezca con el número de núcleos, como el tráfico de caché [3]. Por eso, con N = 128, la `f` calculada punto por punto cambia con `p` y el modelo se desvía 18,49 %.
 
-## Comparacion adicional con la variante i-k-j
+## Comparación adicional con la variante i-k-j
 
-La variante de la programacion que se encuentra en la ruta `src/gemm_paralelo_ikj.c` mantuvo el reparto por las filas y la misma cambio el orden de los bucles
-para poder recorrer de forma contigua las filas de B y C. A su vez, en el caso de una matriz con un tamano de N = 128 con 8 nucleos, el tiempo simulado paso de
-1,996 ms a 0,831 ms, donde se observa una mejora de 2,40× entre las implementaciones. Asimismo, la tasa de fallos de la cache L1D bajo de un 39,14 % a un 5,51 %
-y los accesos a la cache L2 pasaron de 1 168 442 a 21 746, aunque es importante mencionar que el numero de fallos de L2 aumento de 846 a 1 104. De la misma manera,
-el *speedup* de la variante calculado con su propia ejecucion de un nucleo fue de 7,779×.
+La variante de la programación que se encuentra en la ruta `src/gemm_paralelo_ikj.c` mantuvo el reparto por las filas y cambió el orden de los bucles
+para poder recorrer de forma contigua las filas de B y C. A su vez, en el caso de una matriz con un tamaño de N = 128 con 8 núcleos, el tiempo simulado pasó de
+1,996 ms a 0,831 ms, donde se observa una mejora de 2,40× entre las implementaciones. Asimismo, la tasa de fallos de la caché L1D bajó de un 39,14 % a un 5,51 %
+y los accesos a la caché L2 pasaron de 1 168 442 a 21 746, aunque es importante mencionar que el número de fallos de L2 aumentó de 846 a 1 104. De la misma manera,
+el *speedup* de la variante, calculado con su propia ejecución de un núcleo, fue de 7,779×.
 
 | Métrica (N = 128, 8 núcleos) | Oficial | Variante i-k-j |
 | --- | ---: | ---: |
@@ -95,24 +95,24 @@ Los accesos a L2 bajaron unas 54 veces. Cambiar solo el patrón de acceso elimin
 - La explicación por fallos de conflicto en L1D es una hipótesis compatible con los datos; no se hizo un experimento de control (por ejemplo, aumentar la asociatividad de L1D).
 - La variante i-k-j no es el programa oficial. Se usa solo para comparar.
 
-## Conclusion
+## Conclusión
 
-Con 8 núcleos, el GEMM oficial conservó el 84,12 % de eficiencia para un tamano de N = 64 y el 40,26 % para un tamano de N = 128. Asimismo, con el mismo
+Con 8 núcleos, el GEMM oficial conservó el 84,12 % de eficiencia para un tamaño de N = 64 y el 40,26 % para un tamaño de N = 128. Asimismo, con el mismo
 hardware y el mismo tamaño de N = 128, el haber cambiado el orden de los bucles redujo el tiempo simulado a 0,831 ms. A su vez, la comparación muestra que el
-patron de acceso a memoria influye directamente en cuanto rendimiento se obtiene al agregar los nucleos. En este experimento, ese patrón influyó más en el escalamiento que el número de núcleos: con la variante, la eficiencia con 8 núcleos subió a 97,2 %.
+patrón de acceso a memoria influye directamente en cuánto rendimiento se obtiene al agregar los núcleos. En este experimento, ese patrón influyó más en el escalamiento que el número de núcleos: con la variante, la eficiencia con 8 núcleos subió a 97,2 %.
 
-## Reproduccion
+## Reproducción
 
-Desde la raíz del repositorio en Ubuntu, con el Docker, la imagen ARM del proyecto, Python 3 y la herramienta Matplotlib instalados, ejecutar el siguiente
+Desde la raíz del repositorio en Ubuntu, con Docker, la imagen ARM del proyecto, Python 3 y la herramienta Matplotlib instalados, ejecutar el siguiente
 comando:
 
 ```bash
 bash scripts/reproducir_e4.sh
 ```
 
-Tambien es importante mencionar, que el script llama al contenedor para validar y poder simular el experimento. Ademas este reutiliza las corridas validas por
-defecto y regenera los archivos CSV, los graficos correspondientes y la comparacion a realizar. Finalmente, la comprobación final muestra en pantalla el
-mensaje de `E4 COMPLETO`, para una ejecucion del experimento en forma correcta.
+También es importante mencionar que el script llama al contenedor para validar y poder simular el experimento. Además, este reutiliza las corridas válidas por
+defecto y regenera los archivos CSV, los gráficos correspondientes y la comparación a realizar. Finalmente, la comprobación final muestra en pantalla el
+mensaje de `E4 COMPLETO`, para una ejecución del experimento en forma correcta.
 
 [Datos oficiales](../results/e4/) · [Datos de la variante i-k-j](../results/e4_ikj/) · [Registro de reproducción](../results/e4_reproduccion/reproducir.log)
 
