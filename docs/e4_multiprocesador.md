@@ -53,7 +53,7 @@ apuntan a un costo importante de los diversos accesos a la jerarquía de caché,
 
 - **No es desbalance de carga:** la diferencia de ciclos entre núcleos fue de 0,92 %.
 - **Sí hay mucho tráfico de caché:** con 8 núcleos, la tasa de fallos de L1D fue de 39,14 % y hubo 1 168 442 accesos a L2.
-- **Causa más probable:** el programa recorre B por columnas con un paso de 512 bytes (128 elementos de 4 bytes). En una L1D de 2 vías, esas direcciones caen en pocos conjuntos y tienden a expulsarse entre sí (fallos por conflicto) [2]. Esto es compatible con los datos, pero **no se aisló con un experimento de control**, por lo que se presenta como hipótesis.
+- **Causa más probable:** el programa recorre por columnas con un paso de 512 bytes (128 elementos de 4 bytes). En una L1D de 2 vías, esas direcciones caen en pocos conjuntos y tienden a expulsarse entre sí (fallos por conflicto) [2]. Esto es compatible con los datos, pero **no se aisló con un experimento de control**, por lo que se presenta como hipótesis.
 
 ## Estimación con la ley de Amdahl
 
@@ -69,7 +69,7 @@ comportamiento del barrido, pero, a su vez, una fracción serial constante descr
 ## Comparación adicional con la variante i-k-j
 
 La variante de la programación que se encuentra en la ruta `src/gemm_paralelo_ikj.c` mantuvo el reparto por las filas y cambió el orden de los bucles
-para poder recorrer de forma contigua las filas de B y C. A su vez, en el caso de una matriz con un tamaño de N = 128 con 8 núcleos, el tiempo simulado pasó de
+para poder recorrer de forma contigua las filas. A su vez, en el caso de una matriz con un tamaño de N = 128 con 8 núcleos, el tiempo simulado pasó de
 1,996 ms a 0,831 ms, donde se observa una mejora de 2,40× entre las implementaciones. Asimismo, la tasa de fallos de la caché L1D bajó de un 39,14 % a un 5,51 %
 y los accesos a la caché L2 pasaron de 1 168 442 a 21 746, aunque es importante mencionar que el número de fallos de L2 aumentó de 846 a 1 104. De la misma manera,
 el *speedup* de la variante, calculado con su propia ejecución de un núcleo, fue de 7,779×.
