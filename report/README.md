@@ -27,6 +27,7 @@ el enlace al grafico.
 
 - [E4. Escalabilidad de GEMM en un multiprocesador](e4.md). Este archivo incluye los resultados con 1, 2, 4 y 8 nucleos, ademas el analisis de eficiencia y
 los diversos fallos de L2, su estimacion correspondiente de la fraccion serial con Amdahl y la comparacion realizada con la variante `i-k-j`.
+- [E6. Integración y exploración con presupuesto de costo](https://github.com/Pauli-0709/Proyecto_2_Arqui/blob/main/report/e6.md). Este archivo incluye las 12 configuraciones evaluadas con costo máximo de 32 (N = 128), la mejor configuración por tiempo y por rendimiento/costo, el frente de Pareto, el análisis de sensibilidad (N = 256 y presupuesto de 16), el control de alineamiento de memoria y la propuesta final.
 
 
 El informe grupal en formato IEEE sigue pendiente de integracion.
