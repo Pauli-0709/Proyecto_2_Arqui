@@ -1,0 +1,2 @@
+bin/e6/gemm_paralelo_sve_malloc: ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), statically linked, BuildID[sha1]=9c7ccd40b61785e92887fb1de8ff5eba7ad07214, for GNU/Linux 3.7.0, not stripped
+-rwxr-xr-x 1 1000 1000 882336 Nov 27 21:54 bin/e6/gemm_paralelo_sve_malloc

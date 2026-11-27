@@ -1,0 +1,3 @@
+n,id,nucleos,ancho,vl_bits,costo,roi_ms,rendimiento_por_costo,speedup_vs_base,l1d_fallos_pct,instrucciones,pareto,dentro_presupuesto
+128,c01_1n_w2_vl512,1,2,512,5.0,0.7144280000000001,0.2799442351083664,1.0,52.95079980610761,1062957,True,True
+128,c02_1n_w2_vl1024,1,2,1024,9.0,0.5336219999999999,0.20822063391522672,1.3388278594210887,59.578741140250685,533549,True,True

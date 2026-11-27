@@ -1,0 +1,127 @@
+00000000004037a0 <gemm_sve_omp>:
+  4037a0:	d10183ff 	sub	sp, sp, #0x60
+  4037a4:	b00005e5 	adrp	x5, 4c0000 <tunable_list+0x4f8>
+  4037a8:	aa0003e8 	mov	x8, x0
+  4037ac:	aa0203e7 	mov	x7, x2
+  4037b0:	aa0303e6 	mov	x6, x3
+  4037b4:	2a0103e2 	mov	w2, w1
+  4037b8:	a9047bfd 	stp	x29, x30, [sp, #64]
+  4037bc:	910103fd 	add	x29, sp, #0x40
+  4037c0:	910023e1 	add	x1, sp, #0x8
+  4037c4:	f945e0a5 	ldr	x5, [x5, #3008]
+  4037c8:	f9002bf3 	str	x19, [sp, #80]
+  4037cc:	52800003 	mov	w3, #0x0                   	// #0
+  4037d0:	9100c3f3 	add	x19, sp, #0x30
+  4037d4:	f94000a0 	ldr	x0, [x5]
+  4037d8:	f9001fe0 	str	x0, [sp, #56]
+  4037dc:	d2800000 	mov	x0, #0x0                   	// #0
+  4037e0:	a9009fe8 	stp	x8, x7, [sp, #8]
+  4037e4:	90000000 	adrp	x0, 403000 <initialize_env+0x1a1c>
+  4037e8:	91238000 	add	x0, x0, #0x8e0
+  4037ec:	a90193e6 	stp	x6, x4, [sp, #24]
+  4037f0:	a902fff3 	stp	x19, xzr, [sp, #40]
+  4037f4:	940001a7 	bl	403e90 <GOMP_parallel>
+  4037f8:	d2800021 	mov	x1, #0x1                   	// #1
+  4037fc:	52800000 	mov	w0, #0x0                   	// #0
+  403800:	8b010262 	add	x2, x19, x1
+  403804:	91000421 	add	x1, x1, #0x1
+  403808:	385ff042 	ldurb	w2, [x2, #-1]
+  40380c:	0b020000 	add	w0, w0, w2
+  403810:	f100243f 	cmp	x1, #0x9
+  403814:	54ffff61 	b.ne	403800 <gemm_sve_omp+0x60>  // b.any
+  403818:	b00005e1 	adrp	x1, 4c0000 <tunable_list+0x4f8>
+  40381c:	f945e021 	ldr	x1, [x1, #3008]
+  403820:	f9401fe3 	ldr	x3, [sp, #56]
+  403824:	f9400022 	ldr	x2, [x1]
+  403828:	eb020063 	subs	x3, x3, x2
+  40382c:	d2800002 	mov	x2, #0x0                   	// #0
+  403830:	540000a1 	b.ne	403844 <gemm_sve_omp+0xa4>  // b.any
+  403834:	a9447bfd 	ldp	x29, x30, [sp, #64]
+  403838:	f9402bf3 	ldr	x19, [sp, #80]
+  40383c:	910183ff 	add	sp, sp, #0x60
+  403840:	d65f03c0 	ret
+  403844:	9400ecf7 	bl	43ec20 <__stack_chk_fail>
+  403848:	d503201f 	nop
+  40384c:	d503201f 	nop
+0000000000403850 <fila_sve>:
+  403850:	b4000420 	cbz	x0, 4038d4 <fila_sve+0x84>
+  403854:	9b017c01 	mul	x1, x0, x1
+  403858:	aa0303e7 	mov	x7, x3
+  40385c:	d37ef405 	lsl	x5, x0, #2
+  403860:	d2800006 	mov	x6, #0x0                   	// #0
+  403864:	8b000023 	add	x3, x1, x0
+  403868:	04a0e3ea 	cntw	x10
+  40386c:	d37ef421 	lsl	x1, x1, #2
+  403870:	0420e3e9 	cntb	x9
+  403874:	8b030843 	add	x3, x2, x3, lsl #2
+  403878:	8b010048 	add	x8, x2, x1
+  40387c:	8b010084 	add	x4, x4, x1
+  403880:	2518e3e2 	ptrue	p2.b
+  403884:	d503201f 	nop
+  403888:	aa0803e1 	mov	x1, x8
+  40388c:	aa0703e2 	mov	x2, x7
+  403890:	25a01cc1 	whilelo	p1.s, x6, x0
+  403894:	25b8c001 	mov	z1.s, #0
+  403898:	25814420 	mov	p0.b, p1.b
+  40389c:	d503201f 	nop
+  4038a0:	8540c822 	ld1rw	{z2.s}, p2/z, [x1]
+  4038a4:	91001021 	add	x1, x1, #0x4
+  4038a8:	a540a440 	ld1w	{z0.s}, p1/z, [x2]
+  4038ac:	8b050042 	add	x2, x2, x5
+  4038b0:	65828040 	fmul	z0.s, p0/m, z0.s, z2.s
+  4038b4:	65808001 	fadd	z1.s, p0/m, z1.s, z0.s
+  4038b8:	eb03003f 	cmp	x1, x3
+  4038bc:	54ffff21 	b.ne	4038a0 <fila_sve+0x50>  // b.any
+  4038c0:	e5464481 	st1w	{z1.s}, p1, [x4, x6, lsl #2]
+  4038c4:	8b0a00c6 	add	x6, x6, x10
+  4038c8:	8b0900e7 	add	x7, x7, x9
+  4038cc:	eb06001f 	cmp	x0, x6
+  4038d0:	54fffdc8 	b.hi	403888 <fila_sve+0x38>  // b.pmore
+  4038d4:	d65f03c0 	ret
+  4038d8:	d503201f 	nop
+  4038dc:	d503201f 	nop
+00000000004038e0 <gemm_sve_omp._omp_fn.0>:
+  4038e0:	a9bc7bfd 	stp	x29, x30, [sp, #-64]!
+  4038e4:	910003fd 	mov	x29, sp
+  4038e8:	a9025bf5 	stp	x21, x22, [sp, #32]
+  4038ec:	aa0003f5 	mov	x21, x0
+  4038f0:	a90153f3 	stp	x19, x20, [sp, #16]
+  4038f4:	f9001bf7 	str	x23, [sp, #48]
+  4038f8:	94000227 	bl	404194 <gomp_ialias_omp_get_thread_num>
+  4038fc:	a9405eb4 	ldp	x20, x23, [x21]
+  403900:	52800022 	mov	w2, #0x1                   	// #1
+  403904:	f94012a1 	ldr	x1, [x21, #32]
+  403908:	f9400ab6 	ldr	x22, [x21, #16]
+  40390c:	3820c822 	strb	w2, [x1, w0, sxtw]
+  403910:	f9400eb5 	ldr	x21, [x21, #24]
+  403914:	b40002d4 	cbz	x20, 40396c <gemm_sve_omp._omp_fn.0+0x8c>
+  403918:	93407c13 	sxtw	x19, w0
+  40391c:	94000215 	bl	404170 <gomp_ialias_omp_get_num_threads>
+  403920:	93407c00 	sxtw	x0, w0
+  403924:	9ac00a8c 	udiv	x12, x20, x0
+  403928:	9b00d180 	msub	x0, x12, x0, x20
+  40392c:	eb00027f 	cmp	x19, x0
+  403930:	54000283 	b.cc	403980 <gemm_sve_omp._omp_fn.0+0xa0>  // b.lo, b.ul, b.last
+  403934:	9b130193 	madd	x19, x12, x19, x0
+  403938:	8b13018c 	add	x12, x12, x19
+  40393c:	eb0c027f 	cmp	x19, x12
+  403940:	54000162 	b.cs	40396c <gemm_sve_omp._omp_fn.0+0x8c>  // b.hs, b.nlast
+  403944:	d503201f 	nop
+  403948:	aa1303e1 	mov	x1, x19
+  40394c:	aa1503e4 	mov	x4, x21
+  403950:	91000673 	add	x19, x19, #0x1
+  403954:	aa1603e3 	mov	x3, x22
+  403958:	aa1703e2 	mov	x2, x23
+  40395c:	aa1403e0 	mov	x0, x20
+  403960:	97ffffbc 	bl	403850 <fila_sve>
+  403964:	eb13019f 	cmp	x12, x19
+  403968:	54ffff08 	b.hi	403948 <gemm_sve_omp._omp_fn.0+0x68>  // b.pmore
+  40396c:	a94153f3 	ldp	x19, x20, [sp, #16]
+  403970:	a9425bf5 	ldp	x21, x22, [sp, #32]
+  403974:	f9401bf7 	ldr	x23, [sp, #48]
+  403978:	a8c47bfd 	ldp	x29, x30, [sp], #64
+  40397c:	1400006d 	b	403b30 <GOMP_barrier>
+  403980:	9100058c 	add	x12, x12, #0x1
+  403984:	d2800000 	mov	x0, #0x0                   	// #0
+  403988:	17ffffeb 	b	403934 <gemm_sve_omp._omp_fn.0+0x54>
+  40398c:	d503201f 	nop

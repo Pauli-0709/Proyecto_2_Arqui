@@ -1,0 +1,13 @@
+id,nucleos,ancho,vl_bits,justificacion
+c01_1n_w2_vl512,1,2,512,Base de referencia: 1 nucleo con SVE VL512; en E3 N=128 dio 0.461 ms (15.7x sobre escalar) y es el mejor VL por costo
+c02_1n_w2_vl1024,1,2,1024,E3 N=128: VL1024 dio 0.456 ms contra 0.461 ms de VL512; se prueba si 1% de mejora justifica casi el doble de costo
+c03_2n_w2_vl512,2,2,512,Escala c01 a 2 nucleos; E4 con acceso por filas mostro speedup 1.99 con 2 nucleos
+c04_4n_w2_vl256,4,2,256,VL256 (0.913 ms en E3) es casi igual a VL384 con menor costo; se compensa con mas nucleos
+c05_4n_w2_vl512,4,2,512,Combina VL512 con 4 nucleos; E4 acceso por filas dio speedup 3.96 con 4 nucleos
+c06_8n_w2_vl128,8,2,128,Maximo paralelismo con vector minimo; E4 acceso por filas dio speedup 7.78 con 8 nucleos
+c07_8n_w1_vl128,8,1,128,Ancho 1 ahorra 0.5 de costo por nucleo; E2 N=128 mostro IPC 0.859 contra 1.027 de ancho 2
+c08_4n_w4_vl256,4,4,256,E2 N=128 ROB192: ancho 4 da IPC 1.0325 contra 1.027 de ancho 2; se verifica si +1 de costo por nucleo se justifica
+c09_6n_w2_vl512,6,2,512,Mayor configuracion con VL512 dentro del presupuesto (costo 30); 128 filas no se reparten parejo entre 6 nucleos
+c10_2n_w2_vl1024,2,2,1024,Variante de VL1024 con 2 nucleos (costo 18) para comparar contra c05 (costo 20)
+c11_3n_w2_vl512,3,2,512,Punto intermedio de nucleos con VL512 y costo 15 (dentro del presupuesto 16)
+c12_8n_w2_vl256,8,2,256,Escala VL256 a 8 nucleos (costo 24) para ver si el ancho de banda de L2 limita antes que el computo

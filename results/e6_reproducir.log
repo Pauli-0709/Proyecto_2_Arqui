@@ -1,0 +1,47 @@
+c01_1n_w2_vl512      costo=5
+c02_1n_w2_vl1024     costo=9
+c03_2n_w2_vl512      costo=10
+c04_4n_w2_vl256      costo=12
+c05_4n_w2_vl512      costo=20
+c06_8n_w2_vl128      costo=16
+c07_8n_w1_vl128      costo=12
+c08_4n_w4_vl256      costo=16
+c09_6n_w2_vl512      costo=30
+c10_2n_w2_vl1024     costo=18
+c11_3n_w2_vl512      costo=15
+c12_8n_w2_vl256      costo=24
+MODELO_COSTO_OK CONFIGURACIONES=12
+Matplotlib created a temporary config/cache directory at /tmp/matplotlib-3jzl5m7l because the default path (/.config/matplotlib) is not a writable directory; it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+CORRIDA c01_1n_w2_vl512 (N=128 nucleos=1 ancho=2 VL=512)
+CORRIDA c02_1n_w2_vl1024 (N=128 nucleos=1 ancho=2 VL=1024)
+CORRIDA c03_2n_w2_vl512 (N=128 nucleos=2 ancho=2 VL=512)
+CORRIDA c04_4n_w2_vl256 (N=128 nucleos=4 ancho=2 VL=256)
+CORRIDA c05_4n_w2_vl512 (N=128 nucleos=4 ancho=2 VL=512)
+CORRIDA c06_8n_w2_vl128 (N=128 nucleos=8 ancho=2 VL=128)
+CORRIDA c07_8n_w1_vl128 (N=128 nucleos=8 ancho=1 VL=128)
+CORRIDA c08_4n_w4_vl256 (N=128 nucleos=4 ancho=4 VL=256)
+CORRIDA c09_6n_w2_vl512 (N=128 nucleos=6 ancho=2 VL=512)
+CORRIDA c10_2n_w2_vl1024 (N=128 nucleos=2 ancho=2 VL=1024)
+CORRIDA c11_3n_w2_vl512 (N=128 nucleos=3 ancho=2 VL=512)
+CORRIDA c12_8n_w2_vl256 (N=128 nucleos=8 ancho=2 VL=256)
+BARRIDO_E6_OK N=128 SALIDA=results/e6/n128
+Matplotlib created a temporary config/cache directory at /tmp/matplotlib-h48c4y_k because the default path (/.config/matplotlib) is not a writable directory; it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+ANALISIS_E6_OK N=128 PRESUPUESTO=32 CONFIGURACIONES=12
+CORRIDA c01_1n_w2_vl512 (N=256 nucleos=1 ancho=2 VL=512)
+CORRIDA c02_1n_w2_vl1024 (N=256 nucleos=1 ancho=2 VL=1024)
+CORRIDA c03_2n_w2_vl512 (N=256 nucleos=2 ancho=2 VL=512)
+CORRIDA c04_4n_w2_vl256 (N=256 nucleos=4 ancho=2 VL=256)
+CORRIDA c05_4n_w2_vl512 (N=256 nucleos=4 ancho=2 VL=512)
+CORRIDA c06_8n_w2_vl128 (N=256 nucleos=8 ancho=2 VL=128)
+CORRIDA c07_8n_w1_vl128 (N=256 nucleos=8 ancho=1 VL=128)
+CORRIDA c08_4n_w4_vl256 (N=256 nucleos=4 ancho=4 VL=256)
+CORRIDA c09_6n_w2_vl512 (N=256 nucleos=6 ancho=2 VL=512)
+CORRIDA c10_2n_w2_vl1024 (N=256 nucleos=2 ancho=2 VL=1024)
+CORRIDA c11_3n_w2_vl512 (N=256 nucleos=3 ancho=2 VL=512)
+CORRIDA c12_8n_w2_vl256 (N=256 nucleos=8 ancho=2 VL=256)
+BARRIDO_E6_OK N=256 SALIDA=results/e6/n256
+Matplotlib created a temporary config/cache directory at /tmp/matplotlib-3vty4gwq because the default path (/.config/matplotlib) is not a writable directory; it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+ANALISIS_E6_OK N=256 PRESUPUESTO=32 CONFIGURACIONES=12
+Matplotlib created a temporary config/cache directory at /tmp/matplotlib-nnq_q1dl because the default path (/.config/matplotlib) is not a writable directory; it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+ANALISIS_E6_OK N=128 PRESUPUESTO=16 CONFIGURACIONES=12
+REPRODUCCION_E6_OK TAMANOS="128 256"

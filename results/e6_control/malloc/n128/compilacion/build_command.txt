@@ -1,0 +1,1 @@
+aarch64-linux-gnu-gcc -std=c11 -O2 -Wall -Wextra -Werror -fopenmp -fno-tree-vectorize -fno-tree-slp-vectorize -ffp-contract=off -march=armv8-a+sve -msve-vector-bits=scalable -DE6_SIN_ALINEAR -static -DUSE_GEM5 -I/opt/gem5/include src/gemm_paralelo_sve.c /opt/gem5/util/m5/build/arm64/out/libm5.a -lm -o bin/e6/gemm_paralelo_sve_malloc 
