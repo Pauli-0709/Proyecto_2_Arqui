@@ -1,6 +1,6 @@
 # E6. Exploración de configuraciones bajo presupuesto
 
-**Responsable:** Sary Vargas 
+**Responsables:** Sary Vargas 
 
 ## Objetivo y metodología
 
@@ -16,7 +16,7 @@ Métricas: `rendimiento/costo = 1 / (tiempo en ms × costo)`; `speedup` frente a
 
 ## Protocolo de coherencia
 
-Las 24 corridas usan la jerarquía de caches clásica de gem5 (igual que E4) y no Ruby. La decisión se apoya en los datos de E5 con el GEMM paralelo (Ruby, 2 a 8 núcleos): MESI fue más rápido o igual que MOESI en los 14 pares medidos. Con N = 128 el cociente MOESI/MESI fue 1,42 con 2 núcleos (22,69 ms contra 15,94 ms) y 1,47 con 8 núcleos (6,10 ms contra 4,15 ms); con N = 64 fue entre 1,000 y 1,005. Además, el reparto por filas con memoria alineada a 64 bytes hace que cada fila de C (N × 4 bytes, múltiplo de 64) empiece en una línea de cache distinta, así que los hilos no escriben en una misma línea. Por eso el falso compartido, donde E5 mostró diferencias entre protocolos, no es el factor que decide en este kernel. Esto es un argumento con datos de otro experimento: no se midió el kernel SVE de E6 con Ruby.
+El enunciado incluye el protocolo en la pregunta del grupo, pero E6 no lo varió: las 24 corridas usan la jerarquía de cachés clásica de gem5 (igual que E4) y no Ruby. La decisión se apoya en los datos de E5 con el GEMM paralelo (Ruby, 2 a 8 núcleos): MESI fue más rápido o igual que MOESI en los 14 pares medidos. Con N = 128, el cociente MOESI/MESI fue 1,42 con 2 núcleos (22,69 ms contra 15,94 ms) y 1,47 con 8 núcleos (6,10 ms contra 4,15 ms); con N = 64 fue entre 1,000 y 1,005. Además, el reparto por filas con memoria alineada a 64 bytes hace que cada fila de C (N × 4 bytes, múltiplo de 64) empiece en una línea de caché distinta, así que los hilos no escriben en una misma línea. Por eso el falso compartido, donde E5 mostró diferencias entre protocolos, no es el factor que decide en este kernel. Esto es un argumento con datos de otro experimento: no se midió el kernel SVE de E6 con Ruby.
 
 ## Configuraciones evaluadas
 
@@ -63,10 +63,10 @@ Las 24 corridas usan la jerarquía de caches clásica de gem5 (igual que E4) y n
 ## Análisis de lo observado
 
 1. **El VL rindió más que los núcleos.** c03 (2 núcleos, VL512, costo 10) fue más rápida que c12 (8 núcleos, VL256, costo 24), que c04, c08, c06 y c07. Incluso c01 (1 núcleo) fue 1,21 veces más rápida que c06 (8 núcleos con VL128).
-2. **Los núcleos escalaron poco.** Con VL512 el speedup fue 1,95 con 2 núcleos (97,5 % de eficiencia), 2,50 con 3 (83,4 %), 2,41 con 4 (60,2 %) y 2,71 con 6 (45,2 %).
+2. **Los núcleos escalaron poco.** Con VL512, el speedup fue 1,95 con 2 núcleos (97,5 % de eficiencia), 2,50 con 3 (83,4 %), 2,41 con 4 (60,2 %) y 2,71 con 6 (45,2 %).
 3. **Con N = 256, 4 y 6 núcleos empataron.** c05 y c09 dieron 1,5835 ms y 1,5834 ms. El reparto estático da 64 filas por hilo con 4 núcleos y 43 con 6, así que si el tiempo dependiera solo del cómputo, 6 núcleos serían cerca de 1,5 veces más rápidos. No ocurrió, lo que apunta a que el límite está fuera de los núcleos. Es compatible con una L2 o memoria compartidas saturadas, pero este experimento no lo comprueba.
 4. **El ancho casi no importó.** Con 8 núcleos y VL128, ancho 1 contra ancho 2 dio 0,4849 ms contra 0,4882 ms (N = 128) y 4,3676 ms contra 4,3508 ms (N = 256). Con 4 núcleos y VL256, ancho 4 contra ancho 2 dio 0,2851 ms contra 0,2822 ms y 2,9802 ms contra 3,0419 ms. Las diferencias son de 2 % o menos, pero el ancho 4 cuesta 33 % más. Esto es coherente con E2, donde pasar de ancho 2 a 4 subió el IPC solo 0,5 % con N = 128.
-5. **La tasa de fallos de L1D fue alta (39 % a 55 %) en todas las configuraciones.** Con N = 128, B ocupa 64 KiB, el doble de la L1D de 32 KiB, así que cada fila de C vuelve a recorrer B desde la L2. Con VL1024 la tasa subió a 54 %, lo que coincide con lo visto en E3 al aumentar el VL.
+5. **La tasa de fallos de L1D fue alta (39 % a 55 %) en todas las configuraciones.** Con N = 128, B ocupa 64 KiB, el doble de la L1D de 32 KiB, así que cada fila de C vuelve a recorrer B desde la L2. Con VL1024, la tasa subió a 54 %, lo que coincide con lo visto en E3 al aumentar el VL.
 6. **VL1024 contra VL512 con un núcleo.** c02 fue 9,4 % más rápida que c01 en N = 128 (0,3643 ms contra 0,4023 ms) y 8,2 % en N = 256, con 80 % más de costo (9 contra 5). En E3 la diferencia había sido de 1 %.
 
 ## Sensibilidad
@@ -98,7 +98,7 @@ Se filtraron las mismas corridas con costo ≤ 16 (8 configuraciones): c01, c02,
 | c02 | 9 | 5,4951 | 0,0202 | 1,09 | 68,5 |
 | c01 | 5 | 5,9835 | 0,0334 | 1,00 | 52,9 |
 
-Con N = 256 la mejor configuración por rendimiento/costo sigue siendo c01 (0,0334), seguida de c03 (0,0329). Cambia la de menor tiempo con costo moderado: c05 (4 núcleos, costo 20) iguala a c09 (costo 30). Con N = 256, c11 (3 núcleos) queda en la quinta posición, mientras que con N = 128 era la segunda.
+Con N = 256, la mejor configuración por rendimiento/costo sigue siendo c01 (0,0334), seguida de c03 (0,0329). Cambia la de menor tiempo con costo moderado: c05 (4 núcleos, costo 20) iguala a c09 (costo 30). Con N = 256, c11 (3 núcleos) queda en la quinta posición, mientras que con N = 128 era la segunda.
 
 N = 1024 no se simuló: implica unas 512 veces el trabajo de N = 128 y no era viable en el tiempo disponible. Por eso N = 256 es solo un indicio de tendencia, no una medición de N = 1024.
 
@@ -116,7 +116,7 @@ Alternativas según el objetivo:
 | --- | --- | --- |
 | Solo importa rendimiento/costo | c01 (costo 5) | Primera con ambos N y ambos presupuestos |
 | Menor tiempo con costo ≤ 16 | c11 (costo 15) | 0,1607 ms con N = 128 |
-| Menor tiempo con costo ≤ 32 | c09 (costo 30) | 0,1485 ms con N = 128; con N = 256 c05 le iguala con 2/3 del costo |
+| Menor tiempo con costo ≤ 32 | c09 (costo 30) | 0,1485 ms con N = 128; con N = 256 c05 lo iguala con 2/3 del costo |
 
 La decisión final es del equipo. Los datos no indican que gastar más de 20 de costo ayude con estos tamaños.
 
@@ -155,4 +155,4 @@ El script valida el modelo de costo, compila el kernel, comprueba que contiene i
 
 [1] R. Jain, *The Art of Computer Systems Performance Analysis*. Wiley, 1991.
 [2] J. L. Hennessy y D. A. Patterson, *Computer Architecture: A Quantitative Approach*, 6.ª ed. Morgan Kaufmann, 2019, cap. 1 (costo y rendimiento).
-[3] Demás referencias (gem5, SVE, OpenMP): ver [report/e6.md](../report/e6.md).
+[3] Las demás referencias (gem5, SVE, OpenMP): ver [report/e6.md](../report/e6.md).
