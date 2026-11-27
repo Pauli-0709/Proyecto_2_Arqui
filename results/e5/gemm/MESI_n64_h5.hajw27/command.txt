@@ -1,1 +1,0 @@
-/opt/gem5/build/ARM_MESI/gem5.opt -d /work/results/e5/gemm/MESI_n64_h5.hajw27 /opt/gem5/configs/deprecated/example/se.py --ruby --cpu-type=ArmTimingSimpleCPU --num-cpus=5 --cacheline_size=64 --mem-size=512MiB -c /work/bin/e5/gemm_paralelo_arm -o 64\ 5 

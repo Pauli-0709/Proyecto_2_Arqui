@@ -1,1 +1,0 @@
-/opt/gem5/build/ARM_MOESI/gem5.opt -d /work/results/e5/gemm/MOESI_n64_h6.AqUIBQ /opt/gem5/configs/deprecated/example/se.py --ruby --cpu-type=ArmTimingSimpleCPU --num-cpus=6 --cacheline_size=64 --mem-size=512MiB -c /work/bin/e5/gemm_paralelo_arm -o 64\ 6 
