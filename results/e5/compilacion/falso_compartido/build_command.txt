@@ -1,0 +1,1 @@
+aarch64-linux-gnu-gcc -O2 -Wall -Wextra -Werror -fopenmp -std=c11 -static -DUSE_GEM5 -I/opt/gem5/include src/falso_compartido.c /opt/gem5/util/m5/build/arm64/out/libm5.a -lm -o bin/e5_reproducible/falso_arm 

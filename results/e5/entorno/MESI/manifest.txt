@@ -1,0 +1,5 @@
+fecha=2026-11-27T00:39:30+00:00
+commit=c13aadce1ad4b31c5aaf6172949bebe0bd1f82b0
+archivos_modificados=0
+host=Linux 6.18.58.1-microsoft-standard-WSL2 x86_64 nproc=8
+gem5_bin=/opt/gem5/build/ARM_MESI/gem5.opt
