@@ -1,0 +1,4 @@
+estado=PASS
+esperado=HILOS=5 HILOS_USADOS=5 MODO=con_relleno ITERACIONES=100000 ESPERADO=500000 CHECK=PASS errores=0
+bloques_stats=2
+motivo=ninguno

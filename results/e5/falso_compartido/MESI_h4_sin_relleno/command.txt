@@ -1,0 +1,1 @@
+/opt/gem5/build/ARM_MESI/gem5.opt -d .local/e5.BEIQhA/falso_compartido/MESI_h4_sin_relleno /opt/gem5/configs/deprecated/example/se.py --ruby --cpu-type=ArmTimingSimpleCPU --num-cpus=4 --cacheline_size=64 --mem-size=512MiB -c /work/bin/e5_reproducible/falso_arm -o 4\ sin_relleno\ 100000

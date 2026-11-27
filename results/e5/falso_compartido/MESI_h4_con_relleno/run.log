@@ -1,0 +1,52 @@
+warn: The se.py script is deprecated. It will be removed in future releases of  gem5.
+warn: L1Cache_Controller is deprecated. Use MESI_Two_Level_L1Cache_Controller instead
+warn: L1Cache_Controller is deprecated. Use MESI_Two_Level_L1Cache_Controller instead
+warn: L1Cache_Controller is deprecated. Use MESI_Two_Level_L1Cache_Controller instead
+warn: L1Cache_Controller is deprecated. Use MESI_Two_Level_L1Cache_Controller instead
+warn: L2Cache_Controller is deprecated. Use MESI_Two_Level_L2Cache_Controller instead
+warn: Directory_Controller is deprecated. Use MESI_Two_Level_Directory_Controller instead
+Global frequency set at 1000000000000 ticks per second
+src/mem/dram_interface.cc:690: warn: DRAM device capacity (8192 Mbytes) does not match the address range assigned (512 Mbytes)
+src/base/statistics.hh:279: warn: One of the stats is a legacy stat. Legacy stat is a stat that does not belong to any statistics::Group. Legacy stat is deprecated.
+src/base/statistics.hh:279: warn: One of the stats is a legacy stat. Legacy stat is a stat that does not belong to any statistics::Group. Legacy stat is deprecated.
+system.remote_gdb: Listening for connections on port 7000
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 24.1.0.1
+gem5 compiled Nov  5 2026 01:31:20
+gem5 started Nov 27 2026 00:45:19
+gem5 executing on 2c90bc421b97, pid 705
+command line: /opt/gem5/build/ARM_MESI/gem5.opt -d .local/e5.BEIQhA/falso_compartido/MESI_h4_con_relleno /opt/gem5/configs/deprecated/example/se.py --ruby --cpu-type=ArmTimingSimpleCPU --num-cpus=4 --cacheline_size=64 --mem-size=512MiB -c /work/bin/e5_reproducible/falso_arm -o '4 con_relleno 100000'
+
+**** REAL SIMULATION ****
+src/sim/simulate.cc:199: info: Entering event queue @ 0.  Starting simulation...
+src/mem/ruby/system/Sequencer.cc:704: warn: Replacement policy updates recently became the responsibility of SLICC state machines. Make sure to setMRU() near callbacks in .sm files!
+src/sim/syscall_emul.cc:86: warn: ignoring syscall set_robust_list(...)
+src/sim/syscall_emul.cc:97: warn: ignoring syscall rseq(...)
+      (further warnings will be suppressed)
+src/sim/mem_state.cc:448: info: Increasing stack size by one page.
+src/arch/arm/insts/pseudo.cc:174: warn: 	instruction 'bti' unimplemented
+src/sim/syscall_emul.cc:86: warn: ignoring syscall mprotect(...)
+src/sim/syscall_emul.cc:86: warn: ignoring syscall sched_getaffinity(...)
+src/sim/syscall_emul.cc:86: warn: ignoring syscall rt_sigaction(...)
+src/sim/syscall_emul.cc:97: warn: ignoring syscall rt_sigprocmask(...)
+      (further warnings will be suppressed)
+src/sim/syscall_emul.cc:86: warn: ignoring syscall mprotect(...)
+src/sim/power_state.cc:105: warn: PowerState: Already in the requested power state, request ignored
+src/arch/arm/isa.hh:214: warn: User mode does not have SPSR
+src/arch/arm/isa.hh:214: warn: User mode does not have SPSR
+src/sim/syscall_emul.cc:86: warn: ignoring syscall set_robust_list(...)
+src/sim/syscall_emul.cc:86: warn: ignoring syscall mprotect(...)
+src/arch/arm/insts/pseudo.cc:174: warn: 	instruction 'bti' unimplemented
+src/arch/arm/isa.hh:214: warn: User mode does not have SPSR
+src/arch/arm/isa.hh:214: warn: User mode does not have SPSR
+src/sim/syscall_emul.cc:86: warn: ignoring syscall set_robust_list(...)
+src/sim/syscall_emul.cc:86: warn: ignoring syscall mprotect(...)
+src/arch/arm/insts/pseudo.cc:174: warn: 	instruction 'bti' unimplemented
+src/arch/arm/isa.hh:214: warn: User mode does not have SPSR
+src/arch/arm/isa.hh:214: warn: User mode does not have SPSR
+src/sim/syscall_emul.cc:86: warn: ignoring syscall set_robust_list(...)
+src/arch/arm/insts/pseudo.cc:174: warn: 	instruction 'bti' unimplemented
+HILOS=4 HILOS_USADOS=4 MODO=con_relleno ITERACIONES=100000 ESPERADO=400000 CHECK=PASS errores=0
+Exiting @ tick 894980500 because m5_exit instruction encountered

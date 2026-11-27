@@ -1,0 +1,4 @@
+estado=PASS
+esperado=N=64 HILOS=5 HILOS_USADOS=5 CHECK=PASS errores=0
+bloques_stats=2
+motivo=ninguno
