@@ -118,7 +118,7 @@ Alternativas según el objetivo:
 | Menor tiempo con costo ≤ 16 | c11 (costo 15) | 0,1607 ms con N = 128 |
 | Menor tiempo con costo ≤ 32 | c09 (costo 30) | 0,1485 ms con N = 128; con N = 256 c05 lo iguala con 2/3 del costo |
 
-La decisión final es del equipo. Los datos no indican que gastar más de 20 de costo ayude con estos tamaños.
+
 
 ## Limitaciones
 
