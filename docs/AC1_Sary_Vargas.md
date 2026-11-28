@@ -1,11 +1,8 @@
 # AC1. Plan de aprendizaje individual: autoevaluación de competencias
 
 **Estudiante:** Sary Vargas
-**Fecha:** [AAAA-MM-DD, semana 1]
+**Fecha:** [semana 1]
 
-> **Antes de entregar:** los niveles de esta matriz son una propuesta basada en lo que se observa de tu trabajo (por ejemplo, cuánta ayuda necesitaste para cada herramienta). Cámbialos si tu punto de partida real fue distinto. Esta matriz es el diagnóstico inicial; AC4 la repite al final.
-
-**Escala:** 0 = no conozco el tema. 1 = lo conozco y lo uso con ayuda. 2 = lo uso solo en tareas conocidas. 3 = puedo explicarlo y adaptarlo a casos nuevos.
 
 ## 1. Matriz de competencias (diagnóstico inicial)
 
