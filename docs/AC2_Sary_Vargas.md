@@ -26,9 +26,13 @@
 ## Fuentes
 
 [1] M. Weidmann, "Introducing the Scalable Matrix Extension for the Armv9-A Architecture," Arm Community, 14 de julio de 2021. https://developer.arm.com/community/arm-community-blogs/b/architectures-and-processors-blog/posts/scalable-matrix-extension-armv9-a-architecture
+
 [2] Arm, *SME Programmer's Guide*, versión 1.0, documento 109246_0100_01_en, 2024.
+
 [3] RISC-V International, *RISC-V Ratified Specifications Library* (extensión vectorial "V"). https://docs.riscv.org/reference/home/index.html
+
 [4] M. Perotti et al., "A 'New Ara' for Vector Computing: An Open Source Highly Efficient RISC-V V 1.0 Vector Processor Design," arXiv:2210.08882.
+
 [5] gem5 project, *Learning gem5*. https://www.gem5.org/documentation/learning_gem5/introduction/
 
 ## Uso de IA
