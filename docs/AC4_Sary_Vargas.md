@@ -17,7 +17,7 @@ Los niveles iniciales son los de la matriz de AC1 y se usa la misma escala de 0 
 | 4 | gem5 en modo SE | 0 | 2 | Armé el comando de E4 y E6 y verifiqué el hardware efectivo en `config.ini` |
 | 5 | ROI y métricas de `stats.txt` | 1 | 2 | Extraje speedup, eficiencia, fallos de L1D/L2 y desbalance por núcleo |
 | 6 | Microarquitectura superescalar | 1 | 2 | Usé los datos de E2 para justificar los anchos 1, 2 y 4 de E6 |
-| 7 | Vectorización y SVE | 1 | 2 | SE desarrolló un kernel SVE con OpenMP y comprobé que el binario tiene `fmul`/`fadd` sobre registros `z` |
+| 7 | Vectorización y SVE | 1 | 2 | Se desarrolló un kernel SVE con OpenMP y comprobé que el binario tiene `fmul`/`fadd` sobre registros `z` |
 | 8 | OpenMP | 1 | 2 | Reparto estático de filas; comprobé hilos activos igual a núcleos |
 | 9 | Speedup, eficiencia y Amdahl | 1 | 2 | Ajuste de `f` por mínimos cuadrados; interpreté por qué el modelo se desvió 18,49 % con N = 128 |
 | 10 | Cachés y coherencia | 1 | 2 | Relacioné 39,14 % de fallos de L1D con el patrón de acceso y comprobé la mejora con la variante i-k-j |
