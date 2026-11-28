@@ -1,7 +1,7 @@
 # AC2. Ficha de vigilancia tecnológica
 
-**Estudiante:** Sary Vargas [completar apellidos]
-**Fecha:** [AAAA-MM-DD, semana 1]
+**Estudiante:** Sary Vargas Zamora
+**Fecha:** [ semana 1]
 
 ## Tecnología 1. Arm Scalable Matrix Extension (SME y SME2)
 
