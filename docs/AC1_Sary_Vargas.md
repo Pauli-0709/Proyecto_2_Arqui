@@ -28,7 +28,7 @@ Escala usada en la matriz:
 | 8 | Programación paralela con OpenMP | 1 | Conocimiento básico de la herramienta |
 | 9 | Speedup, eficiencia y ley de Amdahl | 1 | Conozco las fórmulas y la teoría, pero me falta investigar más para su aplicación |
 | 10 | Jerarquía de cachés y coherencia | 1 | Conocimiento básico de la teoría |
-| 11 | Análisis de datos y gráficos con Python | 1 | He utilizado la herramienta, pero en otras aplicaciones |
+| 11 | Análisis de datos y gráficos con Python | 2 | He utilizado la herramienta |
 | 12 | Redacción técnica y comunicación de resultados | 2 | Puedo redactar adecuadamente los resultados técnicos obtenidos; sin embargo, se puede depurar |
 
 ## 2. Brechas prioritarias (3)
